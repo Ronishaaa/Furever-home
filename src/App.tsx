@@ -1,24 +1,36 @@
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { UserContextProvider } from "./context/userContextProvider";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
 import { Home, Login, Signup } from "./pages";
+import EmailVerification from "./pages/EmailVerification";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.withCredentials = true;
 
 function App() {
   return (
-    <UserContextProvider>
+    <AuthProvider>
       <BrowserRouter>
+        <Navbar />
         <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <Routes>
           <Route path="/register" element={<Signup />} />
+          <Route path="/verify" element={<EmailVerification />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />{" "}
         </Routes>
       </BrowserRouter>
-    </UserContextProvider>
+    </AuthProvider>
   );
 }
 

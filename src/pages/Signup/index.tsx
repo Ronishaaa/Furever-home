@@ -17,8 +17,8 @@ export const Signup = () => {
     e.preventDefault();
     const { name, email, password } = data;
     try {
-      const { data } = await axios.post("/register", {
-        name,
+      const { data } = await axios.post("/sign-up", {
+        username: name,
         email,
         password,
       });
@@ -28,7 +28,7 @@ export const Signup = () => {
       } else {
         setData({ name: "", email: "", password: "" });
         toast.success("register Successful");
-        navigate("/login");
+        navigate("/verify");
       }
     } catch (error) {
       console.log(error);

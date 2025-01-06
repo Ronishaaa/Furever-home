@@ -2,10 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import styles from "./index.module.scss";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -13,23 +16,21 @@ export const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const { email, password } = data;
 
     try {
-      const { data } = await axios.post("/login", {
-        email,
-        password,
-      });
+      const response = await axios.post("/login", { email, password });
 
-      if (data.error) {
-        toast.error(data.error);
-      } else {
+      if (response.data.token) {
+        login(response.data.token);
         setData({ email: "", password: "" });
         navigate("/");
+      } else {
+        toast.error(response.data.error || "Login failed");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Login error:", error);
+      toast.error("An error occurred while logging in.");
     }
   };
 
