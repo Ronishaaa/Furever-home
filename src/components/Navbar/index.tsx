@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <nav
       className={twMerge(
-        "bg-primaryCream p-4",
+        "bg-primaryMintGreen/40 p-4 fixed z-10 w-full",
         noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
       )}
     >

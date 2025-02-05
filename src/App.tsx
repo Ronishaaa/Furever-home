@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import { Home, Login, Signup } from "./pages";
 import EmailVerification from "./pages/EmailVerification";
-import ProtectedRoute from "./pages/ProtectedRoute";
 
 axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.withCredentials = true;
@@ -23,9 +22,9 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
+              // <ProtectedRoute>
+              <Home />
+              // </ProtectedRoute>
             }
           />{" "}
         </Routes>

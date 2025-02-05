@@ -53,7 +53,7 @@ export const Signup = () => {
                 placeholder="Enter your name"
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
-                className="w-full p-3 border border-primaryBrown rounded-md focus:outline-none"
+                className="w-full p-3 border border-primaryGreen rounded-md focus:outline-none"
               />
             </div>
 
@@ -67,7 +67,7 @@ export const Signup = () => {
                 placeholder="Enter your email"
                 value={data.email}
                 onChange={(e) => setData({ ...data, email: e.target.value })}
-                className="w-full p-3 border border-primaryBrown rounded-md focus:outline-none"
+                className="w-full p-3 border border-primaryGreen rounded-md focus:outline-none"
               />
             </div>
 
@@ -81,13 +81,13 @@ export const Signup = () => {
                 placeholder="Enter your password"
                 value={data.password}
                 onChange={(e) => setData({ ...data, password: e.target.value })}
-                className="w-full p-3 border border-primaryBrown rounded-md focus:outline-none"
+                className="w-full p-3 border border-primaryGreen rounded-md focus:outline-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 bg-primaryBrown text-secondaryWhite font-semibold rounded-md focus:outline-none"
+              className="w-full py-3 bg-primaryGreen text-secondaryWhite font-semibold rounded-md focus:outline-none"
             >
               Register
             </button>
