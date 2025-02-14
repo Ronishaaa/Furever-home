@@ -1,6 +1,27 @@
+import { MdOutlineAccountCircle } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useAuth } from "../../context/AuthContext";
+import { Button } from "../Button";
+
+const NAV_LINKS = [
+  {
+    link: "/adopt",
+    name: "Adopt a  Pet",
+  },
+  {
+    link: "/tips",
+    name: "Pet care tips",
+  },
+  {
+    link: "/success-stories",
+    name: "Success Stories",
+  },
+  {
+    link: "contact-us",
+    name: "Contact us",
+  },
+];
 
 const Navbar = () => {
   const location = useLocation();
@@ -11,60 +32,39 @@ const Navbar = () => {
   return (
     <nav
       className={twMerge(
-        "bg-primaryMintGreen/40 p-4 fixed z-10 w-full",
+        "bg-primaryIvory p-4 fixed z-20 w-full",
         noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
       )}
     >
       <div className="min-w-screen-xl mx-auto flex items-center justify-between">
-        <div className="text-2xl font-bold text-neutralDarkGray">
-          <Link to="/">Furever Home</Link>
+        <div className="text-2xl font-bold text-primaryIvory">
+          <Link to="/">
+            <img src="/logoDark.png" className="h-11" />
+          </Link>
         </div>
 
         <div className="hidden md:flex space-x-8">
-          <Link
-            to="/pets"
-            className="text-neutralDarkGray hover:text-primaryGreen transition duration-300"
-          >
-            Our pets
-          </Link>
-          <Link
-            to="/about"
-            className="text-neutralDarkGray hover:text-primaryGreen transition duration-300"
-          >
-            About
-          </Link>
-          <Link
-            to="/adopt"
-            className="text-neutralDarkGray hover:text-primaryGreen transition duration-300"
-          >
-            Adopt
-          </Link>
-          <Link
-            to="/contact"
-            className="text-neutralDarkGray hover:text-primaryGreen transition duration-300"
-          >
-            Contact
-          </Link>
+          {NAV_LINKS.map((item, index) => (
+            <Link
+              to={item.link}
+              className="text-primaryPurple font-semibold hover:text-primaryGreen transition duration-300"
+              key={index}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
 
-        {isAuthenticated ? (
-          <div className="text-neutralDarkGray">Welcome, hi!</div>
-        ) : (
-          <div className="flex space-x-4">
-            <Link
-              to="/login"
-              className="bg-primaryGreen text-white py-2 px-4 rounded-md hover:bg-primaryGreen/80 transition duration-300"
-            >
-              Login
+        <div className="flex gap-4 items-center">
+          <Button size="md" variant="filled" label="Donate Now" />
+          {isAuthenticated ? (
+            <div>hi</div>
+          ) : (
+            <Link to="/login" className="">
+              <MdOutlineAccountCircle size={24} />
             </Link>
-            <Link
-              to="/register"
-              className="bg-secondaryOrange text-white py-2 px-4 rounded-md hover:bg-secondaryOrange/80 transition duration-300"
-            >
-              Sign Up
-            </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </nav>
   );

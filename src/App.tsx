@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import { Home, Login, Signup } from "./pages";
@@ -28,6 +29,7 @@ function App() {
             }
           />{" "}
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );

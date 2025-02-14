@@ -1,0 +1,41 @@
+@use "main";
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  position: relative;
+  font-weight: 600;
+
+  span {
+    white-space: nowrap;
+    transition: 0.6s;
+    z-index: 10;
+  }
+}
+
+.filled {
+  color: main.$primary-black;
+  background-color: main.$secondary-yellow;
+}
+
+.outlined {
+  color: main.$primary-ivory;
+  border: 2px solid main.$primary-ivory;
+}
+
+.lg {
+  height: 52px;
+  padding: 0 28px;
+}
+
+.md {
+  height: 44px;
+  padding: 0 18px;
+}
+
+.sm {
+  padding: 0 24px;
+  height: 44px;
+}
