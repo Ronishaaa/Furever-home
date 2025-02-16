@@ -3,7 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const EmailVerification = () => {
+export const EmailVerification = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -60,5 +60,3 @@ const EmailVerification = () => {
     </div>
   );
 };
-
-export default EmailVerification;
