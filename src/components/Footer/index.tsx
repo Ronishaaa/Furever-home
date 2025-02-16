@@ -22,7 +22,7 @@ const OPTIONS = [
       },
       {
         title: "Contact Us",
-        link: "/contact-usr",
+        link: "/contact-us",
       },
     ],
   },
@@ -44,7 +44,7 @@ const OPTIONS = [
       },
       {
         title: "Call Us: 9877777777",
-        link: "/y",
+        link: "/",
       },
       {
         title: "Email: petsdoptionnepal.com",

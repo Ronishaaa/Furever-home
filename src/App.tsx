@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import { Home, Login, Signup } from "./pages";
 import EmailVerification from "./pages/EmailVerification";
+import { PetDetails } from "./pages/PetDetails";
 
 axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.withCredentials = true;
@@ -28,6 +29,7 @@ function App() {
               // </ProtectedRoute>
             }
           />{" "}
+          <Route path="/pet-details" element={<PetDetails />} />
         </Routes>
         <Footer />
       </BrowserRouter>

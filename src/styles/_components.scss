@@ -1,0 +1,18 @@
+.nm-slider {
+  .swiper-wrapper {
+    display: flex;
+    justify-content: center;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+    transform: translate3d(0px, 0px, 0px) !important;
+  }
+}
+.swiper-wrapper {
+  display: inline-flex;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
