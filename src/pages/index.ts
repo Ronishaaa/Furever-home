@@ -1,4 +1,4 @@
-export * from "./AdoptionApplication";
+export * from "../components/AdoptionApplication";
 export * from "./EmailVerification";
 export * from "./Home";
 export * from "./Login";

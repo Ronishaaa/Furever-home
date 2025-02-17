@@ -5,7 +5,6 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import { EmailVerification, Home, Login, PetDetails, Signup } from "./pages";
-import AdoptionApplication from "./pages/AdoptionApplication";
 
 axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.withCredentials = true;
@@ -29,7 +28,6 @@ function App() {
             }
           />{" "}
           <Route path="/pet-details" element={<PetDetails />} />
-          <Route path="/adopt" element={<AdoptionApplication />} />
         </Routes>
         <Footer />
       </BrowserRouter>

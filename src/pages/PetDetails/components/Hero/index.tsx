@@ -4,7 +4,8 @@ import SwiperCore from "swiper";
 import { Controller, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { twMerge } from "tailwind-merge";
-import { Button } from "../../../../components";
+import { useBoolean } from "usehooks-ts";
+import { AdoptionApplication, Button } from "../../../../components";
 
 const IMAGES = [
   { src: "https://picsum.photos/570/444", alt: "Case Brown Sunglass" },
@@ -74,6 +75,12 @@ export const Hero = () => {
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const {
+    value: isFormOpen,
+    setTrue: openForm,
+    setFalse: closeForm,
+  } = useBoolean(false);
 
   const updatePagination = (swiper: SwiperClass) => {
     setCurrentSlide(swiper.realIndex);
@@ -181,6 +188,7 @@ export const Hero = () => {
                 label={"Apply to Adopt"}
                 size="md"
                 className="w-full"
+                onClick={openForm}
               />
             </div>
           </div>
@@ -204,6 +212,8 @@ export const Hero = () => {
           </div>
         </div>
       </div>
+
+      <AdoptionApplication handleClose={closeForm} open={isFormOpen} />
     </section>
   );
 };
