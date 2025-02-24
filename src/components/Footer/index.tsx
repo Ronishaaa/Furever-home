@@ -56,7 +56,7 @@ const OPTIONS = [
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-primaryPurple text-secondaryWhite">
+    <footer className="w-full bg-primaryPurple text-primaryIvory">
       <div className="fh-container">
         <div className="mx-auto w-full pt-6 lg:max-w-[1440px] lg:pt-[100px]">
           <div className="fh-grid order-last mx-auto border-b-secondaryWhite pb-4 lg:border-b lg:py-8">
@@ -66,7 +66,7 @@ const Footer = () => {
                 alt="fureverhome logo"
                 className="h-[70px]"
               />
-              <div className="mb-4 mt-2 text-secondaryWhite lg:mb-7">
+              <div className="mb-4 mt-2 text-primaryIvory lg:mb-7">
                 Giving stray pets a second chance at a loving home.
               </div>
             </div>

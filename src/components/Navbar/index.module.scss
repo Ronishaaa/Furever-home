@@ -1,0 +1,13 @@
+@use "main";
+
+.navbar {
+  z-index: 1000;
+  position: sticky;
+  padding: 1rem;
+  top: 0;
+  background-color: rgba(main.$primary-ivory, 0.6);
+  width: 100%;
+  backdrop-filter: blur(30px);
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(main.$primary-dark-rosewood, 0.7);
+}

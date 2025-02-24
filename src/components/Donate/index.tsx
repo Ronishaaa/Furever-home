@@ -7,7 +7,7 @@ export const Donate = () => {
       <div className="fh-container">
         <div className={styles.container}>
           <div className="fh-grid">
-            <div className="col-start-2 col-span-5 text-secondaryWhite">
+            <div className="col-start-2 col-span-5 text-primaryIvory">
               <h2 className="text-5xl mb-5 font-semibold">
                 Help Give Stray Pets a Second Chance
               </h2>

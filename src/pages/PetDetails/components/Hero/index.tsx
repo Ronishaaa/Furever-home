@@ -53,18 +53,6 @@ const DESCRIPTION = [
       },
     ],
   },
-  {
-    title: "Health Information",
-    content: [
-      { paragraph: "Vaccinated: Fully vaccinated (Jan 2024)" },
-      {
-        paragraph:
-          "Health Issues: None (recovered from minor paw injury in 2023)",
-      },
-      { paragraph: "Diet: Premium dog food, no allergies" },
-      { paragraph: "Medications: None" },
-    ],
-  },
 ];
 
 export const Hero = () => {
@@ -86,7 +74,7 @@ export const Hero = () => {
     setCurrentSlide(swiper.realIndex);
   };
   return (
-    <section className="mt-[120px]">
+    <section className="mt-10">
       <div className="fh-container">
         <div className="fh-grid">
           <div className="col-span-7 overflow-hidden">
@@ -108,7 +96,7 @@ export const Hero = () => {
               >
                 <button
                   className={twMerge(
-                    "absolute left-0 top-1/2 z-10 hidden size-14 -translate-y-2/4 items-center justify-center rounded-full border border-primaryPurple hover:bg-primaryPurple/15 lg:flex"
+                    "absolute left-0 top-1/2 z-10 hidden size-14 -translate-y-2/4 items-center justify-center rounded-full border border-primaryDarkRosewood hover:bg-primaryDarkRosewood/15 lg:flex"
                   )}
                   ref={prevRef}
                 >
@@ -116,7 +104,7 @@ export const Hero = () => {
                 </button>
                 <button
                   className={twMerge(
-                    "absolute right-0 top-1/2 z-10 hidden size-14 -translate-y-2/4 items-center justify-center rounded-full border border-primaryPurple hover:bg-primaryPurple/15 lg:flex"
+                    "absolute right-0 top-1/2 z-10 hidden size-14 -translate-y-2/4 items-center justify-center rounded-full border border-primaryDarkRosewood hover:bg-primaryDarkRosewood/15 lg:flex"
                   )}
                   ref={nextRef}
                 >
@@ -155,8 +143,8 @@ export const Hero = () => {
                   className={twMerge(
                     "h-[70px] !w-fit cursor-pointer rounded border",
                     currentSlide === idx
-                      ? "border-primaryPurple"
-                      : "border-primaryPurple/50"
+                      ? "border-primaryDarkRosewood"
+                      : "border-primaryDarkRosewood/50"
                   )}
                   onClick={() => firstSwiper?.slideToLoop(idx)}
                 >

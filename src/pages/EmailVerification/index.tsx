@@ -53,7 +53,7 @@ export const EmailVerification = () => {
       <button
         onClick={handleOtpSubmit}
         disabled={loading}
-        className="w-full py-3 bg-primaryGreen text-secondaryWhite font-semibold rounded-md hover:bg-primaryGreen/80 focus:outline-none"
+        className="w-full py-3 bg-primaryGreen text-primaryIvory font-semibold rounded-md hover:bg-primaryGreen/80 focus:outline-none"
       >
         {loading ? "Verifying..." : "Verify OTP"}
       </button>

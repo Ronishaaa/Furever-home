@@ -170,7 +170,7 @@ export const AdoptionApplication = ({ open, handleClose }: Props) => {
             required
           />
           <TextArea
-            label=" Do you currently have other pets in the household? If yes, provide details."
+            label="Do you currently have other pets in the household? If yes, provide details."
             id="otherPets"
             name="otherPets"
             value={form.otherPets}
@@ -179,21 +179,12 @@ export const AdoptionApplication = ({ open, handleClose }: Props) => {
             rows={2}
           />{" "}
           <TextArea
-            label="Are all current pets spayed/neutered?"
+            label="Are all current pets neutered?"
             id="neuteredPets"
             name="neuteredPets"
             value={form.neuteredPets}
             onChange={handleChange}
             required
-          />
-          <TextArea
-            label="What happened to previous pets? Have you ever rehomed or surrendered a pet?"
-            id="previousPets"
-            name="previousPets"
-            value={form.previousPets}
-            onChange={handleChange}
-            required
-            rows={4}
           />
           <TextArea
             label="Do you have any upcoming vacations or life events that may impact adopting an animal?"

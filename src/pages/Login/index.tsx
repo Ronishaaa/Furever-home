@@ -37,13 +37,13 @@ export const Login = () => {
   return (
     <div className={styles.container}>
       <div className="bg-secondaryWhite shadow-lg p-6 rounded-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold text-center text-primaryBlack mb-6">
+        <h2 className="text-2xl font-semibold text-center text-primaryIvory mb-6">
           Login
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-4">
             <div>
-              <label htmlFor="email" className="block text-primaryBlack">
+              <label htmlFor="email" className="block text-primaryIvory">
                 Email
               </label>
               <input
@@ -57,7 +57,7 @@ export const Login = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-primaryBlack">
+              <label htmlFor="password" className="block text-primaryIvory">
                 Password
               </label>
               <input
@@ -72,13 +72,13 @@ export const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-primaryGreen text-secondaryWhite font-semibold rounded-md hover:bg-primaryGreen/80 focus:outline-none"
+              className="w-full py-3 bg-primaryGreen text-primaryIvory font-semibold rounded-md hover:bg-primaryGreen/80 focus:outline-none"
             >
               Login
             </button>
           </div>
         </form>
-        <p className="text-center mt-4 text-primaryBlack">
+        <p className="text-center mt-4 text-primaryIvory">
           Don't have an account?{" "}
           <Link to="/register" className="text-primaryBlue hover:underline">
             Sign Up

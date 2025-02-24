@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../Button";
+import styles from "./index.module.scss";
 
 const NAV_LINKS = [
   {
@@ -32,12 +33,12 @@ const Navbar = () => {
   return (
     <nav
       className={twMerge(
-        "bg-primaryIvory p-4 fixed z-20 w-full top-0",
+        styles.navbar,
         noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
       )}
     >
       <div className="min-w-screen-xl mx-auto flex items-center justify-between">
-        <div className="text-2xl font-bold text-primaryIvory">
+        <div className="text-2xl font-bold text-primaryDarkRosewood">
           <Link to="/">
             <img src="/logoDark.png" className="h-11" />
           </Link>
@@ -47,7 +48,7 @@ const Navbar = () => {
           {NAV_LINKS.map((item, index) => (
             <Link
               to={item.link}
-              className="text-primaryPurple font-semibold hover:text-primaryGreen transition duration-300"
+              className="text-primaryDarkRosewood font-semibold hover:text-primaryDarkRosewood/80 transition duration-300"
               key={index}
             >
               {item.name}

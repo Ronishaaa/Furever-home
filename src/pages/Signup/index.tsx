@@ -38,13 +38,13 @@ export const Signup = () => {
   return (
     <div className={styles.container}>
       <div className="bg-secondaryWhite shadow-lg p-6 rounded-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold text-center text-primaryBlack mb-6">
+        <h2 className="text-2xl font-semibold text-center text-primaryIvory mb-6">
           Sign Up
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-4">
             <div>
-              <label htmlFor="name" className="block text-primaryBlack">
+              <label htmlFor="name" className="block text-primaryIvory">
                 Name
               </label>
               <input
@@ -58,7 +58,7 @@ export const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-primaryBlack">
+              <label htmlFor="email" className="block text-primaryIvory">
                 Email
               </label>
               <input
@@ -72,7 +72,7 @@ export const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-primaryBlack">
+              <label htmlFor="password" className="block text-primaryIvory">
                 Password
               </label>
               <input
@@ -87,13 +87,13 @@ export const Signup = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-primaryGreen text-secondaryWhite font-semibold rounded-md focus:outline-none"
+              className="w-full py-3 bg-primaryGreen text-primaryIvory font-semibold rounded-md focus:outline-none"
             >
               Register
             </button>
           </div>
         </form>
-        <p className="text-center mt-4 text-primaryBlack">
+        <p className="text-center mt-4 text-primaryIvory">
           Already have an account?{" "}
           <Link to="/login" className="text-primaryBlue hover:underline">
             Login
