@@ -1,5 +1,16 @@
 import { useRef, useState } from "react";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { BsFillLightningChargeFill } from "react-icons/bs";
+import {
+  FaBirthdayCake,
+  FaChild,
+  FaDumbbell,
+  FaPaw,
+  FaRegHeart,
+  FaSyringe,
+  FaWeight,
+} from "react-icons/fa";
+import { IoMdFemale, IoMdMale } from "react-icons/io";
+import { MdChevronLeft, MdChevronRight, MdPets } from "react-icons/md";
 import SwiperCore from "swiper";
 import { Controller, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
@@ -13,47 +24,39 @@ const IMAGES = [
   { src: "https://picsum.photos/570/446", alt: "Case Brown Sunglass" },
 ];
 
-const DETAILS = [
-  { name: "Breed", value: "Labrador" },
-  { name: "Color", value: "Yellow" },
-  { name: "Age", value: "6 weeks old" },
-  { name: "Gender", value: "Female" },
-  { name: "Size", value: "Large" },
-  { name: "Weight", value: "15kg" },
-  { name: "Vaccination status", value: "vaccinated" },
-];
-
-const DESCRIPTION = [
-  {
-    title: "Personality and Behavior",
-    content: [
-      { paragraph: "Energy Level: High (active, loves fetch and hiking)" },
-      { paragraph: "Temperament: Friendly, sociable, affectionate" },
-      { paragraph: "Training: Basic commands, house-trained" },
-      { paragraph: "Behavior with Strangers: Cautious at first, but friendly" },
-      {
-        paragraph:
-          "Behavior with Other Pets: Gets along well with other dogs and cats",
-      },
-      {
-        paragraph:
-          "Special Traits: Loves water, calm indoors but needs regular exercise",
-      },
-    ],
+const PET = {
+  name: "Buddy",
+  breed: "Labrador Retriever",
+  gender: "Male",
+  age: "2 years",
+  weight: "5kg",
+  energy: "High",
+  health: "Vaccinated, Neutered",
+  personality: [
+    "Friendly",
+    "Energetic",
+    "Loyal",
+    "Social",
+    "Playful",
+    "Great with kids",
+  ],
+};
+const petData = {
+  personality: {
+    energyLevel: "High",
+    temperament: "Shy",
+    training: "Basic",
+    strangerBehavior: null,
+    petBehavior: null,
+    specialTraits: null,
   },
-  {
-    title: "Adoption Requirements",
-    content: [
-      { paragraph: "Ideal Home: Active household, yard preferred" },
-      { paragraph: "Children: Good with kids" },
-      { paragraph: "Other Pets: Compatible with other dogs and cats" },
-      { paragraph: "Experience Level: First-time or experienced dog owners" },
-      {
-        paragraph: "Special Requirements: Needs daily walks and playtime",
-      },
-    ],
+  adoptionInfo: {
+    childrenFriendly: true,
+    otherPetsFriendly: true,
+    experienceLevel: "FirstTimeOwner",
+    specialNeeds: null,
   },
-];
+};
 
 export const Hero = () => {
   const prevRef = useRef(null);
@@ -112,16 +115,14 @@ export const Hero = () => {
                 </button>
 
                 {IMAGES.map((image, index) => (
-                  <SwiperSlide key={index} className="h-[444px]">
-                    <figure>
-                      <img
-                        className="mx-auto h-[444px] object-contain"
-                        width={636}
-                        height={444}
-                        alt={image.alt}
-                        src={image.src}
-                      />
-                    </figure>
+                  <SwiperSlide key={index} className="h-[400px]">
+                    <img
+                      width={600}
+                      height={400}
+                      alt={image.alt}
+                      src={image.src}
+                      className="mx-auto object-cover"
+                    />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -153,50 +154,176 @@ export const Hero = () => {
                     height={70}
                     alt={image.alt}
                     src={image.src}
-                    className="max-h-[60px] max-w-[80px] object-contain"
+                    className="max-h-[70px] max-w-[80px] object-contain"
                   />
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
 
-          <div className="col-span-5 col-start-8 px-4">
-            <h1 className="text-3xl mt-2 text-utilityDarkGray mb-3">Max</h1>
-            <div className="">
-              {DETAILS.map((item, index) => (
-                <div key={index} className="grid grid-cols-2 mb-3">
-                  <div className="">{item.name}</div>
-                  <div className="">{item.value}</div>
+          <div className="col-span-5 col-start-8 p-4">
+            <h2 className="text-3xl font-bold">{PET.name}</h2>
+
+            <div className="grid grid-cols-2 gap-6 mt-6">
+              <div className="flex items-center gap-2">
+                <FaPaw size={20} className="text-primaryOrange" />
+                <div>
+                  <div className="text-sm text-black/80">Breed</div>
+                  <div className="text-base text-black font-medium">
+                    {PET.breed}
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <FaBirthdayCake size={20} className="text-primaryOrange" />
+                <div>
+                  <div className="text-sm text-black/80">Age</div>
+                  <div className="text-base text-black font-medium">
+                    {PET.age}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {PET.gender === "Female" ? (
+                  <IoMdFemale size={20} className="text-primaryOrange" />
+                ) : (
+                  <IoMdMale size={20} className="text-primaryOrange" />
+                )}
+                <div>
+                  <div className="text-sm text-black/80">Gender</div>
+                  <div className="text-base text-black font-medium">
+                    {PET.gender}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <FaWeight size={20} className="text-primaryOrange" />
+                <div>
+                  <div className="text-sm text-black/80">Weight</div>
+                  <div className="text-base text-black font-medium">
+                    {PET.weight}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <FaSyringe size={20} className="text-primaryOrange" />
+
+                <div>
+                  <div className="text-sm text-black/80">Health</div>
+                  <div className="text-base text-black font-medium">
+                    {PET.health}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <BsFillLightningChargeFill
+                  size={20}
+                  className="text-primaryOrange"
+                />
+
+                <div>
+                  <div className="text-sm text-black/80">Energy level</div>
+                  <div className="text-base text-black font-medium">
+                    {PET.energy}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="mt-4 flex gap-6">
+
+            <div className="mt-6">
+              <h3 className="font-semibold text-lg">Personality</h3>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {PET.personality.map((trait) => (
+                  <span
+                    key={trait}
+                    className="bg-primaryBrown/20 text-black px-3 py-1 rounded-full text-sm"
+                  >
+                    {trait}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-6">
               <Button
                 variant="filled"
                 label={"Apply to Adopt"}
                 size="md"
-                className="w-full"
+                className="w-full gap-2 items-center"
                 onClick={openForm}
+                icon={<FaRegHeart />}
               />
             </div>
           </div>
         </div>
 
         <div className="mt-20">
-          <div className="text-2xl mb-3 font-semibold">Description</div>
-          <div className="gap-y-4 grid grid-cols-2">
-            {DESCRIPTION.map((item, index) => (
-              <div className="" key={index}>
-                <div className="text-xl mb-3 font-medium">{item.title}</div>
-                <ul>
-                  {item.content.map((item, index) => (
-                    <li className="text-base list-inside list-disc" key={index}>
-                      {item.paragraph}
-                    </li>
-                  ))}
-                </ul>
+          <h3 className="text-lg text-primaryOrange font-bold border-b-2 pb-2 pl-4">
+            Description
+          </h3>
+          <div className="p-4">
+            <h3 className="text-2xl font-bold py-2">About Buddy</h3>
+            <p className="text-gray-700 mt-2">
+              Meet Buddy, a friendly and energetic Labrador Retriever who's
+              looking for his forever home! At 2 years old, Buddy is the perfect
+              blend of playful energy and good manners. He loves going for long
+              walks, playing fetch in the park, and cuddling up on the couch
+              after a day of adventure.
+            </p>
+            <p>
+              Buddy is great with children and gets along well with other dogs.
+              He's been fully trained for basic commands and is house-trained.
+              His favorite activities include swimming, chasing balls, and
+              receiving belly rubs!
+            </p>
+            <div className="my-6">
+              <div className="bg-gray-100 rounded-md">
+                <strong>Training:</strong> {petData.personality.training}
               </div>
-            ))}
+            </div>
+
+            <div>
+              <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                Compatibility
+              </h2>
+              <div className="grid grid-cols-4 gap-4">
+                <div className="p-3 bg-gray-100 rounded-md flex flex-col items-center gap-2">
+                  <div className="size-14 bg-primaryGreen/20 rounded-full flex items-center justify-center">
+                    <FaChild className="text-primaryGreen" size={32} />
+                  </div>
+                  <div className="text-base">Children Friendly</div>
+                  <div className="text-sm text-primaryGreen">
+                    {" "}
+                    {petData.adoptionInfo.childrenFriendly ? "Yes" : "No"}
+                  </div>
+                </div>
+                <div className="p-3 bg-gray-100 rounded-md flex flex-col items-center gap-2">
+                  <div className="size-14 bg-primaryGreen/20 rounded-full flex items-center justify-center">
+                    <MdPets className="text-primaryGreen" size={32} />
+                  </div>
+                  <div className="text-base">Other Pets Friendly</div>
+                  <div className="text-sm text-primaryGreen">
+                    {" "}
+                    {petData.adoptionInfo.otherPetsFriendly ? "Yes" : "No"}
+                  </div>
+                </div>
+                <div className="p-3 bg-gray-100 rounded-md flex flex-col items-center gap-2">
+                  <div className="size-14 bg-primaryGreen/20 rounded-full flex items-center justify-center">
+                    <FaDumbbell className="text-primaryGreen" size={32} />
+                  </div>
+                  <div className="text-base">Experience Level</div>
+                  <div className="text-sm text-primaryGreen">
+                    {" "}
+                    {petData.adoptionInfo.experienceLevel}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
