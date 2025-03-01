@@ -8,7 +8,7 @@ export const Hero = () => {
         <div className="fh-grid">
           <div className="col-span-5">
             <h1 className="text-4xl md:text-5xl font-bold mb-5">
-              Find Your Perfect Companion Today!
+              Find Your Furever Companion Today!
             </h1>
             <p className="text-lg md:text-xl mb-5">
               Adopt a pet and make a difference in their life. Together, we can

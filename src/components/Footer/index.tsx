@@ -56,7 +56,7 @@ const OPTIONS = [
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-primaryPurple text-primaryIvory">
+    <footer className="w-full bg-black">
       <div className="fh-container">
         <div className="mx-auto w-full pt-6 lg:max-w-[1440px] lg:pt-[100px]">
           <div className="fh-grid order-last mx-auto border-b-secondaryWhite pb-4 lg:border-b lg:py-8">
@@ -66,20 +66,22 @@ const Footer = () => {
                 alt="fureverhome logo"
                 className="h-[70px]"
               />
-              <div className="mb-4 mt-2 text-primaryIvory lg:mb-7">
+              <div className="mb-4 mt-2 text-grey lg:mb-7">
                 Giving stray pets a second chance at a loving home.
               </div>
             </div>
             <div className="col-span-4 grid grid-cols-2 gap-8 border-b border-b-secondaryWhite pb-4 lg:col-span-7 lg:col-start-6 lg:grid-cols-3 lg:border-none lg:pb-0">
               {OPTIONS.map((item, index) => (
                 <div key={index}>
-                  <div className="text-xl mb-4">{item.title}</div>
+                  <div className="text-xl text-secondaryWhite mb-4">
+                    {item.title}
+                  </div>
 
                   <ul>
                     {item.sections.map((item, index) => (
                       <li
                         key={index}
-                        className="text-sm mb-4 last:mb-0 hover:underline"
+                        className="text-sm mb-4  text-grey last:mb-0 hover:text-primaryOrange"
                       >
                         <Link to={item.link}>{item.title}</Link>
                       </li>
@@ -89,7 +91,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          <div className="justify-between lg:flex lg:py-8">
+          <div className="justify-between  text-grey lg:flex lg:py-8">
             <div>© 2025 Pet Adoption Nepal. All rights reserved.</div>
 
             <div className="mt-[10px] flex gap-1 lg:gap-4">

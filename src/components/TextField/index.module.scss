@@ -2,7 +2,7 @@
 
 .input {
   width: 100%;
-  color: main.$primary-purple;
+  color: main.$primary-black;
   font-size: 16px;
   background-color: transparent;
   outline: none;
@@ -10,21 +10,20 @@
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 1rem;
-  color: main.$primary-purple;
   background-color: white;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &::placeholder {
-    color: rgba(main.$primary-purple, 0.16);
+    color: rgba(main.$primary-black, 0.16);
   }
 
   &:focus {
-    border-color: main.$primary-purple;
+    border-color: main.$primary-black;
     outline: none;
   }
 }
 
 .error {
   margin-bottom: 2px;
-  color: main.$primary-purple;
+  color: main.$primary-black;
 }

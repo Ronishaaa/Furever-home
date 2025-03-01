@@ -4,26 +4,27 @@ const PETS = [
   {
     name: "Buddy",
     age: 2,
-    image: "https://picsum.photos/id/237/300/300",
+    image: "/pet1.jpg",
     breed: "Golden Retriever",
   },
   {
     name: "Luna",
     age: 1,
-    image: "https://picsum.photos/300/301",
-    breed: "Siberian Husky",
+    image: "/pet2.jpg",
+    breed: "Sammoyed",
   },
   {
     name: "Charlie",
     age: 3,
-    image: "https://picsum.photos/301/302",
-    breed: "Labrador Retriever",
+    image: "/pet3.jpg",
+
+    breed: "Siberian Husky",
   },
   {
     name: "Milo",
     age: 4,
-    image: "https://picsum.photos/300/303",
-    breed: "Beagle",
+    image: "/pet4.jpg",
+    breed: "Cocker spaniel",
   },
 ];
 
@@ -32,8 +33,8 @@ export const Featured = () => {
     <section className="my-20">
       <div className="fh-container">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-semibold mb-3 text-primaryDarkRosewood">
-            Featured Pets
+          <h2 className="text-3xl font-bold mb-3 text-primaryDarkRosewood">
+            Our Pets
           </h2>
           <p className="text-lg text-primaryDarkRosewood">
             Meet some of our wonderful pets looking for a home!

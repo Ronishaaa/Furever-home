@@ -11,7 +11,7 @@ export const PetCard = ({ image, age, name, breed }: Props) => {
       href="/pet-details"
       className="relative bg-secondaryWhite rounded-lg overflow-hidden group"
     >
-      <div className="overflow-hidden aspect-w-1 aspect-h-1">
+      <div className="overflow-hidden aspect-square">
         <img
           className="object-cover w-full h-full transition-all duration-300 group-hover:scale-125"
           src={image}
@@ -24,13 +24,27 @@ export const PetCard = ({ image, age, name, breed }: Props) => {
         </span>
       </div>
       <div className="p-4">
-        <h3 className="text-xl font-semibold text-primaryDarkRosewood mb-2">
-          {name}
-        </h3>
-        <div className="text-sm text-primaryDarkRosewood mb-2">
-          {age} years old
+        <div className="flex justify-between">
+          <h3 className="text-xl font-semibold text-primaryDarkRosewood mb-2">
+            {name}
+          </h3>
+          <div className="bg-primaryOrange/20 py-1 px-4 text-primaryOrange text-sm mb-2 rounded-full">
+            {breed}
+          </div>
         </div>
-        <div className="text-sm text-primaryDarkRosewood">{breed}</div>
+        <div className="text-base text-primaryDarkRosewood/80 mb-2">
+          Bella is a sweet 3-year-old Labrador who loves to play fetch and
+          cuddle on the couch.
+        </div>
+
+        <div className="flex">
+          <div className="w-fit bg-primaryIvory/20 py-1 px-2 text-black/80 bg-primaryIvory text-sm mb-2 rounded-full">
+            female
+          </div>
+          <div className="w-fit bg-primaryIvory/20 py-1 px-2 text-black/80 bg-primaryIvory text-sm mb-2 rounded-full">
+            {age} years old
+          </div>
+        </div>
       </div>
     </a>
   );
