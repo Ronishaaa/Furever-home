@@ -6,11 +6,13 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import {
   Adopt,
+  Contact,
   EmailVerification,
   Home,
   Login,
   PetDetails,
   Signup,
+  SuccessStories,
 } from "./pages";
 
 axios.defaults.baseURL = "http://localhost:3001";
@@ -29,6 +31,8 @@ function App() {
           <Route path="/" element={<Home />} />{" "}
           <Route path="/pet-details" element={<PetDetails />} />
           <Route path="/adopt" element={<Adopt />} />
+          <Route path="/success-stories" element={<SuccessStories />} />
+          <Route path="/contact-us" element={<Contact />} />
         </Routes>
         <Footer />
       </BrowserRouter>

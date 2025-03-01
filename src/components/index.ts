@@ -5,4 +5,5 @@ export * from "./Footer";
 export * from "./Navbar";
 export * from "./PetCard";
 export * from "./RadioButton";
+export * from "./TextArea";
 export * from "./TextField";
