@@ -1,4 +1,8 @@
+import dayjs from "dayjs";
+import { Link } from "react-router-dom";
+
 interface Props {
+  href: number;
   image: string;
   name: string;
   story: string;
@@ -6,9 +10,19 @@ interface Props {
   rescueDate?: string;
 }
 
-export const StoryCard = ({ image, name, story, adoptionDate }: Props) => {
+export const StoryCard = ({
+  image,
+  name,
+  story,
+  adoptionDate,
+  href,
+}: Props) => {
+  const plainText = story.replace(/<[^>]+>/g, "");
   return (
-    <div className="relative bg-secondaryWhite rounded-lg overflow-hidden group shadow-md">
+    <Link
+      to={`/success-stories/${href}`}
+      className="relative bg-secondaryWhite rounded-lg overflow-hidden group shadow-md"
+    >
       <div className="overflow-hidden aspect-square">
         <img
           className="object-cover w-full h-full transition-all duration-300 group-hover:scale-125"
@@ -29,13 +43,13 @@ export const StoryCard = ({ image, name, story, adoptionDate }: Props) => {
         </h3>
 
         <p className="text-base text-primaryDarkRosewood/80 mb-4">
-          {story.split(".")[0]}.
+          {plainText.split(".")[0]}.
         </p>
 
         <div className="text-sm text-primaryGreen/80 font-medium bg-primaryGreen/20 py-1 px-3 rounded-full w-fit">
-          Adopted on: {adoptionDate}
+          Adopted on: {dayjs(adoptionDate).format("MMM D, YYYY")}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

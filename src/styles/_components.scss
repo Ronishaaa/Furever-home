@@ -1,3 +1,5 @@
+@use "variables";
+
 .nm-slider {
   .swiper-wrapper {
     display: flex;
@@ -14,4 +16,34 @@
 .swiper-slide {
   display: flex;
   justify-content: center;
+}
+
+.fh-content {
+  h2 {
+    font-size: 28px;
+    color: variables.$primary-black;
+    font-weight: 500;
+    max-width: 768px;
+    margin: 80px auto 24pxpx;
+  }
+
+  h3 {
+    font-size: 23px;
+    color: variables.$primary-black;
+    max-width: 768px;
+    margin: 48pxpx auto 16pxpx;
+  }
+
+  p {
+    font-size: 18px;
+    margin: 0 auto;
+    max-width: 768px;
+    color: rgba(variables.$primary-black, 0.7);
+
+    a {
+      color: rgba(variables.$primary-black, 1);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
 }

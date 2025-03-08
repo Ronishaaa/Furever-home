@@ -7,3 +7,4 @@ export * from "./Login";
 export * from "./PetDetails";
 export * from "./Signup";
 export * from "./SuccessStories";
+export * from "./SuccessStoriesDetail";

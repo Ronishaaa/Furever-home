@@ -13,6 +13,7 @@ import {
   PetDetails,
   Signup,
   SuccessStories,
+  SuccessStoriesDetail,
 } from "./pages";
 
 axios.defaults.baseURL = "http://localhost:3001";
@@ -32,6 +33,10 @@ function App() {
           <Route path="/pet-details" element={<PetDetails />} />
           <Route path="/adopt" element={<Adopt />} />
           <Route path="/success-stories" element={<SuccessStories />} />
+          <Route
+            path="/success-stories/:id"
+            element={<SuccessStoriesDetail />}
+          />
           <Route path="/contact-us" element={<Contact />} />
         </Routes>
         <Footer />

@@ -29,7 +29,7 @@ export const Hero = () => {
     <section className="bg-black pt-8 pb-20 mb-20">
       <div className="fh-container">
         <h1 className="text-5xl mb-10 font-semibold text-primaryOrange">
-          Stories and insights
+          Success Stories
         </h1>
 
         <div className="grid-cols-2 items-center grid">
