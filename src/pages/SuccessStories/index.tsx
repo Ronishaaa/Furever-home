@@ -1,10 +1,12 @@
 import { Donate } from "../../components";
-import { Hero } from "./components";
+import { Hero, Stories } from "./components";
 
 export const SuccessStories = () => {
   return (
     <>
       <Hero />
+
+      <Stories />
 
       <Donate />
     </>
