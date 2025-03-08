@@ -1,4 +1,8 @@
-import { MdOutlineAccountCircle } from "react-icons/md";
+import { useState } from "react";
+import {
+  MdOutlineAccountCircle,
+  MdOutlineKeyboardArrowDown,
+} from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { useAuth } from "../../context/AuthContext";
@@ -15,11 +19,20 @@ const NAV_LINKS = [
     name: "Pet care tips",
   },
   {
-    link: "/success-stories",
-    name: "Success Stories",
+    name: "Stories",
+    items: [
+      {
+        link: "/success-stories",
+        name: "Success Stories",
+      },
+      {
+        link: "/rescue-stories",
+        name: "Rescue Stories",
+      },
+    ],
   },
   {
-    link: "contact-us",
+    link: "/contact-us",
     name: "Contact us",
   },
 ];
@@ -27,6 +40,7 @@ const NAV_LINKS = [
 const Navbar = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const noNavbarRoutes = ["/login", "/register", "/verify"];
 
@@ -36,6 +50,7 @@ const Navbar = () => {
         styles.navbar,
         noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
       )}
+      onMouseEnter={() => setDropdownOpen(false)}
     >
       <div className="min-w-screen-xl mx-auto flex items-center justify-between">
         <div className="text-2xl font-bold text-primaryDarkRosewood">
@@ -44,15 +59,45 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="hidden md:flex space-x-8">
+        <div className="hidden md:flex gap-8">
           {NAV_LINKS.map((item, index) => (
-            <Link
-              to={item.link}
-              className="text-primaryDarkRosewood font-semibold hover:text-primaryDarkRosewood/80 transition duration-300"
-              key={index}
-            >
-              {item.name}
-            </Link>
+            <div key={index}>
+              {item.items ? (
+                <div
+                  className="relative"
+                  onMouseEnter={() => setDropdownOpen(true)}
+                >
+                  <button className="text-primaryDarkRosewood items-center flex gap-1 font-semibold hover:text-primaryDarkRosewood/80 transition duration-300">
+                    {item.name}
+                    <MdOutlineKeyboardArrowDown size={20} />
+                  </button>
+                  {dropdownOpen && (
+                    <div
+                      onMouseLeave={() => setDropdownOpen(false)}
+                      className="absolute left-0 mt-2 bg-primaryGrey border border-primaryBlack rounded shadow-lg py-2 w-48"
+                    >
+                      {item.items.map((subItem, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          to={subItem.link}
+                          className="block px-4 py-2 hover:bg-neutralLightGray text-primaryDarkRosewood hover:bg-gray-100"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  to={item.link}
+                  className="text-primaryDarkRosewood font-semibold hover:text-primaryDarkRosewood/80 transition duration-300"
+                  onMouseEnter={() => setDropdownOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              )}
+            </div>
           ))}
         </div>
 
