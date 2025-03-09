@@ -5,9 +5,7 @@ export const Content = ({ details }: { details: string }) => {
     <section className="mx-auto mb-8 mt-[60px] w-[866px]">
       <div className="fh-container">
         <div className="fh-grid">
-          <div className="fh-content col-span-10 col-start-2">
-            {parse(details)}
-          </div>
+          <div className="fh-content col-span-12 ">{parse(details)}</div>
         </div>
       </div>
     </section>

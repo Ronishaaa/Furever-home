@@ -8,9 +8,11 @@ export const Hero = ({ title, date, image }: Props) => {
   return (
     <section className="mx-auto mb-8 mt-[60px] w-[1000px]">
       <div className="fh-container">
-        <h1 className="text-5xl mb-3 text-black lg:mb-8">{title}</h1>
+        <h1 className="text-5xl font-semibold text-center mb-3 text-black lg:mb-8">
+          {title}
+        </h1>
 
-        <div className="mb-4 flex text-xl text-black items-center gap-2">
+        <div className="mb-4 flex justify-center font-medium text-xl text-black items-center gap-2">
           <div className="">Adoption on</div>
           <time className="text-dGreen/[0.56]">
             {" "}

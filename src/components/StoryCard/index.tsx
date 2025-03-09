@@ -17,7 +17,8 @@ export const StoryCard = ({
   adoptionDate,
   href,
 }: Props) => {
-  const plainText = story.replace(/<[^>]+>/g, "");
+  const plainText = story.match(/<p>(.*?)<\/p>/)?.[1] || "";
+
   return (
     <Link
       to={`/success-stories/${href}`}
