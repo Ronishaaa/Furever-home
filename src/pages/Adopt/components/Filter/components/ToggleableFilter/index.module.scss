@@ -1,0 +1,16 @@
+@use "main";
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  color: main.$primary-black;
+  cursor: pointer;
+  user-select: none;
+  height: 52px;
+  padding: 0;
+  span {
+    font-size: medium;
+    font-weight: 700;
+    line-height: 140%;
+  }
+}

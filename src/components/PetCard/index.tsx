@@ -1,20 +1,31 @@
 interface Props {
-  image: string;
+  href: number;
+  image?: string[];
   name: string;
   breed: string;
   age: number;
+  gender: string;
+  personality: string[];
 }
 
-export const PetCard = ({ image, age, name, breed }: Props) => {
+export const PetCard = ({
+  image,
+  href,
+  age,
+  name,
+  breed,
+  gender,
+  personality,
+}: Props) => {
   return (
     <a
-      href="/pet-details"
+      href={`/pet-details/${href}`}
       className="relative bg-secondaryWhite rounded-lg overflow-hidden group"
     >
       <div className="overflow-hidden aspect-square">
         <img
           className="object-cover w-full h-full transition-all duration-300 group-hover:scale-125"
-          src={image}
+          src={image && image?.length > 0 ? image[0] : "/pet1.jpg"}
           alt=""
         />
       </div>
@@ -33,13 +44,17 @@ export const PetCard = ({ image, age, name, breed }: Props) => {
           </div>
         </div>
         <div className="text-base text-primaryDarkRosewood/80 mb-2">
-          Bella is a sweet 3-year-old Labrador who loves to play fetch and
-          cuddle on the couch.
+          {name} is a {personality?.[0].toLowerCase()} {age}
+          -year-old {breed} who loves{" "}
+          {personality?.includes("Playful")
+            ? "playing fetch"
+            : "exploring outdoors"}{" "}
+          and {gender === "Male" ? "cuddling" : "snuggling"} on the couch.
         </div>
 
         <div className="flex">
           <div className="w-fit bg-primaryIvory/20 py-1 px-2 text-black/80 bg-primaryIvory text-sm mb-2 rounded-full">
-            female
+            {gender}
           </div>
           <div className="w-fit bg-primaryIvory/20 py-1 px-2 text-black/80 bg-primaryIvory text-sm mb-2 rounded-full">
             {age} years old

@@ -7,7 +7,6 @@ import {
   FaPaw,
   FaRegHeart,
   FaSyringe,
-  FaWeight,
 } from "react-icons/fa";
 import { IoMdFemale, IoMdMale } from "react-icons/io";
 import { MdChevronLeft, MdChevronRight, MdPets } from "react-icons/md";
@@ -17,51 +16,16 @@ import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { twMerge } from "tailwind-merge";
 import { useBoolean } from "usehooks-ts";
 import { AdoptionApplication, Button } from "../../../../components";
+import { Pet } from "../../../Adopt/queries";
 
-const IMAGES = [
-  { src: "https://picsum.photos/570/444", alt: "Case Brown Sunglass" },
-  { src: "https://picsum.photos/570/445", alt: "Case Brown Sunglass" },
-  { src: "https://picsum.photos/570/446", alt: "Case Brown Sunglass" },
-];
+interface Props {
+  data: Pet;
+}
 
-const PET = {
-  name: "Buddy",
-  breed: "Labrador Retriever",
-  gender: "Male",
-  age: "2 years",
-  weight: "5kg",
-  energy: "High",
-  health: "Vaccinated, Neutered",
-  personality: [
-    "Friendly",
-    "Energetic",
-    "Loyal",
-    "Social",
-    "Playful",
-    "Great with kids",
-  ],
-};
-const petData = {
-  personality: {
-    energyLevel: "High",
-    temperament: "Shy",
-    training: "Basic",
-    strangerBehavior: null,
-    petBehavior: null,
-    specialTraits: null,
-  },
-  adoptionInfo: {
-    childrenFriendly: true,
-    otherPetsFriendly: true,
-    experienceLevel: "FirstTimeOwner",
-    specialNeeds: null,
-  },
-};
-
-export const Hero = () => {
+export const Hero = ({ data }: Props) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-
+  console.log(data);
   const [firstSwiper, setFirstSwiper] = useState<SwiperCore | null>(null);
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
 
@@ -114,13 +78,13 @@ export const Hero = () => {
                   <MdChevronRight size={24} />
                 </button>
 
-                {IMAGES.map((image, index) => (
-                  <SwiperSlide key={index} className="h-[400px]">
+                {data.images?.map((image, index) => (
+                  <SwiperSlide key={index} className="h-[500px]">
                     <img
                       width={600}
                       height={400}
-                      alt={image.alt}
-                      src={image.src}
+                      alt="dog"
+                      src={image}
                       className="mx-auto object-cover"
                     />
                   </SwiperSlide>
@@ -138,7 +102,7 @@ export const Hero = () => {
               watchSlidesProgress={true}
               modules={[FreeMode, Navigation, Controller]}
             >
-              {IMAGES.map((image, idx) => (
+              {data.images?.map((image, idx) => (
                 <SwiperSlide
                   key={idx}
                   className={twMerge(
@@ -152,8 +116,8 @@ export const Hero = () => {
                   <img
                     width={80}
                     height={70}
-                    alt={image.alt}
-                    src={image.src}
+                    alt={data.name}
+                    src={image}
                     className="max-h-[70px] max-w-[80px] object-contain"
                   />
                 </SwiperSlide>
@@ -162,7 +126,7 @@ export const Hero = () => {
           </div>
 
           <div className="col-span-5 col-start-8 p-4">
-            <h2 className="text-3xl font-bold">{PET.name}</h2>
+            <h2 className="text-3xl font-bold">{data.name}</h2>
 
             <div className="grid grid-cols-2 gap-6 mt-6">
               <div className="flex items-center gap-2">
@@ -170,7 +134,7 @@ export const Hero = () => {
                 <div>
                   <div className="text-sm text-black/80">Breed</div>
                   <div className="text-base text-black font-medium">
-                    {PET.breed}
+                    {data.breed}
                   </div>
                 </div>
               </div>
@@ -180,13 +144,13 @@ export const Hero = () => {
                 <div>
                   <div className="text-sm text-black/80">Age</div>
                   <div className="text-base text-black font-medium">
-                    {PET.age}
+                    {data.age}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                {PET.gender === "Female" ? (
+                {data.gender === "Female" ? (
                   <IoMdFemale size={20} className="text-primaryOrange" />
                 ) : (
                   <IoMdMale size={20} className="text-primaryOrange" />
@@ -194,17 +158,7 @@ export const Hero = () => {
                 <div>
                   <div className="text-sm text-black/80">Gender</div>
                   <div className="text-base text-black font-medium">
-                    {PET.gender}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <FaWeight size={20} className="text-primaryOrange" />
-                <div>
-                  <div className="text-sm text-black/80">Weight</div>
-                  <div className="text-base text-black font-medium">
-                    {PET.weight}
+                    {data.gender}
                   </div>
                 </div>
               </div>
@@ -215,7 +169,7 @@ export const Hero = () => {
                 <div>
                   <div className="text-sm text-black/80">Health</div>
                   <div className="text-base text-black font-medium">
-                    {PET.health}
+                    {data.healthCondition}
                   </div>
                 </div>
               </div>
@@ -229,7 +183,7 @@ export const Hero = () => {
                 <div>
                   <div className="text-sm text-black/80">Energy level</div>
                   <div className="text-base text-black font-medium">
-                    {PET.energy}
+                    {data.energyLevel}
                   </div>
                 </div>
               </div>
@@ -238,7 +192,7 @@ export const Hero = () => {
             <div className="mt-6">
               <h3 className="font-semibold text-lg">Personality</h3>
               <div className="flex flex-wrap gap-2 mt-3">
-                {PET.personality.map((trait) => (
+                {data.personality.map((trait) => (
                   <span
                     key={trait}
                     className="bg-primaryBrown/20 text-black px-3 py-1 rounded-full text-sm"
@@ -267,23 +221,36 @@ export const Hero = () => {
             Description
           </h3>
           <div className="p-4">
-            <h3 className="text-2xl font-bold py-2">About Buddy</h3>
+            <h3 className="text-2xl font-bold py-2">About {data.name}</h3>
             <p className="text-gray-700 mt-2">
-              Meet Buddy, a friendly and energetic Labrador Retriever who's
-              looking for his forever home! At 2 years old, Buddy is the perfect
-              blend of playful energy and good manners. He loves going for long
-              walks, playing fetch in the park, and cuddling up on the couch
-              after a day of adventure.
+              Meet {data.name}, a {data.personality?.join(", ")} {data.breed}{" "}
+              who's looking for {data.gender === "Male" ? "his" : "her"} forever
+              home! At {data.age} years old, {data.name} is the perfect mix of{" "}
+              {data.energyLevel?.toLowerCase()} energy and{" "}
+              {data.trainingLevel === "None"
+                ? "a willingness to learn"
+                : `${data.trainingLevel.toLowerCase()} training`}
+              . {data.gender === "Male" ? "He" : "She"} loves outdoor adventures
+              and spending quality time with loved ones.
             </p>
             <p>
-              Buddy is great with children and gets along well with other dogs.
-              He's been fully trained for basic commands and is house-trained.
-              His favorite activities include swimming, chasing balls, and
+              {data.name} is great with{" "}
+              {data.adoptionInfo?.childrenFriendly ? "children" : "adults"} and{" "}
+              {data.adoptionInfo?.otherPetsFriendly
+                ? "other dogs"
+                : "prefers to be the only dog"}
+              . {data.gender === "Male" ? "He" : "She"}{" "}
+              {data.trainingLevel === "None"
+                ? "is eager to learn new tricks"
+                : `has ${data.trainingLevel.toLowerCase()} training and knows basic commands`}
+              . {data.gender === "Male" ? "His" : "Her"} favorite activities
+              include {data.personality?.[0].toLowerCase()}, playing, and
               receiving belly rubs!
             </p>
+
             <div className="my-6">
               <div className="bg-gray-100 rounded-md">
-                <strong>Training:</strong> {petData.personality.training}
+                <strong>Training:</strong> {data.trainingLevel}
               </div>
             </div>
 
@@ -299,7 +266,7 @@ export const Hero = () => {
                   <div className="text-base">Children Friendly</div>
                   <div className="text-sm text-primaryGreen">
                     {" "}
-                    {petData.adoptionInfo.childrenFriendly ? "Yes" : "No"}
+                    {data.adoptionInfo?.childrenFriendly ? "Yes" : "No"}
                   </div>
                 </div>
                 <div className="p-3 bg-gray-100 rounded-md flex flex-col items-center gap-2">
@@ -309,7 +276,7 @@ export const Hero = () => {
                   <div className="text-base">Other Pets Friendly</div>
                   <div className="text-sm text-primaryGreen">
                     {" "}
-                    {petData.adoptionInfo.otherPetsFriendly ? "Yes" : "No"}
+                    {data.adoptionInfo?.otherPetsFriendly ? "Yes" : "No"}
                   </div>
                 </div>
                 <div className="p-3 bg-gray-100 rounded-md flex flex-col items-center gap-2">
@@ -319,7 +286,7 @@ export const Hero = () => {
                   <div className="text-base">Experience Level</div>
                   <div className="text-sm text-primaryGreen">
                     {" "}
-                    {petData.adoptionInfo.experienceLevel}
+                    {data.adoptionInfo?.experienceLevel}
                   </div>
                 </div>
               </div>

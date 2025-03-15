@@ -1,5 +1,6 @@
 export * from "./AdoptionApplication";
 export * from "./Button";
+export * from "./Checkbox";
 export * from "./Donate";
 export * from "./Footer";
 export * from "./Navbar";

@@ -4,26 +4,30 @@ const PETS = [
   {
     name: "Buddy",
     age: 2,
-    image: "/pet1.jpg",
+    image: ["/pet1.jpg"],
     breed: "Golden Retriever",
+    gender: "Female",
   },
   {
     name: "Luna",
     age: 1,
-    image: "/pet2.jpg",
+    image: ["/pet2.jpg"],
+    gender: "Female",
     breed: "Sammoyed",
   },
   {
     name: "Charlie",
     age: 3,
-    image: "/pet3.jpg",
+    gender: "Female",
+    image: ["/pet3.jpg"],
 
     breed: "Siberian Husky",
   },
   {
     name: "Milo",
     age: 4,
-    image: "/pet4.jpg",
+    gender: "Male",
+    image: ["/pet4.jpg"],
     breed: "Cocker spaniel",
   },
 ];
@@ -48,6 +52,9 @@ export const Featured = () => {
               image={item.image}
               name={item.name}
               breed={item.breed}
+              gender={item.gender}
+              href={1}
+              personality={["loyal", "Playful"]}
             />
           ))}
         </div>

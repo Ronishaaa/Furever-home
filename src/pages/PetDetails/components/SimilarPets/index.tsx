@@ -4,25 +4,25 @@ const PETS = [
   {
     name: "Buddy",
     age: 2,
-    image: "https://picsum.photos/id/237/300/300",
+    image: ["https://picsum.photos/id/237/300/300"],
     breed: "Golden Retriever",
   },
   {
     name: "Luna",
     age: 1,
-    image: "https://picsum.photos/300/301",
+    image: ["https://picsum.photos/300/301"],
     breed: "Siberian Husky",
   },
   {
     name: "Charlie",
     age: 3,
-    image: "https://picsum.photos/301/302",
+    image: ["https://picsum.photos/301/302"],
     breed: "Labrador Retriever",
   },
   {
     name: "Milo",
     age: 4,
-    image: "https://picsum.photos/300/303",
+    image: ["https://picsum.photos/300/303"],
     breed: "Beagle",
   },
 ];
@@ -47,6 +47,9 @@ export const SimilarPets = () => {
               image={item.image}
               name={item.name}
               breed={item.breed}
+              gender="Female"
+              href={1}
+              personality={["loyal", "Playful"]}
             />
           ))}
         </div>

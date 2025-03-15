@@ -15,13 +15,14 @@ export const StoryCard = ({
   name,
   story,
   adoptionDate,
+  rescueDate,
   href,
 }: Props) => {
   const plainText = story.match(/<p>(.*?)<\/p>/)?.[1] || "";
 
   return (
     <Link
-      to={`/success-stories/${href}`}
+      to={adoptionDate ? `/success-stories/${href}` : `/rescue-stories/${href}`}
       className="relative bg-secondaryWhite rounded-lg overflow-hidden group shadow-md"
     >
       <div className="overflow-hidden aspect-square">
@@ -32,24 +33,26 @@ export const StoryCard = ({
         />
       </div>
 
-      <div className="absolute left-3 top-3">
-        <span className="sm:px-3 sm:py-1.5 px-1.5 py-1 text-[8px] sm:text-xs font-bold tracking-wide text-primaryGreen uppercase bg-secondaryWhite rounded-full">
-          Success Story
-        </span>
-      </div>
+      <div className="p-4 flex flex-col justify-between">
+        <div>
+          <h3 className="text-2xl font-semibold text-primaryDarkRosewood mb-2">
+            {name}
+          </h3>
 
-      <div className="p-4">
-        <h3 className="text-2xl font-semibold text-primaryDarkRosewood mb-2">
-          {name}
-        </h3>
-
-        <p className="text-base text-primaryDarkRosewood/80 mb-4">
-          {plainText.split(".")[0]}.
-        </p>
-
-        <div className="text-sm text-primaryGreen/80 font-medium bg-primaryGreen/20 py-1 px-3 rounded-full w-fit">
-          Adopted on: {dayjs(adoptionDate).format("MMM D, YYYY")}
+          <p className="text-base text-primaryDarkRosewood/80 mb-4">
+            {plainText.split(".")[0]}.
+          </p>
         </div>
+
+        {adoptionDate ? (
+          <div className="text-sm text-primaryGreen/80 font-medium bg-primaryGreen/20 py-1 px-3 rounded-full w-fit">
+            Adopted on: {dayjs(adoptionDate).format("MMM D, YYYY")}
+          </div>
+        ) : (
+          <div className="text-sm text-primaryOrange/80 font-medium bg-primaryOrange/20 py-1 px-3 rounded-full w-fit">
+            Rescued on: {dayjs(rescueDate).format("MMM D, YYYY")}
+          </div>
+        )}
       </div>
     </Link>
   );

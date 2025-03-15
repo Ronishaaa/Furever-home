@@ -1,0 +1,74 @@
+@use "main";
+
+.checkbox {
+  list-style: none;
+}
+
+.fhCheckbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+
+  & + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    pointer-events: none;
+    user-select: none;
+    transition: color 0.15s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 1px;
+      transform: unset;
+      background: transparent;
+      border: 1px solid main.$primary-dark-rosewood;
+      transition: background 0.2s ease, box-shadow 0.2s ease,
+        border 0.1s ease-in;
+    }
+  }
+}
+
+.fhCheckbox {
+  & + label {
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
+
+    &::before {
+      width: 18px;
+      height: 18px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 11px;
+      transform: translateY(-50%) scale(0);
+      width: 18px;
+      height: 18px;
+      background-image: url("/check.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+      border-radius: 4px;
+      transition: transform 0.1s ease-in;
+    }
+  }
+
+  &:checked + label::before {
+    border-color: main.$primary-dark-rosewood;
+  }
+  &:checked + label::after {
+    transform: translateY(-50%) scale(1);
+    transition: transform 0.2s ease-out;
+    opacity: 1;
+  }
+}
