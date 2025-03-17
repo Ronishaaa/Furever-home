@@ -1,3 +1,4 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import SimpleBarReact from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
@@ -9,7 +10,7 @@ import {
   SearchBadge,
   TextField,
 } from "../../../../components";
-import { useGetPets } from "../../queries";
+import { fetchAllPets } from "../../queries";
 import { ToggleableFilter } from "./components/ToggleableFilter";
 import useFilters, {
   EnergyLevel,
@@ -113,20 +114,48 @@ export const Filter = () => {
     ageMax,
   ]);
 
-  const { data } = useGetPets({
-    ageMax,
-    ageMin,
-    energyLevels,
-    experienceLevels,
-    gender,
-    personality,
-    trainingLevels,
-    searchTerm,
-    skip: 0,
-    sortBy: "createdAt",
-    sortOrder: "asc",
-    limit: 12,
-  });
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: [
+        "getProducts",
+        ageMax,
+        ageMin,
+        energyLevels,
+        experienceLevels,
+        gender,
+        personality,
+        trainingLevels,
+        searchTerm,
+      ],
+      queryFn: ({ pageParam = 0 }) =>
+        fetchAllPets({
+          ageMax,
+          ageMin,
+          energyLevels,
+          experienceLevels,
+          gender,
+          personality,
+          trainingLevels,
+          searchTerm,
+          skip: pageParam,
+          sortBy: "createdAt",
+          sortOrder: "asc",
+          limit: 12,
+        }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => {
+        const { limit, skip, total } = lastPage.meta;
+        const nextCursor = skip + limit;
+
+        return nextCursor < total ? nextCursor : undefined;
+      },
+      getPreviousPageParam: (firstPage) => {
+        const { limit, skip } = firstPage.meta;
+        const prevCursor = skip - limit;
+
+        return prevCursor >= 0 ? prevCursor : undefined;
+      },
+    });
 
   const clearFilters = () => {
     clearAllFilters();
@@ -270,13 +299,12 @@ export const Filter = () => {
                 </div>
               )}
             </div>
-            {data && data?.data.length > 0 ? (
+            {data && data?.pages.length > 0 ? (
               <div className="grid grid-cols-3 gap-6 mt-2">
-                {data.data
-                  .filter((pet) => pet.adoptionStatus !== "Adopted")
-                  .map((pet, index) => (
+                {data?.pages.map((page) =>
+                  page.data.map((pet) => (
                     <PetCard
-                      key={pet.id || index}
+                      key={pet.id}
                       age={pet.age}
                       image={pet.images}
                       name={pet.name}
@@ -284,19 +312,27 @@ export const Filter = () => {
                       gender={pet.gender}
                       href={pet.id}
                       personality={pet.personality}
+                      adoptionStatus={pet.adoptionStatus}
                     />
-                  ))}
+                  ))
+                )}
               </div>
             ) : (
               <p className="flex justify-center">No pet found</p>
             )}
 
-            {/* <Button
-              size="lg"
-              variant="filled"
-              label="Load More Pets"
-              className="mx-auto mt-6"
-            /> */}
+            {hasNextPage && (
+              <div className="flex justify-center">
+                <Button
+                  label="Load More Pets"
+                  size="lg"
+                  variant="filled"
+                  className="mx-auto mt-6"
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

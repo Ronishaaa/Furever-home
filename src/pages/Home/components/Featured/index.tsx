@@ -1,5 +1,5 @@
 import { PetCard } from "../../../../components";
-import { useGetPets } from "../../../Adopt/queries";
+import { useGetPets } from "./queries";
 
 export const Featured = () => {
   const { data } = useGetPets({

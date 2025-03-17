@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 interface Props {
   href: number;
   image?: string[];
@@ -6,6 +8,7 @@ interface Props {
   age: number;
   gender: string;
   personality: string[];
+  adoptionStatus?: string;
 }
 
 export const PetCard = ({
@@ -16,6 +19,7 @@ export const PetCard = ({
   breed,
   gender,
   personality,
+  adoptionStatus,
 }: Props) => {
   return (
     <a
@@ -30,8 +34,15 @@ export const PetCard = ({
         />
       </div>
       <div className="absolute left-3 top-3">
-        <span className="sm:px-3 sm:py-1.5 px-1.5 py-1 text-[8px] sm:text-xs font-bold tracking-wide text-primaryGreen uppercase bg-secondaryWhite rounded-full">
-          Available
+        <span
+          className={twMerge(
+            "px-1.5 py-1 text-[8px] sm:text-xs font-bold tracking-wide  uppercase bg-secondaryWhite rounded-full",
+            adoptionStatus === "Available"
+              ? "text-primaryGreen"
+              : "text-warningRed"
+          )}
+        >
+          {adoptionStatus ? adoptionStatus : "Available"}
         </span>
       </div>
       <div className="p-4">

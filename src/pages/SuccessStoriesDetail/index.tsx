@@ -4,7 +4,7 @@ import { useGetUniqueSuccessStories } from "../SuccessStories/queries";
 import { Content, Hero } from "./components";
 
 export const SuccessStoriesDetail = () => {
-  const { id } = useParams(); // Get ID from URL
+  const { id } = useParams(); 
   const storyId = id ? parseInt(id, 10) : undefined;
   const { data } = useGetUniqueSuccessStories(storyId);
 
