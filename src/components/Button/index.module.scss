@@ -7,6 +7,7 @@
   border-radius: 40px;
   position: relative;
   font-weight: 600;
+  gap: 4px;
 
   span {
     white-space: nowrap;
@@ -20,9 +21,23 @@
   background-color: main.$primary-orange;
 }
 
+.green {
+  color: main.$secondary-white;
+  background-color: main.$primary-green;
+}
+
+.ion {
+  color: transparent;
+}
+
 .outlined {
   color: main.$primary-ivory;
   border: 2px solid main.$primary-ivory;
+}
+
+.outlined-dark {
+  color: main.$primary-black;
+  border: 2px solid main.$primary-black;
 }
 
 .lg {
@@ -30,12 +45,12 @@
   padding: 0 28px;
 }
 
-.md {
+.sm {
   height: 44px;
-  padding: 0 18px;
+  padding: 0;
 }
 
-.sm {
+.md {
   padding: 0 24px;
   height: 44px;
 }

@@ -154,7 +154,7 @@ export const Filter = () => {
               </ul>
             </ToggleableFilter>
 
-            <ToggleableFilter title="Experience Levels">
+            <ToggleableFilter title="Experience Levels" last>
               <ul>
                 {EXPERIENCE_LEVELS.map((item, index) => (
                   <li key={index}>
@@ -172,7 +172,7 @@ export const Filter = () => {
               onClick={clearAll}
               size="lg"
               variant="filled"
-              label="Clear ALl"
+              label="Clear All"
             />
           </div>
 

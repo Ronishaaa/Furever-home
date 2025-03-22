@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { FaRegHeart } from "react-icons/fa";
 import {
   MdOutlineAccountCircle,
   MdOutlineKeyboardArrowDown,
 } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import { useBoolean } from "usehooks-ts";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../Button";
+import { Wishlist } from "../Wishlist";
 import styles from "./index.module.scss";
 
 const NAV_LINKS = [
@@ -41,78 +44,92 @@ const Navbar = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { value, toggle, setFalse } = useBoolean(false);
 
   const noNavbarRoutes = ["/login", "/register", "/verify"];
 
   return (
-    <nav
-      className={twMerge(
-        styles.navbar,
-        noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
-      )}
-      onMouseEnter={() => setDropdownOpen(false)}
-    >
-      <div className="min-w-screen-xl mx-auto flex items-center justify-between">
-        <div className="text-2xl font-bold text-primaryDarkRosewood">
-          <Link to="/">
-            <img src="/logoDark.png" className="h-11" />
-          </Link>
-        </div>
+    <>
+      <nav
+        className={twMerge(
+          styles.navbar,
+          noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
+        )}
+        onMouseEnter={() => setDropdownOpen(false)}
+      >
+        <div className="fh-container">
+          <div className="min-w-screen-xl mx-auto flex items-center justify-between">
+            <div className="text-2xl font-bold text-primaryDarkRosewood">
+              <Link to="/">
+                <img src="/logoDark.png" className="h-11" />
+              </Link>
+            </div>
 
-        <div className="hidden md:flex gap-8">
-          {NAV_LINKS.map((item, index) => (
-            <div key={index}>
-              {item.items ? (
-                <div
-                  className="relative"
-                  onMouseEnter={() => setDropdownOpen(true)}
-                >
-                  <button className="text-primaryDarkRosewood items-center flex gap-1 font-semibold hover:text-primaryDarkRosewood/80 transition duration-300">
-                    {item.name}
-                    <MdOutlineKeyboardArrowDown size={20} />
-                  </button>
-                  {dropdownOpen && (
+            <div className="hidden md:flex gap-8">
+              {NAV_LINKS.map((item, index) => (
+                <div key={index}>
+                  {item.items ? (
                     <div
-                      onMouseLeave={() => setDropdownOpen(false)}
-                      className="absolute left-0 mt-2 bg-primaryGrey border border-primaryBlack rounded shadow-lg py-2 w-48"
+                      className="relative"
+                      onMouseEnter={() => setDropdownOpen(true)}
                     >
-                      {item.items.map((subItem, subIndex) => (
-                        <Link
-                          key={subIndex}
-                          to={subItem.link}
-                          className="block px-4 py-2 hover:bg-neutralLightGray text-primaryDarkRosewood hover:bg-gray-100"
+                      <button className="text-primaryDarkRosewood items-center flex gap-1 font-semibold hover:text-primaryDarkRosewood/80 transition duration-300">
+                        {item.name}
+                        <MdOutlineKeyboardArrowDown size={20} />
+                      </button>
+                      {dropdownOpen && (
+                        <div
+                          onMouseLeave={() => setDropdownOpen(false)}
+                          className="absolute left-0 mt-2 bg-primaryGrey border border-primaryBlack rounded shadow-lg py-2 w-48"
                         >
-                          {subItem.name}
-                        </Link>
-                      ))}
+                          {item.items.map((subItem, subIndex) => (
+                            <Link
+                              key={subIndex}
+                              to={subItem.link}
+                              className="block px-4 py-2 hover:bg-neutralLightGray text-primaryDarkRosewood hover:bg-gray-100"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                     </div>
+                  ) : (
+                    <Link
+                      to={item.link}
+                      className="text-primaryDarkRosewood font-semibold hover:text-primaryDarkRosewood/80 transition duration-300"
+                      onMouseEnter={() => setDropdownOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
                   )}
                 </div>
+              ))}
+            </div>
+
+            <div className="flex gap-2 items-center">
+              <Button
+                size="sm"
+                variant="icon"
+                icon={<FaRegHeart size={24} />}
+                onClick={toggle}
+              />
+              {isAuthenticated ? (
+                <div className="flex gap-2 items-center">
+                  <MdOutlineAccountCircle size={24} />
+                </div>
               ) : (
-                <Link
-                  to={item.link}
-                  className="text-primaryDarkRosewood font-semibold hover:text-primaryDarkRosewood/80 transition duration-300"
-                  onMouseEnter={() => setDropdownOpen(false)}
-                >
-                  {item.name}
+                <Link to="/login">
+                  <Button label="Login" size="md" variant="green" />
                 </Link>
               )}
             </div>
-          ))}
+          </div>
         </div>
+      </nav>
 
-        <div className="flex gap-4 items-center">
-          <Button size="md" variant="filled" label="Donate Now" />
-          {isAuthenticated ? (
-            <div>hi</div>
-          ) : (
-            <Link to="/login" className="">
-              <MdOutlineAccountCircle size={24} />
-            </Link>
-          )}
-        </div>
-      </div>
-    </nav>
+      <Wishlist close={setFalse} value={value} />
+    </>
   );
 };
 

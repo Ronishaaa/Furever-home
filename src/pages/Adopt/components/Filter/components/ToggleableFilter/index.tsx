@@ -8,6 +8,7 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   value?: string;
+  last?: boolean;
 }
 
 export const ToggleableFilter = ({
@@ -15,13 +16,14 @@ export const ToggleableFilter = ({
   children,
   className,
   value,
+  last,
 }: Props) => {
   const { value: isFilterOpen, toggle: toggleFilter } = useBoolean(true);
 
   return (
     <div
       className={twMerge(
-        "border-b border-primaryDarkRosewood/[0.16]",
+        !last && "border-b border-primaryDarkRosewood/[0.16]",
         className
       )}
     >

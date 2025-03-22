@@ -11,9 +11,7 @@ export const TextField = ({ label, error, ...textFieldProps }: Props) => {
   return (
     <div className="w-full">
       {label && (
-        <label className="text-base mb-[2px] block text-primaryBlack">
-          {label}
-        </label>
+        <label className="text-sm font-medium text-black">{label}</label>
       )}
       <input type="text" className={styles.input} {...textFieldProps} />
       {error && (

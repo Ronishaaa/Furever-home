@@ -31,7 +31,7 @@ export const RadioButton = ({
 
   return (
     <li
-      className={twMerge("flex h-8 w-fit cursor-pointer items-center px-4")}
+      className={twMerge("flex h-8 w-fit cursor-pointer items-center pr-4")}
       onClick={handleChange}
     >
       <input
@@ -62,9 +62,7 @@ const RadioButtonGroup = ({
   return (
     <div className={parentClassName}>
       {label && (
-        <label className="text-base mb-[2px] block text-primaryBlack">
-          {label}
-        </label>
+        <label className="text-sm font-medium text-black">{label}</label>
       )}
       <ul className={twMerge("w-fit", className)}>
         {React.Children.map(

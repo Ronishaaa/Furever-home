@@ -16,6 +16,7 @@ export const Hero = () => {
             </p>
             <div className="flex gap-3">
               <Button size="md" variant="filled" label="Start searching" />
+              <Button size="md" variant="outlined" label="Donate Now" />
             </div>
           </div>
         </div>

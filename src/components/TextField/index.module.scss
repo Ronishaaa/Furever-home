@@ -3,14 +3,15 @@
 .input {
   width: 100%;
   color: main.$primary-black;
+  margin-top: 4px;
   font-size: 16px;
   background-color: transparent;
   outline: none;
   padding: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(main.$primary-black, 0.16);
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: white;
+  background-color: transparent;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &::placeholder {
