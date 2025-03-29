@@ -65,6 +65,8 @@ export const Wishlist = ({ close, value }: Props) => {
     }
   }, [data]);
 
+  const [isUpdated, setIsUpdated] = useState(false);
+
   useGSAP(
     () => {
       if (value) {
@@ -156,6 +158,7 @@ export const Wishlist = ({ close, value }: Props) => {
     setWishlist(wishlistData, {
       onSuccess: (response) => {
         setWishlistData(response.data);
+        setIsUpdated(true);
       },
       onError: (error) => {
         console.error("Failed to update preferences:", error);
@@ -258,22 +261,33 @@ export const Wishlist = ({ close, value }: Props) => {
             <h2 className="text-xl font-semibold mb-4">Your Perfect Matches</h2>
 
             <div className="grid grid-cols-2 gap-2 my-4">
-              {wishlistData?.pets && wishlistData.pets.length > 0 ? (
-                wishlistData.pets
-                  .filter((pet) => pet.adoptionStatus !== "Pending")
-                  .map((pet, index) => (
-                    <MatchingPetCard
-                      key={index}
-                      id={pet.id}
-                      age={pet.age}
-                      breed={pet.breed}
-                      energyLevel={pet.energyLevel}
-                      gender={pet.gender}
-                      images={pet.images}
-                      name={pet.name}
-                    />
-                  ))
-              ) : data?.data.MatchedPets && data.data.MatchedPets.length > 0 ? (
+              {isUpdated ? (
+                wishlistData && wishlistData?.pets?.length > 0 ? (
+                  wishlistData.pets
+                    .filter((pet) => pet.adoptionStatus !== "Pending")
+                    .map((pet, index) => (
+                      <MatchingPetCard
+                        key={index}
+                        id={pet.id}
+                        age={pet.age}
+                        breed={pet.breed}
+                        energyLevel={pet.energyLevel}
+                        gender={pet.gender}
+                        images={pet.images}
+                        name={pet.name}
+                      />
+                    ))
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500 mb-2">
+                      No matches found based on your updated preferences.
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      Try adjusting your filters and search again.
+                    </p>
+                  </div>
+                )
+              ) : data && data?.data.MatchedPets?.length > 0 ? (
                 data.data.MatchedPets.filter(
                   (pet) => pet.pet.adoptionStatus !== "Pending"
                 ).map((pet, index) => (

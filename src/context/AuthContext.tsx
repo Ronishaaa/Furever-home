@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { MdPlayCircleOutline } from "react-icons/md";
+import { MdPets } from "react-icons/md";
 import { toast } from "sonner";
 import { axios } from "../lib";
 import { useUpdateSocket } from "../pages/Login/queries";
@@ -78,12 +78,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     socket.on("newPetMatch", (data: { message: string; pet: Pet }) => {
       console.log("Received new pet match:", data);
-      alert(data.message);
-      toast("New Pet", {
+      toast(`New pet matched!`, {
+        description: `A pet matching your wishlist is available!`,
+        duration: 3000,
         className: "my-classname",
-        description: data.message,
-        duration: 5000,
-        icon: <MdPlayCircleOutline />,
+        icon: <MdPets />,
       });
     });
 
