@@ -8,7 +8,6 @@ export const SuccessStoriesDetail = () => {
   const storyId = id ? parseInt(id, 10) : undefined;
   const { data } = useGetUniqueSuccessStories(storyId);
 
-  console.log(data);
   return (
     <>
       {data ? (

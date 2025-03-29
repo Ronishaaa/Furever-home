@@ -155,7 +155,6 @@ export const Wishlist = ({ close, value }: Props) => {
 
     setWishlist(wishlistData, {
       onSuccess: (response) => {
-        console.log("Preferences updated successfully!", response);
         setWishlistData(response.data);
       },
       onError: (error) => {
@@ -260,7 +259,7 @@ export const Wishlist = ({ close, value }: Props) => {
 
             <div className="grid grid-cols-2 gap-2 my-4">
               {wishlistData?.pets && wishlistData.pets.length > 0 ? (
-                wishlistData?.pets
+                wishlistData.pets
                   .filter((pet) => pet.adoptionStatus !== "Pending")
                   .map((pet, index) => (
                     <MatchingPetCard
@@ -274,6 +273,21 @@ export const Wishlist = ({ close, value }: Props) => {
                       name={pet.name}
                     />
                   ))
+              ) : data?.data.MatchedPets && data.data.MatchedPets.length > 0 ? (
+                data.data.MatchedPets.filter(
+                  (pet) => pet.pet.adoptionStatus !== "Pending"
+                ).map((pet, index) => (
+                  <MatchingPetCard
+                    key={index}
+                    id={pet.pet.id}
+                    age={pet.pet.age}
+                    breed={pet.pet.breed}
+                    energyLevel={pet.pet.energyLevel}
+                    gender={pet.pet.gender}
+                    images={pet.pet.images}
+                    name={pet.pet.name}
+                  />
+                ))
               ) : (
                 <div className="text-center py-8">
                   <p className="text-gray-500 mb-2">
