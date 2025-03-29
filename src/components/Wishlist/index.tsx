@@ -1,17 +1,17 @@
 import { FloatingOverlay } from "@floating-ui/react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { HiOutlineSparkles } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import { useOnClickOutside } from "usehooks-ts";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../Button";
 import { Dropdown } from "../Dropdown";
-import { RadioButton } from "../RadioButton";
 import { TextField } from "../TextField";
 import { MatchingPetCard } from "./components";
 import styles from "./index.module.scss";
-import { useSetWishlist } from "./queries";
+import { useGetWishlist, useSetWishlist } from "./queries";
 
 gsap.registerPlugin(useGSAP);
 
@@ -39,11 +39,13 @@ interface Props {
 }
 
 export const Wishlist = ({ close, value }: Props) => {
-  const wishlistRef = useRef(null);
+  const preferencesRef = useRef(null);
   const containerRef = useRef(null);
   const overlayRef = useRef(null);
 
   const { user } = useAuth();
+  const userId = user?.id;
+  const { data } = useGetWishlist(userId as number);
 
   const [age, setAge] = useState<number[] | null>(null);
   const [breed, setBreed] = useState<string | null>(null);
@@ -52,12 +54,21 @@ export const Wishlist = ({ close, value }: Props) => {
 
   const { mutate: setWishlist } = useSetWishlist();
 
-  useOnClickOutside(wishlistRef, close);
+  useOnClickOutside(preferencesRef, close);
+  useEffect(() => {
+    if (data) {
+      const { ageMin, ageMax, breed, gender, energyLevel } = data.data;
+      setAge(ageMin && ageMax ? [ageMin, ageMax] : null);
+      setBreed(breed || null);
+      setGender(gender || "");
+      setEnergyLevel(energyLevel || null);
+    }
+  }, [data]);
 
   useGSAP(
     () => {
       if (value) {
-        gsap.to(wishlistRef.current, {
+        gsap.to(preferencesRef.current, {
           x: "0%",
           duration: 0.3,
         });
@@ -67,7 +78,7 @@ export const Wishlist = ({ close, value }: Props) => {
           overflowX: "hidden",
         });
       } else {
-        gsap.to(wishlistRef.current, {
+        gsap.to(preferencesRef.current, {
           x: "100%",
           duration: 0.3,
         });
@@ -97,13 +108,13 @@ export const Wishlist = ({ close, value }: Props) => {
       setAge(null);
     }
   };
+
   const handleClearAll = () => {
     setAge(null);
     setBreed(null);
     setGender("");
     setEnergyLevel(null);
   };
-  const userId = user?.id;
 
   const [wishlistData, setWishlistData] = useState<{
     id: number;
@@ -113,8 +124,6 @@ export const Wishlist = ({ close, value }: Props) => {
     ageMax: number | null;
     energyLevel: string;
     gender: string;
-    createdAt: string;
-    updatedAt: string;
     pets: {
       id: number;
       name: string;
@@ -130,8 +139,6 @@ export const Wishlist = ({ close, value }: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const [ageMin, ageMax] = age || [undefined, undefined];
-
     if (!userId) {
       console.error("User is not logged in.");
       return;
@@ -139,20 +146,20 @@ export const Wishlist = ({ close, value }: Props) => {
 
     const wishlistData = {
       userId,
-      ageMin,
-      ageMax,
-      breed: breed || undefined,
+      ageMin: age ? age[0] : 1,
+      ageMax: age ? age[1] : 30,
+      breed: breed || "",
       gender,
-      energyLevel: energyLevel || undefined,
+      energyLevel: energyLevel || "",
     };
 
     setWishlist(wishlistData, {
       onSuccess: (response) => {
-        console.log("Wishlist updated successfully!", response);
+        console.log("Preferences updated successfully!", response);
         setWishlistData(response.data);
       },
       onError: (error) => {
-        console.error("Failed to update wishlist:", error);
+        console.error("Failed to update preferences:", error);
       },
     });
   };
@@ -164,23 +171,26 @@ export const Wishlist = ({ close, value }: Props) => {
       ref={containerRef}
     >
       <div
-        ref={wishlistRef}
-        className="fixed right-0 h-full z-30 w-[650px] py-6 bg-primaryIvory shadow-lg overflow-y-auto"
+        ref={preferencesRef}
+        className="fixed right-0 h-full z-30 w-[950px] py-6 bg-primaryIvory shadow-lg overflow-y-auto"
       >
         <div className="px-6">
           <div className="flex justify-between mb-6">
-            <h1 className="text-2xl font-bold">Wishlist</h1>
+            <div>
+              <h1 className="text-2xl font-bold">Adoption Preferences</h1>
+              <p className="text-gray-600 mt-1">
+                Tell us about your ideal pet and we'll find the best matches for
+                you
+              </p>
+            </div>
             <button onClick={close}>
               <IoClose size={24} />
             </button>
           </div>
-          <form
-            id="wishlist-form"
-            onSubmit={handleSubmit}
-            className="grid grid-cols-2 gap-6"
-          >
+
+          <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-6">
             <Dropdown
-              label="Age (optional)"
+              label="My ideal age range is..."
               options={AGE_GROUP.map((ageGroup) => ({
                 value: ageGroup.label,
                 label: ageGroup.label,
@@ -204,74 +214,77 @@ export const Wishlist = ({ close, value }: Props) => {
               onChange={(e) => setBreed(e.target.value)}
             />
 
-            <RadioButton.Group
-              value={gender || ""}
+            <Dropdown
+              label="I'm looking for a..."
+              options={GENDER}
+              value={gender}
               onChange={(value) => handleGenderChange(value)}
-              label="Gender"
-              className="flex"
-            >
-              {GENDER.map((level) => (
-                <RadioButton key={level.label} value={level.value}>
-                  {level.label}
-                </RadioButton>
-              ))}
-            </RadioButton.Group>
+            />
 
-            <RadioButton.Group
+            <Dropdown
+              label="I'd prefer a pet with... energy"
+              options={ENERGY_LEVEL}
               value={energyLevel || ""}
               onChange={(value) => handleEnergyLevelChange(value)}
-              label="Energy Level (optional)"
-              className="flex"
-            >
-              {ENERGY_LEVEL.map((level) => (
-                <RadioButton key={level.label} value={level.value}>
-                  {level.label}
-                </RadioButton>
-              ))}
-            </RadioButton.Group>
+            />
+
+            <div className="flex gap-2 items-center mt-2 col-span-4">
+              <Button
+                size="lg"
+                variant="outlined-dark"
+                onClick={handleClearAll}
+                className="w-full"
+                label="Clear All"
+              />
+              <Button
+                type="submit"
+                size="lg"
+                variant="filled"
+                className="w-full"
+                label="Find My Matches"
+              />
+            </div>
           </form>
 
-          <div className="flex flex-col gap-2 my-4">
-            {wishlistData?.pets && wishlistData.pets.length > 0 ? (
-              wishlistData?.pets
-                .filter((pet) => pet.adoptionStatus !== "Pending")
-                .map((pet, index) => (
-                  <MatchingPetCard
-                    key={index}
-                    id={pet.id}
-                    age={pet.age}
-                    breed={pet.breed}
-                    energyLevel={pet.energyLevel}
-                    gender={pet.gender}
-                    images={pet.images}
-                    name={pet.name}
-                  />
-                ))
-            ) : (
-              <p className="text-center text-gray-500">
-                No matching pets found.
-              </p>
+          <div className="mt-4">
+            {wishlistData?.pets && wishlistData.pets.length > 0 && (
+              <div className="bg-primaryGreen p-4 rounded-lg mb-4 flex items-center">
+                <HiOutlineSparkles className="text-primaryOrange mr-2" />
+                <span className="text-secondaryWhite">
+                  We found {wishlistData.pets.length} perfect matches!
+                </span>
+              </div>
             )}
-          </div>
-        </div>
 
-        <div className="fixed bottom-0 w-full bg-primaryIvory p-4">
-          <div className="flex w-full gap-6">
-            <Button
-              type="submit"
-              size="lg"
-              variant="filled"
-              className="flex-1"
-              label="Find My Pet"
-              form="wishlist-form"
-            />
-            <Button
-              size="lg"
-              variant="outlined-dark"
-              onClick={handleClearAll}
-              label="Clear All"
-              className="flex-1"
-            />
+            <h2 className="text-xl font-semibold mb-4">Your Perfect Matches</h2>
+
+            <div className="grid grid-cols-2 gap-2 my-4">
+              {wishlistData?.pets && wishlistData.pets.length > 0 ? (
+                wishlistData?.pets
+                  .filter((pet) => pet.adoptionStatus !== "Pending")
+                  .map((pet, index) => (
+                    <MatchingPetCard
+                      key={index}
+                      id={pet.id}
+                      age={pet.age}
+                      breed={pet.breed}
+                      energyLevel={pet.energyLevel}
+                      gender={pet.gender}
+                      images={pet.images}
+                      name={pet.name}
+                    />
+                  ))
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 mb-2">
+                    We'll show your perfect matches here
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    Adjust your preferences and click "Find Matches"
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

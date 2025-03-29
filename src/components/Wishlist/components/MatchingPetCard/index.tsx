@@ -1,3 +1,4 @@
+import { FaBirthdayCake } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface PetMatchesProps {
@@ -20,9 +21,9 @@ export const MatchingPetCard = ({
   images,
 }: PetMatchesProps) => {
   const progress = {
-    High: "75%",
-    Medium: "50%",
-    Low: "25%",
+    High: "100%",
+    Medium: "65%",
+    Low: "30%",
   }[energyLevel];
   return (
     <Link to={`/pet-details/${id}`}>
@@ -32,7 +33,7 @@ export const MatchingPetCard = ({
             <img
               src={images[0]}
               alt={name}
-              className="size-32 object-cover rounded-full"
+              className="size-32 object-cover rounded-lg"
             />
           </div>
 
@@ -40,7 +41,12 @@ export const MatchingPetCard = ({
             <div className="flex justify-between items-center">
               <div className="text-xl font-bold text-gray-800 mb-1">{name}</div>
 
-              <div className="text-base text-gray-600">{age} years</div>
+              <div className="flex items-center gap-2 bg-primaryIvory px-3 py-1 rounded-full">
+                <FaBirthdayCake className="text-primaryOrange" />
+                <span className="text-gray-700">
+                  {age} {age === 1 ? "year" : "years"}
+                </span>
+              </div>
             </div>
             <div className="text-base text-gray-600">
               {breed} • {gender}

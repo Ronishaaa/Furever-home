@@ -19,7 +19,7 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &::placeholder {
-    color: rgba(main.$primary-black, 0.16);
+    color: rgba(main.$primary-black, 0.4);
   }
 
   &:focus {

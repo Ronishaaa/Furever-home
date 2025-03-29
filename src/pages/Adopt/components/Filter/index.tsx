@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Button, Checkbox, PetCard } from "../../../../components";
+import {
+  Button,
+  Checkbox,
+  PetCard,
+  RadioButton,
+  TextField,
+} from "../../../../components";
 import { useGetPets } from "../../queries";
 import { ToggleableFilter } from "./components/ToggleableFilter";
 import useFilters from "./components/useFilters";
@@ -33,6 +39,13 @@ const EXPERIENCE_LEVELS = [
   { name: "Expert", value: "Expert" },
 ];
 
+const AGE_GROUP = [
+  { label: "Puppy (0-1 year)", value: [1, 1] },
+  { label: "Young (1-3 years)", value: [1, 3] },
+  { label: "Adult (3-7 years)", value: [3, 7] },
+  { label: "Senior (8+ years)", value: [8, 30] },
+];
+
 export const Filter = () => {
   const {
     ageMin,
@@ -52,7 +65,11 @@ export const Filter = () => {
     clearAll,
   } = useFilters();
 
-  const [searchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   const { data } = useGetPets({
     ageMax,
@@ -69,47 +86,45 @@ export const Filter = () => {
   });
 
   return (
-    <section className="mt-[110px]">
+    <section className="mt-[20px]">
       <div className="fh-container">
         <div className="fh-grid">
           <div className="col-span-3">
             <h2 className="text-base text-primaryOrange font-bold">Filters</h2>
 
             <ToggleableFilter title="Gender">
-              <ul>
-                {GENDER.map((item, index) => (
-                  <li key={index}>
-                    <Checkbox
-                      name={item.name}
-                      checked={gender === item.value}
-                      onClick={() => setGender(item.value)}
-                    />
-                  </li>
+              <RadioButton.Group
+                value={gender || ""}
+                onChange={(value) => setGender(value)}
+                className="flex flex-col"
+              >
+                {GENDER.map((item) => (
+                  <RadioButton key={item.value} value={item.value}>
+                    {item.name}
+                  </RadioButton>
                 ))}
-              </ul>
+              </RadioButton.Group>
             </ToggleableFilter>
 
             <ToggleableFilter title="Age Range">
-              <div>
-                <label>
-                  Min Age:
-                  <input
-                    type="number"
-                    value={ageMin || ""}
-                    onChange={(e) => setAgeMin(Number(e.target.value))}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
-                  Max Age:
-                  <input
-                    type="number"
-                    value={ageMax || ""}
-                    onChange={(e) => setAgeMax(Number(e.target.value))}
-                  />
-                </label>
-              </div>
+              <RadioButton.Group
+                value={`${ageMin}-${ageMax}`}
+                onChange={(value) => {
+                  const [min, max] = value.split("-").map(Number);
+                  setAgeMin(min);
+                  setAgeMax(max);
+                }}
+                className="flex flex-col"
+              >
+                {AGE_GROUP.map((item, index) => (
+                  <RadioButton
+                    key={index}
+                    value={`${item.value[0]}-${item.value[1]}`}
+                  >
+                    {item.label}
+                  </RadioButton>
+                ))}
+              </RadioButton.Group>
             </ToggleableFilter>
 
             <ToggleableFilter title="Energy Levels">
@@ -177,8 +192,12 @@ export const Filter = () => {
           </div>
 
           <div className="col-start-4 col-span-9">
-            <div className="search">Search</div>
-            <div className="grid grid-cols-3 gap-6">
+            <TextField
+              placeholder="Search by breed,name"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            <div className="grid grid-cols-3 gap-6 mt-2">
               {data?.data.map((pet, index) => (
                 <PetCard
                   key={index}

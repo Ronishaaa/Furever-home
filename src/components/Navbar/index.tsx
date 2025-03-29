@@ -111,7 +111,7 @@ const Navbar = () => {
               <Button
                 size="sm"
                 variant="icon"
-                icon={<FaRegHeart size={24} />}
+                icon={<FaRegHeart size={24} className="text-warningRed" />}
                 onClick={toggle}
               />
               {isAuthenticated ? (

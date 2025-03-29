@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
@@ -18,38 +17,16 @@ import {
   SuccessStories,
   SuccessStoriesDetail,
 } from "./pages";
-import { socket } from "./socket";
 
 axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.withCredentials = true;
 
 function App() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-
-  useEffect(() => {
-    const onConnect = () => {
-      setIsConnected(true);
-    };
-
-    const onDisconnect = () => {
-      setIsConnected(false);
-    };
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, []);
-
-  console.log(isConnected);
   return (
     <AuthProvider>
       <BrowserRouter>
         <Navbar />
-        <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
+        <Toaster />
         <Routes>
           <Route path="/register" element={<Signup />} />
           <Route path="/verify" element={<EmailVerification />} />

@@ -25,7 +25,6 @@ interface Props {
 export const Hero = ({ data }: Props) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  console.log(data);
   const [firstSwiper, setFirstSwiper] = useState<SwiperCore | null>(null);
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
 

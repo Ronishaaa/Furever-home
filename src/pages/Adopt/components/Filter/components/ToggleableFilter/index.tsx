@@ -23,7 +23,7 @@ export const ToggleableFilter = ({
   return (
     <div
       className={twMerge(
-        !last && "border-b border-primaryDarkRosewood/[0.16]",
+        !last && "border-b border-primaryDarkRosewood/40",
         className
       )}
     >
