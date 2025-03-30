@@ -18,7 +18,7 @@ const NAV_LINKS = [
     name: "Adopt a  Pet",
   },
   {
-    link: "/tips",
+    link: "/pet-care-tips",
     name: "Pet care tips",
   },
   {

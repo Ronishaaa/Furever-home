@@ -4,6 +4,7 @@ export * from "./ContactUs";
 export * from "./EmailVerification";
 export * from "./Home";
 export * from "./Login";
+export * from "./PetCareTips";
 export * from "./PetDetails";
 export * from "./RescueStories";
 export * from "./RescueStoriesDetail";

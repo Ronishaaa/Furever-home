@@ -10,6 +10,7 @@ import {
   EmailVerification,
   Home,
   Login,
+  PetCareTips,
   PetDetails,
   RescueStories,
   RescueStoriesDetail,
@@ -34,6 +35,7 @@ function App() {
           <Route path="/" element={<Home />} />{" "}
           <Route path="/pet-details/:id" element={<PetDetails />} />
           <Route path="/adopt" element={<Adopt />} />
+          <Route path="/pet-care-tips" element={<PetCareTips />} />
           <Route path="/success-stories" element={<SuccessStories />} />
           <Route
             path="/success-stories/:id"
