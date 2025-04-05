@@ -45,13 +45,18 @@ export const Wishlist = ({ close, value }: Props) => {
 
   const { user } = useAuth();
   const userId = user?.id;
-  const { data } = useGetWishlist(userId as number);
-
+  const { data, refetch } = useGetWishlist(userId as number);
+  console.log(data);
   const [age, setAge] = useState<number[] | null>(null);
   const [breed, setBreed] = useState<string | null>(null);
   const [gender, setGender] = useState<string>("");
   const [energyLevel, setEnergyLevel] = useState<string | null>(null);
-
+  useEffect(() => {
+    if (value && userId) {
+      refetch();
+      setIsUpdated(false); // fallback to show initial state
+    }
+  }, [value, userId, refetch]);
   const { mutate: setWishlist } = useSetWishlist();
 
   useOnClickOutside(preferencesRef, close);
