@@ -10,12 +10,14 @@ import {
 } from "react-icons/fa";
 import { IoMdFemale, IoMdMale } from "react-icons/io";
 import { MdChevronLeft, MdChevronRight, MdPets } from "react-icons/md";
+import { useParams } from "react-router-dom";
 import SwiperCore from "swiper";
 import { Controller, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { twMerge } from "tailwind-merge";
 import { useBoolean } from "usehooks-ts";
 import { AdoptionApplication, Button } from "../../../../components";
+import { useAuth } from "../../../../context/AuthContext";
 import { Pet } from "../../../Adopt/queries";
 
 interface Props {
@@ -23,8 +25,12 @@ interface Props {
 }
 
 export const Hero = ({ data }: Props) => {
+  const { id } = useParams();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+
+  const { user } = useAuth();
+  const userId = user?.id ?? 0;
   const [firstSwiper, setFirstSwiper] = useState<SwiperCore | null>(null);
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
 
@@ -294,7 +300,12 @@ export const Hero = ({ data }: Props) => {
         </div>
       </div>
 
-      <AdoptionApplication handleClose={closeForm} open={isFormOpen} />
+      <AdoptionApplication
+        handleClose={closeForm}
+        open={isFormOpen}
+        petId={Number(id)}
+        userId={userId}
+      />
     </section>
   );
 };

@@ -27,7 +27,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Navbar />
-        <Toaster closeButton />
+        <Toaster closeButton position="top-right" />
         <Routes>
           <Route path="/register" element={<Signup />} />
           <Route path="/verify" element={<EmailVerification />} />
