@@ -95,7 +95,7 @@ export const Filter = () => {
             <ToggleableFilter title="Gender">
               <RadioButton.Group
                 value={gender || ""}
-                onChange={(value) => setGender(value)}
+                onChange={(e) => setGender(e.target.value)}
                 className="flex flex-col"
               >
                 {GENDER.map((item) => (
@@ -109,8 +109,8 @@ export const Filter = () => {
             <ToggleableFilter title="Age Range">
               <RadioButton.Group
                 value={`${ageMin}-${ageMax}`}
-                onChange={(value) => {
-                  const [min, max] = value.split("-").map(Number);
+                onChange={(e) => {
+                  const [min, max] = e.target.value.split("-").map(Number);
                   setAgeMin(min);
                   setAgeMax(max);
                 }}
