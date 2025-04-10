@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext";
 import {
   Adopt,
   Contact,
+  Donation,
   EmailVerification,
   Home,
   Login,
@@ -17,6 +18,7 @@ import {
   Signup,
   SuccessStories,
   SuccessStoriesDetail,
+  Verification,
 } from "./pages";
 
 axios.defaults.baseURL = "http://localhost:3001";
@@ -44,6 +46,8 @@ function App() {
           <Route path="/rescue-stories" element={<RescueStories />} />
           <Route path="/rescue-stories/:id" element={<RescueStoriesDetail />} />
           <Route path="/contact-us" element={<Contact />} />
+          <Route path="/donate" element={<Donation />} />
+          <Route path="/verification" element={<Verification />} />
         </Routes>
         <Footer />
       </BrowserRouter>

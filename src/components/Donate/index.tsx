@@ -16,9 +16,9 @@ export const Donate = () => {
                 rescued animals. Every contribution makes a difference!
               </div>
 
-              <div className="h-fit">
+              <a href="/donate" className="h-fit">
                 <Button size="md" variant="filled" label="Donate Now" />
-              </div>
+              </a>
             </div>
           </div>
         </div>

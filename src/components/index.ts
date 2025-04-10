@@ -2,6 +2,8 @@ export * from "./AdoptionApplication";
 export * from "./Button";
 export * from "./Checkbox";
 export * from "./Donate";
+export * from "./DonationForm";
+export * from "./DonationVerification";
 export * from "./Dropdown";
 export * from "./Footer";
 export * from "./Navbar";

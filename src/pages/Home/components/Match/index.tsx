@@ -26,7 +26,7 @@ export const Match = () => {
           </div>
 
           <div className="col-span-4 mb-16 lg:col-start-4 lg:mb-0">
-            <h2 className="text-3xl font-bold text-center mb-3 text-primaryIvory">
+            <h2 className="text-3xl font-bold text-center mb-3 text-primaryOrange">
               Find Your Match
             </h2>
             <p className="text-lg text-center mb-6 text-primaryIvory">

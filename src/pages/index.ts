@@ -1,6 +1,7 @@
 export * from "../components/AdoptionApplication";
 export * from "./Adopt";
 export * from "./ContactUs";
+export * from "./Donation";
 export * from "./EmailVerification";
 export * from "./Home";
 export * from "./Login";
@@ -11,3 +12,4 @@ export * from "./RescueStoriesDetail";
 export * from "./Signup";
 export * from "./SuccessStories";
 export * from "./SuccessStoriesDetail";
+export * from "./Verification";

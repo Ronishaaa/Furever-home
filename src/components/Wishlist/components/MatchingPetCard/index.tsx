@@ -9,6 +9,7 @@ interface PetMatchesProps {
   age: number;
   gender: string;
   energyLevel: string;
+  onClick?: () => void;
 }
 
 export const MatchingPetCard = ({
@@ -19,6 +20,7 @@ export const MatchingPetCard = ({
   energyLevel,
   gender,
   images,
+  onClick,
 }: PetMatchesProps) => {
   const progress = {
     High: "100%",
@@ -26,7 +28,7 @@ export const MatchingPetCard = ({
     Low: "30%",
   }[energyLevel];
   return (
-    <Link to={`/pet-details/${id}`}>
+    <Link to={`/pet-details/${id}`} onClick={onClick}>
       <div className="bg-secondaryWhite rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all">
         <div className="flex gap-3 p-4">
           <div className="w-1/4">

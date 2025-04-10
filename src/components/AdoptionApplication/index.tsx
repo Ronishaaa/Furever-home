@@ -63,7 +63,6 @@ export const AdoptionApplication = ({
   userId,
 }: Props) => {
   const { mutate, isSuccess, isError } = useAddApplication();
-  console.log(petId);
 
   const {
     register,
@@ -81,11 +80,8 @@ export const AdoptionApplication = ({
       neuteredPets: false,
     },
   });
-  console.log(errors);
-  console.log("WATCHED VALUES", watch());
 
   const onSubmit = (info: ApplicationInput) => {
-    console.log("Form Data:", info);
     const applicationData = {
       ...info,
       applicationStatus: "Pending",

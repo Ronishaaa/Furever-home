@@ -46,7 +46,6 @@ export const Wishlist = ({ close, value }: Props) => {
   const { user } = useAuth();
   const userId = user?.id;
   const { data, refetch } = useGetWishlist(userId as number);
-  console.log(data);
   const [age, setAge] = useState<number[] | null>(null);
   const [breed, setBreed] = useState<string | null>(null);
   const [gender, setGender] = useState<string>("");
@@ -54,7 +53,7 @@ export const Wishlist = ({ close, value }: Props) => {
   useEffect(() => {
     if (value && userId) {
       refetch();
-      setIsUpdated(false); // fallback to show initial state
+      setIsUpdated(false);
     }
   }, [value, userId, refetch]);
   const { mutate: setWishlist } = useSetWishlist();
@@ -305,6 +304,7 @@ export const Wishlist = ({ close, value }: Props) => {
                     gender={pet.pet.gender}
                     images={pet.pet.images}
                     name={pet.pet.name}
+                    onClick={close}
                   />
                 ))
               ) : (
