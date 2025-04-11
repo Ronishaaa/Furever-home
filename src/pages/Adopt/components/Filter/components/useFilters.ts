@@ -1,52 +1,68 @@
 import { create } from "zustand";
 
+export enum EnergyLevel {
+  High = "High",
+  Medium = "Medium",
+  Low = "Low",
+}
+
+export enum Temperament {
+  Friendly = "Friendly",
+  Shy = "Shy",
+  Aggressive = "Aggressive",
+  Calm = "Calm",
+  Playful = "Playful",
+}
+
+export enum TrainingLevel {
+  None = "None",
+  Basic = "Basic",
+  Advanced = "Advanced",
+}
+
+export enum ExperienceLevel {
+  FirstTimeOwner = "FirstTimeOwner",
+  ExperiencedOwner = "ExperiencedOwner",
+}
 interface FiltersStore {
   ageMin: number;
   ageMax: number;
   gender: string;
-  energyLevels: string[];
+  energyLevels: EnergyLevel[];
   personality: string[];
-  trainingLevels: string[];
-  experienceLevels: string[];
+  trainingLevels: TrainingLevel[];
+  experienceLevels: ExperienceLevel[];
 
-  setAgeMin: (age: number) => void;
-  setAgeMax: (age: number) => void;
-  setGender: (gender: string) => void;
-  setEnergyLevels: (level: string) => void;
+  setAgeMin: (age?: number) => void;
+  setAgeMax: (age?: number) => void;
+  setGender: (gender?: string) => void;
+  setEnergyLevel: (level: EnergyLevel) => void;
   setPersonality: (trait: string) => void;
-  setTrainingLevels: (level: string) => void;
-  setExperienceLevels: (level: string) => void;
-  removeFilter: (category: string, value: string) => void;
+  setTrainingLevel: (level: TrainingLevel) => void;
+  setExperienceLevel: (level: ExperienceLevel) => void;
   clearAll: () => void;
 }
 
 const useFilters = create<FiltersStore>((set) => ({
   ageMin: 0,
-  ageMax: 20,
+  ageMax: 30,
   gender: "",
   energyLevels: [],
   personality: [],
   trainingLevels: [],
   experienceLevels: [],
 
-  // Set minimum age
   setAgeMin: (age) => set({ ageMin: age }),
-
-  // Set maximum age
   setAgeMax: (age) => set({ ageMax: age }),
-
-  // Set gender
   setGender: (gender) => set({ gender }),
 
-  // Toggle energy level
-  setEnergyLevels: (level) =>
+  setEnergyLevel: (level) =>
     set((state) => ({
       energyLevels: state.energyLevels.includes(level)
         ? state.energyLevels.filter((item) => item !== level)
         : [...state.energyLevels, level],
     })),
 
-  // Toggle personality trait
   setPersonality: (trait) =>
     set((state) => ({
       personality: state.personality.includes(trait)
@@ -54,58 +70,20 @@ const useFilters = create<FiltersStore>((set) => ({
         : [...state.personality, trait],
     })),
 
-  // Toggle training level
-  setTrainingLevels: (level) =>
+  setTrainingLevel: (level) =>
     set((state) => ({
       trainingLevels: state.trainingLevels.includes(level)
         ? state.trainingLevels.filter((item) => item !== level)
         : [...state.trainingLevels, level],
     })),
 
-  // Toggle experience level
-  setExperienceLevels: (level) =>
+  setExperienceLevel: (level) =>
     set((state) => ({
       experienceLevels: state.experienceLevels.includes(level)
         ? state.experienceLevels.filter((item) => item !== level)
         : [...state.experienceLevels, level],
     })),
 
-  // Remove a specific filter
-  removeFilter: (category, value) =>
-    set((state) => {
-      switch (category) {
-        case "AgeMin":
-          return { ageMin: undefined };
-        case "AgeMax":
-          return { ageMax: undefined };
-        case "Gender":
-          return { gender: undefined };
-        case "EnergyLevels":
-          return {
-            energyLevels: state.energyLevels.filter((item) => item !== value),
-          };
-        case "Personality":
-          return {
-            personality: state.personality.filter((item) => item !== value),
-          };
-        case "TrainingLevels":
-          return {
-            trainingLevels: state.trainingLevels.filter(
-              (item) => item !== value
-            ),
-          };
-        case "ExperienceLevels":
-          return {
-            experienceLevels: state.experienceLevels.filter(
-              (item) => item !== value
-            ),
-          };
-        default:
-          return {};
-      }
-    }),
-
-  // Clear all filters
   clearAll: () =>
     set({
       ageMin: undefined,

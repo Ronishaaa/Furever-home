@@ -8,7 +8,12 @@ import {
 } from "../../../../components";
 import { useGetPets } from "../../queries";
 import { ToggleableFilter } from "./components/ToggleableFilter";
-import useFilters from "./components/useFilters";
+import useFilters, {
+  EnergyLevel,
+  ExperienceLevel,
+  Temperament,
+  TrainingLevel,
+} from "./components/useFilters";
 
 const GENDER = [
   { name: "Female", value: "Female" },
@@ -16,31 +21,32 @@ const GENDER = [
 ];
 
 const ENERGY_LEVELS = [
-  { name: "Low", value: "Low" },
-  { name: "Medium", value: "Medium" },
-  { name: "High", value: "High" },
+  { name: "Low", value: EnergyLevel.Low },
+  { name: "Medium", value: EnergyLevel.Medium },
+  { name: "High", value: EnergyLevel.High },
 ];
 
 const PERSONALITY = [
-  { name: "Friendly", value: "Friendly" },
-  { name: "Playful", value: "Playful" },
-  { name: "Calm", value: "Calm" },
+  { name: "Friendly", value: Temperament.Friendly },
+  { name: "Playful", value: Temperament.Playful },
+  { name: "Calm", value: Temperament.Calm },
+  { name: "Shy", value: Temperament.Shy },
+  { name: "Aggressive", value: Temperament.Aggressive },
 ];
 
 const TRAINING_LEVELS = [
-  { name: "Basic", value: "Basic" },
-  { name: "Intermediate", value: "Intermediate" },
-  { name: "Advanced", value: "Advanced" },
+  { name: "None", value: TrainingLevel.None },
+  { name: "Basic", value: TrainingLevel.Basic },
+  { name: "Advanced", value: TrainingLevel.Advanced },
 ];
 
 const EXPERIENCE_LEVELS = [
-  { name: "Beginner", value: "Beginner" },
-  { name: "Intermediate", value: "Intermediate" },
-  { name: "Expert", value: "Expert" },
+  { name: "First Time Owner", value: ExperienceLevel.FirstTimeOwner },
+  { name: "Experienced Owner", value: ExperienceLevel.ExperiencedOwner },
 ];
 
 const AGE_GROUP = [
-  { label: "Puppy (0-1 year)", value: [1, 1] },
+  { label: "Puppy (0-1 year)", value: [0, 1] }, // Fixed range to start from 0
   { label: "Young (1-3 years)", value: [1, 3] },
   { label: "Adult (3-7 years)", value: [3, 7] },
   { label: "Senior (8+ years)", value: [8, 30] },
@@ -58,10 +64,10 @@ export const Filter = () => {
     setAgeMin,
     setAgeMax,
     setGender,
-    setEnergyLevels,
+    setEnergyLevel,
     setPersonality,
-    setTrainingLevels,
-    setExperienceLevels,
+    setTrainingLevel,
+    setExperienceLevel,
     clearAll,
   } = useFilters();
 
@@ -108,7 +114,11 @@ export const Filter = () => {
 
             <ToggleableFilter title="Age Range">
               <RadioButton.Group
-                value={`${ageMin}-${ageMax}`}
+                value={
+                  ageMin !== undefined && ageMax !== undefined
+                    ? `${ageMin}-${ageMax}`
+                    : ""
+                }
                 onChange={(e) => {
                   const [min, max] = e.target.value.split("-").map(Number);
                   setAgeMin(min);
@@ -128,13 +138,13 @@ export const Filter = () => {
             </ToggleableFilter>
 
             <ToggleableFilter title="Energy Levels">
-              <ul>
-                {ENERGY_LEVELS.map((item, index) => (
-                  <li key={index}>
+              <ul className="space-y-2">
+                {ENERGY_LEVELS.map((item) => (
+                  <li key={item.value} className="flex items-center">
                     <Checkbox
                       name={item.name}
                       checked={energyLevels.includes(item.value)}
-                      onClick={() => setEnergyLevels(item.value)}
+                      onClick={() => setEnergyLevel(item.value)}
                     />
                   </li>
                 ))}
@@ -142,9 +152,9 @@ export const Filter = () => {
             </ToggleableFilter>
 
             <ToggleableFilter title="Personality">
-              <ul>
-                {PERSONALITY.map((item, index) => (
-                  <li key={index}>
+              <ul className="space-y-2">
+                {PERSONALITY.map((item) => (
+                  <li key={item.value} className="flex items-center">
                     <Checkbox
                       name={item.name}
                       checked={personality.includes(item.value)}
@@ -156,13 +166,13 @@ export const Filter = () => {
             </ToggleableFilter>
 
             <ToggleableFilter title="Training Levels">
-              <ul>
-                {TRAINING_LEVELS.map((item, index) => (
-                  <li key={index}>
+              <ul className="space-y-2">
+                {TRAINING_LEVELS.map((item) => (
+                  <li key={item.value} className="flex items-center">
                     <Checkbox
                       name={item.name}
                       checked={trainingLevels.includes(item.value)}
-                      onClick={() => setTrainingLevels(item.value)}
+                      onClick={() => setTrainingLevel(item.value)}
                     />
                   </li>
                 ))}
@@ -170,13 +180,13 @@ export const Filter = () => {
             </ToggleableFilter>
 
             <ToggleableFilter title="Experience Levels" last>
-              <ul>
-                {EXPERIENCE_LEVELS.map((item, index) => (
-                  <li key={index}>
+              <ul className="space-y-2">
+                {EXPERIENCE_LEVELS.map((item) => (
+                  <li key={item.value} className="flex items-center">
                     <Checkbox
                       name={item.name}
                       checked={experienceLevels.includes(item.value)}
-                      onClick={() => setExperienceLevels(item.value)}
+                      onClick={() => setExperienceLevel(item.value)}
                     />
                   </li>
                 ))}
@@ -200,7 +210,7 @@ export const Filter = () => {
             <div className="grid grid-cols-3 gap-6 mt-2">
               {data?.data.map((pet, index) => (
                 <PetCard
-                  key={index}
+                  key={pet.id || index}
                   age={pet.age}
                   image={pet.images}
                   name={pet.name}

@@ -1,21 +1,23 @@
-import { useState } from "react";
-import { FaRegHeart } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaRegBell, FaRegHeart } from "react-icons/fa";
 import {
   MdOutlineAccountCircle,
   MdOutlineKeyboardArrowDown,
 } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import { useBoolean } from "usehooks-ts";
+import { useBoolean, useOnClickOutside } from "usehooks-ts";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../Button";
 import { Wishlist } from "../Wishlist";
 import styles from "./index.module.scss";
+import { useGetNotifications } from "./queries";
+import { useNotificationStore } from "./useNotificationStore";
 
 const NAV_LINKS = [
   {
     link: "/adopt",
-    name: "Adopt a  Pet",
+    name: "Adopt a Pet",
   },
   {
     link: "/pet-care-tips",
@@ -42,11 +44,39 @@ const NAV_LINKS = [
 
 const Navbar = () => {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const notificationRef = useRef(null);
+  const { isAuthenticated, user } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const {
+    value: isNotificationOpen,
+    toggle: toggleNotification,
+    setFalse: setNotificationFalse,
+  } = useBoolean(false);
+
   const { value, toggle, setFalse } = useBoolean(false);
+  const { unreadCount, resetUnreadCount } = useNotificationStore();
+
+  useOnClickOutside(notificationRef, setNotificationFalse);
 
   const noNavbarRoutes = ["/login", "/register", "/verify"];
+
+  const { data: notifications, refetch } = useGetNotifications(user?.id);
+  const handleNotificationClick = () => {
+    toggleNotification();
+    if (!isNotificationOpen && unreadCount > 0) {
+      resetUnreadCount();
+    }
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [value, user, refetch]);
+
+  const handleNotificationItemClick = () => {
+    setNotificationFalse();
+    setFalse();
+    toggle();
+  };
 
   return (
     <>
@@ -107,17 +137,81 @@ const Navbar = () => {
               ))}
             </div>
 
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-4 items-center">
               <Button
                 size="sm"
                 variant="icon"
-                icon={<FaRegHeart size={24} className="text-warningRed" />}
+                icon={<FaRegHeart size={20} className="text-warningRed" />}
                 onClick={toggle}
+                aria-label="Wishlist"
               />
+
               {isAuthenticated ? (
-                <div className="flex gap-2 items-center">
-                  <MdOutlineAccountCircle size={24} />
-                </div>
+                <>
+                  <div className="relative">
+                    <Button
+                      size="sm"
+                      variant="icon"
+                      onClick={handleNotificationClick}
+                      icon={<FaRegBell size={20} />}
+                    />
+                    {unreadCount > 0 && (
+                      <span className="absolute top-0 -right-2 bg-primaryOrange text-primaryBlack text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {unreadCount}
+                      </span>
+                    )}
+
+                    {isNotificationOpen && (
+                      <div
+                        ref={notificationRef}
+                        className="absolute right-0 mt-2 w-72 bg-secondaryWhite rounded-md shadow-lg py-1 z-50 border border-gray-200"
+                      >
+                        <div className="px-4 py-2 border-b border-gray-200">
+                          <h3 className="font-semibold">Notifications</h3>
+                        </div>
+                        <div className="max-h-60 overflow-y-auto">
+                          {notifications && notifications.length > 0 ? (
+                            notifications.map((notification) => (
+                              <div
+                                key={notification.id}
+                                className="px-4 py-3 hover:bg-primaryCream border-b border-b-primaryBlack cursor-pointer"
+                                onClick={handleNotificationItemClick}
+                              >
+                                <p className="text-sm">
+                                  {notification.message}
+                                </p>
+                                <div className="flex items-center mt-1">
+                                  {notification.pet.images?.[0] && (
+                                    <img
+                                      src={notification.pet.images[0]}
+                                      alt={notification.pet.name}
+                                      className="w-6 h-6 rounded-full mr-2"
+                                    />
+                                  )}
+                                  <p className="text-xs text-gray-500">
+                                    {notification.pet.name} •
+                                    {notification.pet.breed}
+                                  </p>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="px-4 py-3 text-sm text-gray-500">
+                              No notifications
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <Link to="/account">
+                    <MdOutlineAccountCircle
+                      size={24}
+                      className="hover:text-primaryDarkRosewood/80 transition duration-300"
+                    />
+                  </Link>
+                </>
               ) : (
                 <Link to="/login">
                   <Button label="Login" size="md" variant="green" />

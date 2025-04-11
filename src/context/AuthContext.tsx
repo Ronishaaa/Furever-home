@@ -7,6 +7,7 @@ import {
 } from "react";
 import { MdPets } from "react-icons/md";
 import { toast } from "sonner";
+import { useNotificationStore } from "../components/Navbar/useNotificationStore";
 import { axios } from "../lib";
 import { useUpdateSocket } from "../pages/Login/queries";
 import { socket } from "../socket";
@@ -56,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [socketId, setSocketId] = useState<string | null>(null);
   const { mutate: updateSocket } = useUpdateSocket();
+  const { incrementUnreadCount } = useNotificationStore();
 
   useEffect(() => {
     if (!user) {
@@ -70,7 +72,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSocketId(currentSocketId);
       console.log("Socket connected:", currentSocketId);
 
-      // Ensure socketId exists before updating the backend
       if (user.id && currentSocketId) {
         updateSocket({ socketId: currentSocketId, userId: user.id });
       }
@@ -78,6 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     socket.on("newPetMatch", (data: { message: string; pet: Pet }) => {
       console.log("Received new pet match:", data);
+      incrementUnreadCount();
       toast(`New pet matched!`, {
         description: `A pet matching your wishlist is available!`,
         duration: 3000,
@@ -90,7 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       socket.off("connect");
       socket.off("newPetMatch");
     };
-  }, [updateSocket, user]);
+  }, [incrementUnreadCount, updateSocket, user]);
 
   const verifyToken = async () => {
     const token = localStorage.getItem("token");
