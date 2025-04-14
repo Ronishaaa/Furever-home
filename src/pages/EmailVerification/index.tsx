@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../components";
 
 export const EmailVerification = () => {
   const navigate = useNavigate();
@@ -12,6 +13,12 @@ export const EmailVerification = () => {
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
+    setError(null);
+  };
+
+  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOtp(e.target.value);
+    setError(null);
   };
 
   const handleOtpSubmit = async () => {
@@ -19,44 +26,95 @@ export const EmailVerification = () => {
       setError("Email is required");
       return;
     }
+    if (!otp) {
+      setError("OTP is required");
+      return;
+    }
 
     setLoading(true);
-    try {
-      const response = await axios.post("/verify-otp", { email, otp });
-      toast.success(response.data.message);
-      navigate("/login");
-    } catch {
-      setError("Invalid OTP or OTP expired");
-    }
+    const response = await axios.post("api/verify-otp", { email, otp });
+    toast.success(response.data.message);
+    navigate("/login");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
-        Email OTP Verification
-      </h1>
-      <input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={handleEmailChange}
-        className="w-72 p-3 mb-4 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="text"
-        placeholder="Enter OTP"
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-        className="w-72 p-3 mb-4 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
-      <button
-        onClick={handleOtpSubmit}
-        disabled={loading}
-        className="w-full py-3 bg-primaryGreen text-primaryIvory font-semibold rounded-md hover:bg-primaryGreen/80 focus:outline-none"
-      >
-        {loading ? "Verifying..." : "Verify OTP"}
-      </button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Verify Your Email
+          </h1>
+          <p className="text-gray-600">
+            Enter the OTP sent to your email address
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email Address
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={handleEmailChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              disabled={loading}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="otp"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Verification Code
+            </label>
+            <input
+              id="otp"
+              type="text"
+              placeholder="Enter 6-digit OTP"
+              value={otp}
+              onChange={handleOtpChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              maxLength={6}
+              disabled={loading}
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg">
+              {error}
+            </div>
+          )}
+
+          <Button
+            onClick={handleOtpSubmit}
+            disabled={loading}
+            label="Verify Account"
+            size="lg"
+            variant="filled"
+            className="w-full"
+          />
+        </div>
+
+        <div className="text-center text-sm text-gray-500">
+          Didn't receive code?{" "}
+          <button
+            className="text-blue-600 hover:text-blue-800 font-medium"
+            onClick={() => {
+              /* Add resend logic here */
+            }}
+          >
+            Resend OTP
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

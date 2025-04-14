@@ -50,6 +50,8 @@ export const Wishlist = ({ close, value }: Props) => {
   const [breed, setBreed] = useState<string | null>(null);
   const [gender, setGender] = useState<string>("");
   const [energyLevel, setEnergyLevel] = useState<string | null>(null);
+  const [isUpdated, setIsUpdated] = useState(false);
+
   useEffect(() => {
     if (value && userId) {
       refetch();
@@ -60,16 +62,20 @@ export const Wishlist = ({ close, value }: Props) => {
 
   useOnClickOutside(preferencesRef, close);
   useEffect(() => {
-    if (data) {
+    if (data && data.data) {
       const { ageMin, ageMax, breed, gender, energyLevel } = data.data;
-      setAge(ageMin && ageMax ? [ageMin, ageMax] : null);
+
+      setAge(ageMin !== null && ageMax !== null ? [ageMin, ageMax] : null);
       setBreed(breed || null);
       setGender(gender || "");
       setEnergyLevel(energyLevel || null);
+    } else {
+      setAge(null);
+      setBreed(null);
+      setGender("");
+      setEnergyLevel(null);
     }
   }, [data]);
-
-  const [isUpdated, setIsUpdated] = useState(false);
 
   useGSAP(
     () => {
@@ -266,7 +272,7 @@ export const Wishlist = ({ close, value }: Props) => {
 
             <div className="grid grid-cols-2 gap-2 my-4">
               {isUpdated ? (
-                wishlistData && wishlistData?.pets?.length > 0 ? (
+                wishlistData && wishlistData.pets?.length > 0 ? (
                   wishlistData.pets
                     .filter((pet) => pet.adoptionStatus !== "Pending")
                     .map((pet, index) => (
@@ -291,7 +297,7 @@ export const Wishlist = ({ close, value }: Props) => {
                     </p>
                   </div>
                 )
-              ) : data && data?.data.MatchedPets?.length > 0 ? (
+              ) : data && data?.data?.MatchedPets?.length > 0 ? (
                 data.data.MatchedPets.filter(
                   (pet) => pet.pet.adoptionStatus !== "Pending"
                 ).map((pet, index) => (

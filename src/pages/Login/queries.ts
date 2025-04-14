@@ -55,3 +55,12 @@ export const useLogin = () => {
     },
   });
 };
+
+export const useResendVerification = () => {
+  return useMutation({
+    mutationFn: async (data: { email: string }) => {
+      const response = await axios.post("api/resend-verification", data);
+      return response.data;
+    },
+  });
+};

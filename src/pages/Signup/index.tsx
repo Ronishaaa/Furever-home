@@ -1,104 +1,105 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { FiLock, FiMail, FiUser } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { Button, TextField } from "../../components";
 import styles from "./index.module.scss";
 
 export const Signup = () => {
   const navigate = useNavigate();
-
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, email, password } = data;
-    try {
-      const { data } = await axios.post("/sign-up", {
-        username: name,
-        email,
-        password,
-      });
 
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        setData({ name: "", email: "", password: "" });
-        toast.success("register Successful");
-        navigate("/verify");
-      }
-    } catch (error) {
-      console.log(error);
+    if (!name || !email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    setIsLoading(true);
+    const { data: response } = await axios.post("api/sign-up", {
+      username: name,
+      email,
+      password,
+    });
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      setData({ name: "", email: "", password: "" });
+      toast.success("Registration successful! Please verify your email");
+      navigate("/verify");
     }
   };
 
   return (
     <div className={styles.container}>
-      <div className="bg-secondaryWhite shadow-lg p-6 rounded-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold text-center text-primaryIvory mb-6">
-          Sign Up
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-primaryIvory">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Enter your name"
-                value={data.name}
-                onChange={(e) => setData({ ...data, name: e.target.value })}
-                className="w-full p-3 border border-primaryGreen rounded-md focus:outline-none"
-              />
-            </div>
+      <div className="bg-secondaryWhite rounded-xl shadow-lg p-8 w-full max-w-md">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-primaryDarkRosewood mb-2">
+            Create Account
+          </h2>
+          <p className="text-gray-600">Join our community today</p>
+        </div>
 
-            <div>
-              <label htmlFor="email" className="block text-primaryIvory">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                value={data.email}
-                onChange={(e) => setData({ ...data, email: e.target.value })}
-                className="w-full p-3 border border-primaryGreen rounded-md focus:outline-none"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <TextField
+              label="Full Name"
+              placeholder="John Doe"
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+              disabled={isLoading}
+              icon={<FiUser />}
+            />
 
-            <div>
-              <label htmlFor="password" className="block text-primaryIvory">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                value={data.password}
-                onChange={(e) => setData({ ...data, password: e.target.value })}
-                className="w-full p-3 border border-primaryGreen rounded-md focus:outline-none"
-              />
-            </div>
+            <TextField
+              label="Email Address"
+              placeholder="your@email.com"
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
+              disabled={isLoading}
+              icon={<FiMail />}
+            />
 
-            <button
-              type="submit"
-              className="w-full py-3 bg-primaryGreen text-primaryIvory font-semibold rounded-md focus:outline-none"
-            >
-              Register
-            </button>
+            <TextField
+              label="Password"
+              id="password"
+              placeholder="••••••••"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+              disabled={isLoading}
+              icon={<FiLock />}
+              isPassword
+            />
           </div>
+
+          <Button
+            type="submit"
+            label="Register"
+            size="lg"
+            variant="filled"
+            className="w-full"
+          />
         </form>
-        <p className="text-center mt-4 text-primaryIvory">
+
+        <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-primaryBlue hover:underline">
-            Login
+          <Link
+            to="/login"
+            className="font-medium text-primaryBlue hover:underline"
+          >
+            Sign in
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );

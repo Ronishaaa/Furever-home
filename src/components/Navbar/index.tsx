@@ -3,8 +3,11 @@ import { FaRegBell, FaRegHeart } from "react-icons/fa";
 import {
   MdOutlineAccountCircle,
   MdOutlineKeyboardArrowDown,
+  MdOutlineLogout,
 } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
+import SimpleBarReact from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 import { twMerge } from "tailwind-merge";
 import { useBoolean, useOnClickOutside } from "usehooks-ts";
 import { useAuth } from "../../context/AuthContext";
@@ -45,13 +48,22 @@ const NAV_LINKS = [
 const Navbar = () => {
   const location = useLocation();
   const notificationRef = useRef(null);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {
     value: isNotificationOpen,
     toggle: toggleNotification,
     setFalse: setNotificationFalse,
   } = useBoolean(false);
+  const {
+    value: isAccountDropdownOpen,
+    toggle: toggleAccountDropdown,
+    setFalse: setAccountDropdownFalse,
+  } = useBoolean(false);
+
+  const accountDropdownRef = useRef(null);
+
+  useOnClickOutside(accountDropdownRef, setAccountDropdownFalse);
 
   const { value, toggle, setFalse } = useBoolean(false);
   const { unreadCount, resetUnreadCount } = useNotificationStore();
@@ -148,7 +160,7 @@ const Navbar = () => {
 
               {isAuthenticated ? (
                 <>
-                  <div className="relative">
+                  <div className="relative" ref={notificationRef}>
                     <Button
                       size="sm"
                       variant="icon"
@@ -162,19 +174,17 @@ const Navbar = () => {
                     )}
 
                     {isNotificationOpen && (
-                      <div
-                        ref={notificationRef}
-                        className="absolute right-0 mt-2 w-72 bg-secondaryWhite rounded-md shadow-lg py-1 z-50 border border-gray-200"
-                      >
+                      <div className="absolute right-0 mt-2 w-72 bg-secondaryWhite rounded-md shadow-lg py-1 z-50 border border-gray-200">
                         <div className="px-4 py-2 border-b border-gray-200">
                           <h3 className="font-semibold">Notifications</h3>
                         </div>
-                        <div className="max-h-60 overflow-y-auto">
+
+                        <SimpleBarReact className="max-h-60">
                           {notifications && notifications.length > 0 ? (
                             notifications.map((notification) => (
                               <div
                                 key={notification.id}
-                                className="px-4 py-3 hover:bg-primaryCream border-b border-b-primaryBlack cursor-pointer"
+                                className="px-4 py-3 hover:bg-primaryCream/25 border-b border-b-primaryBlack last:border-b-0 cursor-pointer"
                                 onClick={handleNotificationItemClick}
                               >
                                 <p className="text-sm">
@@ -200,17 +210,41 @@ const Navbar = () => {
                               No notifications
                             </div>
                           )}
-                        </div>
+                        </SimpleBarReact>
                       </div>
                     )}
                   </div>
 
-                  <Link to="/account">
-                    <MdOutlineAccountCircle
-                      size={24}
-                      className="hover:text-primaryDarkRosewood/80 transition duration-300"
+                  <div className="relative" ref={accountDropdownRef}>
+                    <Button
+                      size="sm"
+                      variant="icon"
+                      onClick={toggleAccountDropdown}
+                      icon={<MdOutlineAccountCircle size={24} />}
                     />
-                  </Link>
+
+                    {isAccountDropdownOpen && (
+                      <div className="absolute right-0 mt-2 w-48 bg-secondaryWhite rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                        <Link
+                          to="/account"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-primaryCream/25"
+                          onClick={setAccountDropdownFalse}
+                        >
+                          My Account
+                        </Link>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setAccountDropdownFalse();
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-primaryCream/25 flex items-center"
+                        >
+                          <MdOutlineLogout className="mr-2" />
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </>
               ) : (
                 <Link to="/login">
