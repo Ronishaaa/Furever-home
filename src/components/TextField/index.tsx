@@ -1,6 +1,7 @@
 import { InputHTMLAttributes, forwardRef, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
+import styles from "./index.module.scss";
 
 export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -32,7 +33,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             ref={ref}
             type={isPassword ? (showPassword ? "text" : "password") : "text"}
             className={twMerge(
-              "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primaryGreen focus:border-primaryGreen transition-colors",
+              styles.input,
               icon && "pl-10",
               error &&
                 "border-warningRed focus:ring-warningRed/50 focus:border-warningRed",

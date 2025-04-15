@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import {
+  Account,
   Adopt,
   Contact,
   Donation,
@@ -34,6 +35,7 @@ function App() {
           <Route path="/register" element={<Signup />} />
           <Route path="/verify" element={<EmailVerification />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account />} />
           <Route path="/" element={<Home />} />{" "}
           <Route path="/pet-details/:id" element={<PetDetails />} />
           <Route path="/adopt" element={<Adopt />} />

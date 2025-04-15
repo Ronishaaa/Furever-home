@@ -46,7 +46,7 @@ const EXPERIENCE_LEVELS = [
 ];
 
 const AGE_GROUP = [
-  { label: "Puppy (0-1 year)", value: [0, 1] }, // Fixed range to start from 0
+  { label: "Puppy (0-1 year)", value: [0, 1] },
   { label: "Young (1-3 years)", value: [1, 3] },
   { label: "Adult (3-7 years)", value: [3, 7] },
   { label: "Senior (8+ years)", value: [8, 30] },

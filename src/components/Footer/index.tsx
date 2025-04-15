@@ -13,14 +13,6 @@ const OPTIONS = [
         link: "/browse-pets",
       },
       {
-        title: "Adoption Process",
-        link: "/adoption-process",
-      },
-      {
-        title: "Why Adopt?",
-        link: "/why-adopt",
-      },
-      {
         title: "Contact Us",
         link: "/contact-us",
       },
