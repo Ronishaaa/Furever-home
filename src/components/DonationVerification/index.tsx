@@ -54,7 +54,7 @@ export const DonationVerification = () => {
           <div className="inline-flex items-center justify-center bg-primaryGreen size-28 bg-green-100 rounded-full mb-4">
             <FaCheck size={60} className="text-secondaryWhite" />
           </div>
-          <h1 className="text-3xl font-bold text-primaryGreen">
+          <h1 className="text-5xl font-bold text-primaryGreen">
             Donation Successful!
           </h1>
           <p className="text-lg text-gray-600">
@@ -75,7 +75,7 @@ export const DonationVerification = () => {
           <div className="inline-flex items-center justify-center bg-warningRed size-28 bg-green-100 rounded-full mb-4">
             <FaX size={60} className="text-warningRed" />
           </div>
-          <h1 className="text-3xl font-bold text-warningRed">
+          <h1 className="text-5xl font-bold text-warningRed">
             Verification Failed
           </h1>
           <p className="text-lg text-gray-600">

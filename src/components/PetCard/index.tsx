@@ -20,11 +20,11 @@ export const PetCard = ({
   return (
     <a
       href={`/pet-details/${href}`}
-      className="relative bg-secondaryWhite rounded-lg overflow-hidden group"
+      className="relative bg-secondaryWhite rounded-lg overflow-hidden group shadow-md"
     >
       <div className="overflow-hidden aspect-square">
         <img
-          className="object-cover w-full h-full transition-all duration-300 group-hover:scale-125"
+          className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
           src={image && image?.length > 0 ? image[0] : "/pet1.jpg"}
           alt=""
         />
@@ -36,14 +36,14 @@ export const PetCard = ({
       </div>
       <div className="p-4">
         <div className="flex justify-between">
-          <h3 className="text-xl font-semibold text-primaryDarkRosewood mb-2">
+          <h3 className="text-2xl font-semibold text-primaryDarkRosewood mb-2">
             {name}
           </h3>
           <div className="bg-primaryOrange/20 py-1 px-4 text-primaryOrange text-sm mb-2 rounded-full">
             {breed}
           </div>
         </div>
-        <div className="text-base text-primaryDarkRosewood/80 mb-2">
+        <div className="text-sm text-primaryDarkRosewood/80 mb-2">
           {name} is a {personality?.[0].toLowerCase()} {age}
           -year-old {breed} who loves{" "}
           {personality?.includes("Playful")
@@ -52,7 +52,7 @@ export const PetCard = ({
           and {gender === "Male" ? "cuddling" : "snuggling"} on the couch.
         </div>
 
-        <div className="flex">
+        <div className="flex gap-2">
           <div className="w-fit bg-primaryIvory/20 py-1 px-2 text-black/80 bg-primaryIvory text-sm mb-2 rounded-full">
             {gender}
           </div>

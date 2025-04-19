@@ -38,7 +38,7 @@ const healthyTreats = [
 export const Nutrition = () => {
   return (
     <div>
-      <h2 className="text-3xl font-bold text-primaryBlack mb-6">
+      <h2 className="text-5xl font-bold text-primaryBlack mb-6">
         Nutrition Guidelines
       </h2>
       <p className="text-lg text-primaryBlack/80 mb-6">

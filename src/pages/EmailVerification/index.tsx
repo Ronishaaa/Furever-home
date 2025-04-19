@@ -41,7 +41,7 @@ export const EmailVerification = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-5xl font-bold text-gray-800 mb-2">
             Verify Your Email
           </h1>
           <p className="text-gray-600">

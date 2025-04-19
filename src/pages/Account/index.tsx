@@ -82,7 +82,7 @@ export const Account = () => {
     <div className="fh-container mt-4">
       <section className="space-y-6">
         <header className="space-y-2">
-          <h1 className="text-3xl font-bold text-primaryDarkRosewood">
+          <h1 className="text-5xl font-bold text-primaryDarkRosewood">
             Personal Information
           </h1>
           <p className="text-primaryDarkRosewood/80 text-lg">
@@ -198,7 +198,7 @@ export const Account = () => {
       </section>
 
       <section className="my-6">
-        <h1 className="text-3xl font-bold mb-1 text-primaryDarkRosewood">
+        <h1 className="text-5xl font-bold mb-1 text-primaryDarkRosewood">
           My Adoption Applications
         </h1>
         <p className="text-primaryDarkRosewood/80 text-lg mb-4">

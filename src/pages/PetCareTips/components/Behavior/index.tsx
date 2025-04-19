@@ -67,7 +67,7 @@ const enrichmentActivities = [
 export const Behavior = () => {
   return (
     <div className="prose max-w-none">
-      <h2 className="text-3xl font-bold text-primaryBlack mb-6">
+      <h2 className="text-5xl font-bold text-primaryBlack mb-6">
         Understanding Dog Behavior
       </h2>
       <p className="text-lg text-primaryBlack/80 mb-6">

@@ -1,3 +1,4 @@
+import { FaHeart } from "react-icons/fa";
 import { Button } from "../Button";
 import styles from "./index.module.scss";
 
@@ -17,7 +18,12 @@ export const Donate = () => {
               </div>
 
               <a href="/donate" className="h-fit">
-                <Button size="md" variant="filled" label="Donate Now" />
+                <Button
+                  size="md"
+                  variant="filled"
+                  label="Donate Now"
+                  icon={<FaHeart className="mr-2" />}
+                />
               </a>
             </div>
           </div>

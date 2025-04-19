@@ -27,7 +27,7 @@ export const StoryCard = ({
     >
       <div className="overflow-hidden aspect-square">
         <img
-          className="object-cover w-full h-full transition-all duration-300 group-hover:scale-125"
+          className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
           src={image}
           alt="pet"
         />
@@ -39,7 +39,7 @@ export const StoryCard = ({
             {name}
           </h3>
 
-          <p className="text-base text-primaryDarkRosewood/80 mb-4">
+          <p className="text-sm text-primaryDarkRosewood/80 mb-4">
             {plainText.split(".")[0]}.
           </p>
         </div>

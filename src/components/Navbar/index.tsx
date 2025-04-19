@@ -3,6 +3,7 @@ import { FaRegBell, FaRegHeart } from "react-icons/fa";
 import {
   MdOutlineAccountCircle,
   MdOutlineKeyboardArrowDown,
+  MdOutlineLogin,
   MdOutlineLogout,
 } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
@@ -150,16 +151,14 @@ const Navbar = () => {
             </div>
 
             <div className="flex gap-4 items-center">
-              <Button
-                size="sm"
-                variant="icon"
-                icon={<FaRegHeart size={20} className="text-warningRed" />}
-                onClick={toggle}
-                aria-label="Wishlist"
-              />
-
               {isAuthenticated ? (
                 <>
+                  <Button
+                    size="sm"
+                    variant="icon"
+                    icon={<FaRegHeart size={20} className="text-warningRed" />}
+                    onClick={toggle}
+                  />
                   <div className="relative" ref={notificationRef}>
                     <Button
                       size="sm"
@@ -248,7 +247,13 @@ const Navbar = () => {
                 </>
               ) : (
                 <Link to="/login">
-                  <Button label="Login" size="md" variant="green" />
+                  <Button
+                    label="Login"
+                    size="sm"
+                    variant="filled"
+                    icon={<MdOutlineLogin size={18} className="mr-1.5" />}
+                    className="px-3"
+                  />
                 </Link>
               )}
             </div>

@@ -29,7 +29,7 @@ export const Hero = () => {
 
             <div className="px-16">
               <Link to={`/success-stories`}>
-                <h2 className="text-4xl text-secondaryWhite mb-2">
+                <h2 className="text-5xl text-secondaryWhite mb-2">
                   {data[0].title}
                 </h2>
                 <time className="text-primaryOrange">

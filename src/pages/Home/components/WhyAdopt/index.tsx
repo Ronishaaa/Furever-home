@@ -37,7 +37,7 @@ export const WhyAdopt = () => {
     <section className="my-20">
       <div className="fh-container">
         <div className="fh-grid text-center mb-12">
-          <h2 className="col-span-12 text-3xl mb-3 font-bold text-black">
+          <h2 className="col-span-12 text-5xl mb-3 font-bold text-primaryDarkRosewood">
             Why Choose Adoption?
           </h2>
           <p className="col-start-4 col-span-6 text-lg text-black">

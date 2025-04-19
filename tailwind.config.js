@@ -7,6 +7,12 @@ export default {
     },
   },
   theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+        heading: ['"Baloo 2"', "cursive"],
+      },
+    },
     colors: {
       primaryCream: "#E8E1D9",
       primaryBrown: "#977D6C",

@@ -32,7 +32,7 @@ export const SimilarPets = () => {
     <section className="my-20">
       <div className="fh-container">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-semibold mb-3 text-neutralDarkGray">
+          <h2 className="text-5xl font-semibold mb-3 text-neutralDarkGray">
             Similar Pets
           </h2>
           <p className="text-lg text-neutralDarkGray">

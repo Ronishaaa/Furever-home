@@ -72,7 +72,7 @@ export const DonationForm = () => {
   return (
     <div className="fh-container my-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+        <h2 className="text-5xl font-bold text-gray-900 mb-2">
           Support Our Mission
         </h2>
         <p className="text-lg text-gray-600">

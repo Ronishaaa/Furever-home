@@ -3,7 +3,13 @@ import { twMerge } from "tailwind-merge";
 import styles from "./index.module.scss";
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
-  variant: "filled" | "outlined" | "green" | "icon" | "outlined-dark";
+  variant:
+    | "filled"
+    | "outlined"
+    | "green"
+    | "icon"
+    | "outlined-dark"
+    | "outlined-orange";
   size: "lg" | "md" | "sm";
   className?: string;
   icon?: ReactNode;
@@ -27,8 +33,8 @@ export const Button = ({
         styles[size]
       )}
     >
-      {label}
       {icon}
+      {label}
     </button>
   );
 };

@@ -3,7 +3,7 @@ export const AdoptionWorks = () => {
     <section className="py-10 bg-white sm:py-16 lg:py-24 bg-primaryIvory">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="fh-container fh-grid text-center mb-12">
-          <h2 className="col-span-12 text-3xl mb-3 font-semibold text-black">
+          <h2 className="col-span-12 text-5xl mb-3 font-semibold text-primaryDarkRosewood">
             How Adoption Works
           </h2>
           <p className="col-start-4 col-span-6 text-lg text-black">
