@@ -1,101 +1,124 @@
 import axios from "axios";
 import { useState } from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { FiAlertCircle, FiMail } from "react-icons/fi";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Button } from "../../components";
+import { useResendVerification } from "../Login/queries";
+import styles from "./index.module.scss";
+import { useVerifyOtp } from "./queries";
 
 export const EmailVerification = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const location = useLocation();
+  const email = location.state?.email as string | undefined;
+
   const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { mutate: resendVerification } = useResendVerification();
+  const { mutate: verifyOtp } = useVerifyOtp();
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setError(null);
+  const handleResendVerification = () => {
+    resendVerification(
+      { email: email! },
+      {
+        onSuccess: () => {
+          toast.success("Verification email sent!", {
+            description: `We've sent a new verification link to ${email!}. Please check your inbox.`,
+            duration: 5000,
+            className: "bg-green-50 border border-green-200 text-green-800",
+            icon: <FiMail className="text-green-500" />,
+          });
+        },
+      }
+    );
   };
 
-  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOtp(e.target.value);
-    setError(null);
-  };
-
-  const handleOtpSubmit = async () => {
-    if (!email) {
-      setError("Email is required");
-      return;
-    }
+  const handleOtpSubmit = () => {
     if (!otp) {
       setError("OTP is required");
       return;
     }
 
-    setLoading(true);
-    const response = await axios.post("api/verify-otp", { email, otp });
-    toast.success(response.data.message);
-    navigate("/login");
+    verifyOtp(
+      { email: email!, otp },
+      {
+        onSuccess: (data) => {
+          toast.success(data.message);
+          navigate("/login");
+        },
+        onError: (err) => {
+          if (axios.isAxiosError(err)) {
+            const msg =
+              err.response?.data?.message ?? "OTP verification failed.";
+            setError(msg);
+          } else {
+            setError("Something went wrong. Please try again.");
+          }
+        },
+      }
+    );
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold text-gray-800 mb-2">
+    <div className={styles.container}>
+      <div className="bg-secondaryWhite rounded-xl shadow-lg p-8 w-full max-w-md">
+        <div className="text-center mb-8">
+          <h2 className="text-5xl font-bold text-primaryDarkRosewood mb-2">
             Verify Your Email
-          </h1>
+          </h2>
           <p className="text-gray-600">
             Enter the OTP sent to your email address
           </p>
         </div>
 
         <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={handleEmailChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="otp"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Verification Code
-            </label>
-            <input
-              id="otp"
-              type="text"
-              placeholder="Enter 6-digit OTP"
-              value={otp}
-              onChange={handleOtpChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-              maxLength={6}
-              disabled={loading}
-            />
+          <div className="flex gap-2 justify-center">
+            {[...Array(6)].map((_, i) => (
+              <input
+                key={i}
+                type="text"
+                maxLength={1}
+                value={otp[i] || ""}
+                onChange={(e) => {
+                  const newOtp = otp.split("");
+                  newOtp[i] = e.target.value;
+                  setOtp(newOtp.join(""));
+                  if (e.target.value && i < 5) {
+                    const nextInput = (e.target as HTMLInputElement)
+                      .nextElementSibling as HTMLInputElement;
+                    nextInput?.focus();
+                  }
+                }}
+                className="w-12 h-12 text-2xl text-center border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                onKeyDown={(e) => {
+                  if (e.key === "Backspace" && !otp[i] && i > 0) {
+                    const prevInput = (e.target as HTMLInputElement)
+                      .previousElementSibling as HTMLInputElement;
+                    prevInput?.focus();
+                  }
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const pasteData = e.clipboardData.getData("text").slice(0, 6);
+                  if (/^[0-9]{6}$/.test(pasteData)) {
+                    setOtp(pasteData);
+                    handleOtpSubmit();
+                  }
+                }}
+              />
+            ))}
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg">
+            <div className="py-2 px-7 bg-red-50 text-warningRed text-sm rounded-lg flex items-center gap-2">
+              <FiAlertCircle className="flex-shrink-0" />
               {error}
             </div>
           )}
 
           <Button
             onClick={handleOtpSubmit}
-            disabled={loading}
             label="Verify Account"
             size="lg"
             variant="filled"
@@ -103,15 +126,13 @@ export const EmailVerification = () => {
           />
         </div>
 
-        <div className="text-center text-sm text-gray-500">
-          Didn't receive code?{" "}
+        <div className="mt-6 text-center text-sm text-gray-500">
+          Didn't receive the code? Check your spam folder or{" "}
           <button
-            className="text-blue-600 hover:text-blue-800 font-medium"
-            onClick={() => {
-              /* Add resend logic here */
-            }}
+            className="text-primaryBlue font-medium"
+            onClick={handleResendVerification}
           >
-            Resend OTP
+            resend
           </button>
         </div>
       </div>

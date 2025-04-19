@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { FiLock, FiMail, FiUser } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button, TextField } from "../../components";
 import styles from "./index.module.scss";
@@ -32,8 +32,13 @@ export const Signup = () => {
   const onSubmit = (values: SignupForm) => {
     signupUser(values, {
       onSuccess: () => {
-        toast.success("Registration successful! Please verify your email");
-        navigate("/verify");
+        toast("Registration successful!", {
+          description: "Please verify your email to continue.",
+          duration: 4000,
+          className: "bg-green-50 border border-green-200 text-green-800",
+          icon: <FiMail className="text-green-500" />,
+        });
+        navigate("/verify", { state: { email: values.email } });
       },
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {

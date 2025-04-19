@@ -78,7 +78,7 @@ export const Login = () => {
             icon: <FiMail className="text-green-500" />,
           });
           setUnverifiedEmail("");
-          navigate("/verify");
+          navigate("/verify", { state: { unverifiedEmail } });
         },
       }
     );

@@ -5,7 +5,7 @@ export const Hero = () => {
   return (
     <section className="relative overflow-hidden flex py-40 items-center">
       <div className="absolute inset-0 bg-[url('/hero.png')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-gradient-to-r from-primaryBlack/80 via-primaryBlack/50 to-primaryOrange/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primaryBlack/80 via-primaryBlack/50"></div>
       </div>
 
       <div className="absolute top-20 left-20 w-40 h-40 rounded-full bg-primaryDarkRosewood/20 animate-pulse"></div>
