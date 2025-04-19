@@ -1,46 +1,69 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { FiLock, FiMail, FiRefreshCw } from "react-icons/fi";
+import { useForm } from "react-hook-form";
+import { FiAlertCircle, FiLock, FiMail, FiRefreshCw } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { z } from "zod";
 import { Button, TextField } from "../../components";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./index.module.scss";
 import { useLogin, useResendVerification } from "./queries";
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 export const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { mutate: loginUser } = useLogin();
   const { mutate: resendVerification } = useResendVerification();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+  });
+
   const [unverifiedEmail, setUnverifiedEmail] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email || !password) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+  const onSubmit = (values: LoginForm) => {
+    loginUser(values, {
+      onSuccess: (data) => {
+        if (data.token) {
+          login(data.token, data.user);
+          toast.success("Login successful!");
+          navigate("/");
+        }
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const errorMessage = error.response.data.message;
 
-    loginUser(
-      { email, password },
-      {
-        onSuccess: (data) => {
-          if (data.token) {
-            login(data.token, data.user);
-            toast.success("Login successful!");
-            navigate("/");
+          if (error.response.status === 401) {
+            setError("email", { message: " " });
+            setError("password", { message: "Invalid email or password" });
+          } else if (
+            error.response.status === 403 &&
+            errorMessage === "User not verified"
+          ) {
+            setUnverifiedEmail(values.email);
           } else {
-            toast.error(data.message || "Login failed");
+            setError("root", {
+              message: errorMessage || "Login failed. Please try again.",
+            });
           }
-        },
-        onError: (error) => {
-          toast.error(error.message || "Login failed");
-          setUnverifiedEmail(email);
-        },
-      }
-    );
+        }
+      },
+    });
   };
 
   const handleResendVerification = () => {
@@ -48,7 +71,12 @@ export const Login = () => {
       { email: unverifiedEmail },
       {
         onSuccess: () => {
-          toast.success("Verification email resent!");
+          toast.success("Verification email sent!", {
+            description: `We've sent a new verification link to ${unverifiedEmail}. Please check your inbox.`,
+            duration: 5000,
+            className: "bg-green-50 border border-green-200 text-green-800",
+            icon: <FiMail className="text-green-500" />,
+          });
           setUnverifiedEmail("");
           navigate("/verify");
         },
@@ -67,41 +95,43 @@ export const Login = () => {
         </div>
 
         {unverifiedEmail && (
-          <div className="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-            <div className="flex items-center justify-between">
-              <p className="text-yellow-800">
-                Please verify your email address
-              </p>
+          <div className="mb-6 p-4 bg-secondaryYellow/20 rounded-lg border border-secondaryYellow shadow-sm">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-start gap-2">
+                <FiAlertCircle className="h-5 w-5 text-primaryOrange flex-shrink-0 mt-0.5" />
+                <p className="text-sm font-medium text-primaryOrange">
+                  Please verify your email address to complete registration
+                </p>
+              </div>
               <button
                 onClick={handleResendVerification}
-                className="flex items-center text-primaryBlue hover:underline"
+                className="flex items-center text-sm font-medium text-primaryBlue hover:text-primaryBlue/80 transition-colors duration-200"
               >
-                <FiRefreshCw className="mr-1" />
-                Resend Verification
+                <FiRefreshCw className="mr-1.5 h-4 w-4 flex-shrink-0" />
+                Resend
               </button>
             </div>
           </div>
         )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <TextField
               label="Email Address"
               id="email"
               placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               icon={<FiMail />}
+              {...register("email")}
+              error={errors.email?.message}
             />
 
             <TextField
               label="Password"
               id="password"
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               icon={<FiLock />}
               isPassword
+              {...register("password")}
+              error={errors.password?.message}
             />
 
             <div className="flex justify-end">

@@ -7,6 +7,7 @@ interface Props {
   value: string;
   onChange: (value: string) => void;
   className?: string;
+  error?: string | null;
 }
 
 export const Dropdown = ({
@@ -15,6 +16,7 @@ export const Dropdown = ({
   value,
   onChange,
   className,
+  error,
 }: Props) => {
   return (
     <div className={twMerge(className)}>
@@ -33,6 +35,7 @@ export const Dropdown = ({
           </option>
         ))}
       </select>
+      {error && <p className="text-xs px-1 text-warningRed mt-1">{error}</p>}
     </div>
   );
 };

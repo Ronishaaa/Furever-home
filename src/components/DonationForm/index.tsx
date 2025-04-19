@@ -71,89 +71,23 @@ export const DonationForm = () => {
 
   return (
     <div className="fh-container my-8">
-      <div className="text-center mb-8">
-        <h2 className="text-5xl font-bold text-gray-900 mb-2">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold text-primaryDarkRosewood mb-4">
           Support Our Mission
-        </h2>
-        <p className="text-lg text-gray-600">
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Your generous contribution helps us rescue, rehabilitate, and rehome
           dogs in need. Every dollar makes a difference.
         </p>
       </div>
 
-      <div className="fh-grid">
-        <div className="bg-primaryBlack text-secondaryWhite p-6 col-span-4 h-fit rounded-xl shadow-md border border-neutralDarkGray">
-          <h3 className="text-xl font-semibold text-primaryOrange mb-4">
-            Your Donation Helps
-          </h3>
-          <ul className="space-y-3">
-            <li className="flex items-start gap-2">
-              <div className="size-10 rounded-full bg-primaryOrange/50 shrink-0 flex items-center justify-center">
-                <FaHandHoldingMedical
-                  className="text-secondaryWhite"
-                  size={20}
-                />
-              </div>
-              <div>
-                <h4 className="font-medium text-primaryOrange">Medical Care</h4>
-                <p className="text-gray-700 text-sm">
-                  Vaccinations, spay/neuter surgeries, and emergency medical
-                  treatments
-                </p>
-              </div>
-            </li>
-            <li className="flex items-start gap-2">
-              <div className="size-10 rounded-full bg-primaryOrange/50 shrink-0 flex items-center justify-center">
-                <IoMdCart className="text-secondaryWhite" size={20} />
-              </div>
-              <div>
-                <h4 className="font-medium text-primaryOrange">
-                  Food & Supplies
-                </h4>
-                <p className="text-gray-700 text-sm">
-                  Quality nutrition, bedding, toys, and essential care items
-                </p>
-              </div>
-            </li>
-            <li className="flex items-start gap-2">
-              <div className="size-10 rounded-full bg-primaryOrange/50 shrink-0 flex items-center justify-center">
-                <MdOutlinePersonAddAlt
-                  className="text-secondaryWhite"
-                  size={20}
-                />
-              </div>
-              <div>
-                <h4 className="font-medium text-primaryOrange">
-                  Behavioral Training
-                </h4>
-                <p className="text-gray-700 text-sm">
-                  Professional training to prepare dogs for successful adoptions
-                </p>
-              </div>
-            </li>
-            <li className="flex items-start gap-2">
-              <div className="size-10 rounded-full bg-primaryOrange/50 shrink-0 flex items-center justify-center">
-                <CgNotes className="text-secondaryWhite" size={20} />
-              </div>
-              <div>
-                <h4 className="font-medium text-primaryOrange">
-                  Administrative Costs
-                </h4>
-                <p className="text-gray-700 text-sm">
-                  Website maintenance, adoption applications, and outreach
-                  programs
-                </p>
-              </div>
-            </li>
-          </ul>
-        </div>
-
+      <div className="grid grid-cols-3 gap-8">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6 col-span-8 col-start-5"
+          className="lg:col-span-2 flex flex-col gap-4"
         >
-          <div className="bg-secondaryWhite p-6 rounded-xl shadow-md border border-neutralDarkGray">
-            <h3 className="text-xl font-semibold text-primaryDarkRosewood mb-4">
+          <div className="bg-secondaryWhite p-6 rounded-xl border border-neutralDarkGray">
+            <h3 className="text-2xl font-semibold text-primaryDarkRosewood mb-4">
               Donation Amount
             </h3>
 
@@ -163,9 +97,9 @@ export const DonationForm = () => {
                   type="button"
                   key={amount}
                   className={twMerge(
-                    "py-3 px-4 rounded-lg border-2 transition-all duration-200 font-medium",
+                    "py-3 px-4 rounded-lg border-2 transition-all duration-200 font-semibold text-lg mb-1",
                     watch("amount") === amount
-                      ? "bg-primaryOrange text-secondaryWhite border-primaryOrange shadow-md"
+                      ? "bg-primaryOrange text-secondaryWhite border-primaryOrange"
                       : "bg-secondaryWhite border-primaryBlack/40 hover:border-primaryBlack hover:shadow-sm"
                   )}
                   onClick={() => setValue("amount", amount)}
@@ -183,8 +117,8 @@ export const DonationForm = () => {
             />
           </div>
 
-          <div className="bg-secondaryWhite p-6 rounded-xl shadow-md border border-neutralDarkGray">
-            <h3 className="text-xl font-semibold text-neutralDarkGray mb-4">
+          <div className="bg-secondaryWhite p-6 flex flex-col gap-4 rounded-xl border border-neutralDarkGray">
+            <h3 className="text-2xl font-semibold text-neutralDarkGray mb-4">
               Your Information
             </h3>
             <TextField
@@ -220,7 +154,6 @@ export const DonationForm = () => {
             variant="filled"
             type="submit"
             label="Proceed to Payment"
-            className="w-full py-4 text-lg font-semibold"
             disabled={isProcessing}
           />
 
@@ -233,6 +166,70 @@ export const DonationForm = () => {
             </p>
           )}
         </form>
+
+        <div className="bg-primaryDarkRosewood text-secondaryWhite p-8 rounded-xl shadow-lg h-fit">
+          <h3 className="text-2xl font-semibold text-primaryOrange mb-4">
+            Your Donation Helps
+          </h3>
+          <ul className="space-y-3">
+            <li className="flex items-start gap-2">
+              <div className="size-10 rounded-full bg-primaryOrange/20 shrink-0 flex items-center justify-center">
+                <FaHandHoldingMedical
+                  className="text-primaryOrange"
+                  size={20}
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-1">Medical Care</h4>
+                <p className="text-gray-700 text-sm">
+                  Vaccinations, spay/neuter surgeries, and emergency medical
+                  treatments
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start gap-2">
+              <div className="size-10 rounded-full bg-primaryOrange/20 shrink-0 flex items-center justify-center">
+                <IoMdCart className="text-primaryOrange" size={20} />
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-1">Food & Supplies</h4>
+                <p className="text-gray-700 text-sm">
+                  Quality nutrition, bedding, toys, and essential care items
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start gap-2">
+              <div className="size-10 rounded-full bg-primaryOrange/20 shrink-0 flex items-center justify-center">
+                <MdOutlinePersonAddAlt
+                  className="text-primaryOrange"
+                  size={20}
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-1">
+                  Behavioral Training
+                </h4>
+                <p className="text-gray-700 text-sm">
+                  Professional training to prepare dogs for successful adoptions
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start gap-2">
+              <div className="size-10 rounded-full bg-primaryOrange/20 shrink-0 flex items-center justify-center">
+                <CgNotes className="text-primaryOrange" size={20} />
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg mb-1">
+                  Administrative Costs
+                </h4>
+                <p className="text-gray-700 text-sm">
+                  Website maintenance, adoption applications, and outreach
+                  programs
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

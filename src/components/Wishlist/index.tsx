@@ -51,6 +51,7 @@ export const Wishlist = ({ close, value }: Props) => {
   const [gender, setGender] = useState<string>("");
   const [energyLevel, setEnergyLevel] = useState<string | null>(null);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [genderError, setGenderError] = useState<string | null>(null);
 
   useEffect(() => {
     if (value && userId) {
@@ -151,6 +152,13 @@ export const Wishlist = ({ close, value }: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!gender) {
+      setGenderError("Please select a gender");
+      return;
+    } else {
+      setGenderError(null);
+    }
+
     if (!userId) {
       console.error("User is not logged in.");
       return;
@@ -184,145 +192,159 @@ export const Wishlist = ({ close, value }: Props) => {
     >
       <div
         ref={preferencesRef}
-        className="fixed right-0 h-full z-30 w-[950px] py-6 bg-primaryIvory shadow-lg overflow-y-auto"
+        className="fixed right-0 h-full z-30 w-full max-w-[700px] p-4 bg-secondaryWhite shadow-lg overflow-auto"
       >
-        <div className="px-6">
-          <div className="flex justify-between mb-6">
+        <div className="px-4 h-full flex flex-col">
+          <div className="flex justify-between items-center mb-4">
             <div>
-              <h1 className="text-2xl font-bold">Adoption Preferences</h1>
-              <p className="text-gray-600 mt-1">
+              <h1 className="text-xl font-bold">Adoption Preferences</h1>
+              <p className="text-gray-600 text-sm mt-1">
                 Tell us about your ideal pet and we'll find the best matches for
                 you
               </p>
             </div>
-            <button onClick={close}>
-              <IoClose size={24} />
+            <button
+              onClick={close}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <IoClose size={20} />
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-6">
-            <Dropdown
-              label="My ideal age range is..."
-              options={AGE_GROUP.map((ageGroup) => ({
-                value: ageGroup.label,
-                label: ageGroup.label,
-              }))}
-              value={
-                age
-                  ? AGE_GROUP.find(
-                      (group) =>
-                        group.value[0] === age[0] && group.value[1] === age[1]
-                    )?.label || ""
-                  : ""
-              }
-              onChange={(value) => handleAgeChange(value)}
-            />
-
-            <TextField
-              label="Breed (optional)"
-              id="breed"
-              name="breed"
-              value={breed || ""}
-              onChange={(e) => setBreed(e.target.value)}
-            />
-
-            <Dropdown
-              label="I'm looking for a..."
-              options={GENDER}
-              value={gender}
-              onChange={(value) => handleGenderChange(value)}
-            />
-
-            <Dropdown
-              label="I'd prefer a pet with... energy"
-              options={ENERGY_LEVEL}
-              value={energyLevel || ""}
-              onChange={(value) => handleEnergyLevelChange(value)}
-            />
-
-            <div className="flex gap-2 items-center mt-2 col-span-4">
-              <Button
-                size="lg"
-                variant="outlined-dark"
-                onClick={handleClearAll}
-                className="w-full"
-                label="Clear All"
+          <div className="flex-1">
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-2 gap-4 mb-6"
+            >
+              <Dropdown
+                label="Gender"
+                options={GENDER}
+                value={gender}
+                onChange={(value) => {
+                  handleGenderChange(value);
+                  setGenderError(null);
+                }}
+                error={genderError}
               />
-              <Button
-                type="submit"
-                size="lg"
-                variant="filled"
-                className="w-full"
-                label="Find My Matches"
-              />
-            </div>
-          </form>
 
-          <div className="mt-4">
-            {wishlistData?.pets && wishlistData.pets.length > 0 && (
-              <div className="bg-primaryGreen p-4 rounded-lg mb-4 flex items-center">
-                <HiOutlineSparkles className="text-primaryOrange mr-2" />
-                <span className="text-secondaryWhite">
-                  We found {wishlistData.pets.length} perfect matches!
-                </span>
+              <Dropdown
+                label="Energy level (optional)"
+                options={ENERGY_LEVEL}
+                value={energyLevel || ""}
+                onChange={(value) => handleEnergyLevelChange(value)}
+              />
+
+              <Dropdown
+                label="Age range (optional)"
+                options={AGE_GROUP.map((ageGroup) => ({
+                  value: ageGroup.label,
+                  label: ageGroup.label,
+                }))}
+                value={
+                  age
+                    ? AGE_GROUP.find(
+                        (group) =>
+                          group.value[0] === age[0] && group.value[1] === age[1]
+                      )?.label || ""
+                    : ""
+                }
+                onChange={(value) => handleAgeChange(value)}
+              />
+
+              <TextField
+                label="Breed (optional)"
+                id="breed"
+                name="breed"
+                value={breed || ""}
+                onChange={(e) => setBreed(e.target.value)}
+              />
+
+              <div className="col-span-2 flex gap-3 pt-2">
+                <Button
+                  size="md"
+                  variant="outlined-dark"
+                  onClick={handleClearAll}
+                  className="w-full py-2 text-sm"
+                  label="Clear All"
+                />
+                <Button
+                  type="submit"
+                  size="md"
+                  variant="filled"
+                  className="w-full py-2 text-sm"
+                  label="Find Matches"
+                />
               </div>
-            )}
+            </form>
 
-            <h2 className="text-xl font-semibold mb-4">Your Perfect Matches</h2>
-
-            <div className="grid grid-cols-2 gap-2 my-4">
-              {isUpdated ? (
-                wishlistData && wishlistData.pets?.length > 0 ? (
-                  wishlistData.pets
-                    .filter((pet) => pet.adoptionStatus !== "Pending")
-                    .map((pet, index) => (
-                      <MatchingPetCard
-                        key={index}
-                        id={pet.id}
-                        age={pet.age}
-                        breed={pet.breed}
-                        energyLevel={pet.energyLevel}
-                        gender={pet.gender}
-                        images={pet.images}
-                        name={pet.name}
-                      />
-                    ))
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500 mb-2">
-                      No matches found based on your updated preferences.
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Try adjusting your filters and search again.
-                    </p>
-                  </div>
-                )
-              ) : data && data?.data?.MatchedPets?.length > 0 ? (
-                data.data.MatchedPets.filter(
-                  (pet) => pet.pet.adoptionStatus !== "Pending"
-                ).map((pet, index) => (
-                  <MatchingPetCard
-                    key={index}
-                    id={pet.pet.id}
-                    age={pet.pet.age}
-                    breed={pet.pet.breed}
-                    energyLevel={pet.pet.energyLevel}
-                    gender={pet.pet.gender}
-                    images={pet.pet.images}
-                    name={pet.pet.name}
-                    onClick={close}
-                  />
-                ))
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-gray-500 mb-2">
-                    We'll show your perfect matches here
-                  </p>
-                  <p className="text-sm text-gray-400">
-                    Adjust your preferences and click "Find Matches"
-                  </p>
+            <div className="mb-6">
+              {wishlistData?.pets && wishlistData.pets.length > 0 && (
+                <div className="bg-primaryGreen p-3 rounded-lg mb-4 flex items-center">
+                  <HiOutlineSparkles className="text-primaryOrange mr-2 text-lg" />
+                  <span className="text-secondaryWhite text-sm font-medium">
+                    We found {wishlistData.pets.length} perfect matches!
+                  </span>
                 </div>
               )}
+
+              <h2 className="text-lg font-semibold mb-3">
+                Your Perfect Matches
+              </h2>
+
+              <div className="grid grid-cols-1 gap-3">
+                {isUpdated ? (
+                  wishlistData && wishlistData.pets?.length > 0 ? (
+                    wishlistData.pets
+                      .filter((pet) => pet.adoptionStatus !== "Pending")
+                      .map((pet, index) => (
+                        <MatchingPetCard
+                          key={index}
+                          id={pet.id}
+                          age={pet.age}
+                          breed={pet.breed}
+                          energyLevel={pet.energyLevel}
+                          gender={pet.gender}
+                          images={pet.images}
+                          name={pet.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="col-span-2 text-center p-6 bg-gray-50 rounded-lg">
+                      <p className="text-gray-500 text-sm mb-2">
+                        No matches found based on your preferences.
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        Try adjusting your filters and search again.
+                      </p>
+                    </div>
+                  )
+                ) : data && data?.data?.MatchedPets?.length > 0 ? (
+                  data.data.MatchedPets.filter(
+                    (pet) => pet.pet.adoptionStatus !== "Pending"
+                  ).map((pet, index) => (
+                    <MatchingPetCard
+                      key={index}
+                      id={pet.pet.id}
+                      age={pet.pet.age}
+                      breed={pet.pet.breed}
+                      energyLevel={pet.pet.energyLevel}
+                      gender={pet.pet.gender}
+                      images={pet.pet.images}
+                      name={pet.pet.name}
+                      onClick={close}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-2 text-center p-6 bg-gray-50 rounded-lg">
+                    <p className="text-gray-500 text-sm mb-2">
+                      We'll show your perfect matches here
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Adjust your preferences and click "Find Matches"
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

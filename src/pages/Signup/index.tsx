@@ -1,43 +1,54 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { FiLock, FiMail, FiUser } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 import { Button, TextField } from "../../components";
 import styles from "./index.module.scss";
+import { useSignup } from "./queries";
+
+const signupSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type SignupForm = z.infer<typeof signupSchema>;
 
 export const Signup = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<SignupForm>({
+    resolver: zodResolver(signupSchema),
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: signupUser } = useSignup();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { name, email, password } = data;
+  const onSubmit = (values: SignupForm) => {
+    signupUser(values, {
+      onSuccess: () => {
+        toast.success("Registration successful! Please verify your email");
+        navigate("/verify");
+      },
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          const errorMessage = error.response.data.message;
 
-    if (!name || !email || !password) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    setIsLoading(true);
-    const { data: response } = await axios.post("api/sign-up", {
-      username: name,
-      email,
-      password,
+          if (error.response.status === 400) {
+            setError("email", { message: "Email already exist" });
+          } else {
+            setError("root", {
+              message: errorMessage || "Registration failed",
+            });
+          }
+        }
+      },
     });
-
-    if (response.error) {
-      toast.error(response.error);
-    } else {
-      setData({ name: "", email: "", password: "" });
-      toast.success("Registration successful! Please verify your email");
-      navigate("/verify");
-    }
   };
 
   return (
@@ -50,35 +61,31 @@ export const Signup = () => {
           <p className="text-gray-600">Join our community today</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <TextField
               label="Full Name"
               placeholder="John Doe"
-              value={data.name}
-              onChange={(e) => setData({ ...data, name: e.target.value })}
-              disabled={isLoading}
               icon={<FiUser />}
+              {...register("name")}
+              error={errors.name?.message}
             />
 
             <TextField
               label="Email Address"
               placeholder="your@email.com"
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-              disabled={isLoading}
               icon={<FiMail />}
+              {...register("email")}
+              error={errors.email?.message}
             />
 
             <TextField
               label="Password"
-              id="password"
               placeholder="••••••••"
-              value={data.password}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
-              disabled={isLoading}
-              icon={<FiLock />}
               isPassword
+              icon={<FiLock />}
+              {...register("password")}
+              error={errors.password?.message}
             />
           </div>
 

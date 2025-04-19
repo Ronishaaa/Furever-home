@@ -34,7 +34,7 @@ export const useLogin = () => {
         socket.connect();
 
         if (socket.id) setSocketId(socket.id);
-        console.log(socket.id);
+
         const { data } = await axios.post(`api/login`, {
           ...values,
           socketId: socket.id,
@@ -45,7 +45,7 @@ export const useLogin = () => {
       } catch (error) {
         socket.disconnect();
         setSocketId(null);
-        console.error(error);
+        throw error;
       }
     },
     onError: (error) => {
