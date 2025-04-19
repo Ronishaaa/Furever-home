@@ -10,7 +10,7 @@ interface Pet {
   images: string[];
 }
 
-interface AdoptionApplication {
+export interface AdoptionApplicationData {
   id: number;
   pet: Pet;
   applicationStatus: "Approved" | "Rejected" | "Pending";
@@ -23,7 +23,7 @@ interface User {
   email: string;
   phoneNumber: string | null;
   address: string | null;
-  application: AdoptionApplication[];
+  application: AdoptionApplicationData[];
 }
 
 interface UpdateUserData {

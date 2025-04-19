@@ -38,7 +38,6 @@ export const RadioButton = ({
       )}
       onClick={() => {
         if (onChange) {
-          // Simulate a change event when the li is clicked
           onChange({
             target: { value, name, checked: !checked },
           } as React.ChangeEvent<HTMLInputElement>);
@@ -52,7 +51,6 @@ export const RadioButton = ({
         checked={checked}
         onChange={onChange}
         className={styles.input}
-        // Hide the default radio button visually but keep it accessible
         style={{ position: "absolute", opacity: 0, pointerEvents: "none" }}
       />
       <div

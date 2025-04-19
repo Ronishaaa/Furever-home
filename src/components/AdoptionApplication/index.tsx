@@ -1,7 +1,9 @@
 import { FloatingOverlay } from "@floating-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdPets } from "react-icons/md";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import { Button, RadioButton, TextField } from "..";
@@ -35,11 +37,13 @@ export const ApplicationSchema = z.object({
     invalid_type_error: "Neutered status must be selected.",
   }),
 
-  aloneHours: z.coerce
-    .number()
-    .min(0, { message: "Hours cannot be negative." })
-    .max(24, { message: "Hours cannot exceed 24." }),
-
+  aloneHours: z.union([
+    z
+      .number()
+      .min(0, { message: "Hours cannot be negative." })
+      .max(24, { message: "Hours cannot exceed 24." }),
+    z.nan().refine(() => false, { message: "Hours are required." }),
+  ]),
   otherPetsInfo: z
     .string()
     .min(1, { message: "Please specify if you have other pets." }),
@@ -54,6 +58,7 @@ interface Props {
   handleClose: () => void;
   petId: number;
   userId: number;
+  onSuccess: () => void;
 }
 
 export const AdoptionApplication = ({
@@ -61,6 +66,7 @@ export const AdoptionApplication = ({
   handleClose,
   petId,
   userId,
+  onSuccess,
 }: Props) => {
   const { mutate, isSuccess, isError } = useAddApplication();
 
@@ -70,6 +76,7 @@ export const AdoptionApplication = ({
     reset,
     watch,
     control,
+    setValue,
     formState: { errors },
   } = useForm<ApplicationInput>({
     resolver: zodResolver(ApplicationSchema),
@@ -80,6 +87,14 @@ export const AdoptionApplication = ({
       neuteredPets: false,
     },
   });
+
+  const homeOwnership = watch("homeOwnership");
+
+  useEffect(() => {
+    if (homeOwnership) {
+      setValue("petAllowed", true);
+    }
+  }, [homeOwnership, setValue]);
 
   const onSubmit = (info: ApplicationInput) => {
     const applicationData = {
@@ -93,9 +108,21 @@ export const AdoptionApplication = ({
       onSuccess: () => {
         reset();
         handleClose();
+        toast(`Application successfully sent!`, {
+          description: `Your adoption application has been sent successfully.`,
+          duration: 3000,
+          className: "my-classname",
+          icon: <MdPets />,
+        });
+        onSuccess();
       },
       onError: () => console.log("error"),
     });
+  };
+
+  const handleFormClose = () => {
+    reset();
+    handleClose();
   };
 
   return (
@@ -111,7 +138,7 @@ export const AdoptionApplication = ({
           <h2 className={styles.title}>Adoption Application</h2>
           <button
             className="flex size-10 items-center justify-center"
-            onClick={handleClose}
+            onClick={handleFormClose}
             aria-label="Close application form"
           >
             <MdClose size={24} />
@@ -119,8 +146,10 @@ export const AdoptionApplication = ({
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="bg-secondaryWhite p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
+          <div className="bg-secondaryWhite flex flex-col gap-4 p-6 rounded-lg shadow">
+            <h2 className="text-2xl font-semibold mb-4">
+              Personal Information
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TextField
@@ -155,8 +184,8 @@ export const AdoptionApplication = ({
             />
           </div>
 
-          <div className="bg-secondaryWhite p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Housing Information</h2>
+          <div className="bg-secondaryWhite flex flex-col gap-4 p-6 rounded-lg shadow">
+            <h2 className="text-2xl font-semibold">Housing Information</h2>
 
             <TextArea
               label="Who lives in the home? Specify the oldest and youngest members with their ages (e.g., Oldest: 72, Youngest: 5)."
@@ -221,7 +250,7 @@ export const AdoptionApplication = ({
             <TextField
               label="Daily alone hours for pet"
               type="number"
-              {...register("aloneHours")}
+              {...register("aloneHours", { valueAsNumber: true })}
               error={errors.aloneHours?.message}
             />
 

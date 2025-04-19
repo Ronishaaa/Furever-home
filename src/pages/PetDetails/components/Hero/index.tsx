@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { IoMdFemale, IoMdMale } from "react-icons/io";
 import { MdChevronLeft, MdChevronRight, MdPets } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SwiperCore from "swiper";
 import { Controller, FreeMode, Navigation } from "swiper/modules";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
@@ -18,6 +18,7 @@ import { twMerge } from "tailwind-merge";
 import { useBoolean } from "usehooks-ts";
 import { AdoptionApplication, Button } from "../../../../components";
 import { useAuth } from "../../../../context/AuthContext";
+import { AdoptionApplicationData, useGetUser } from "../../../Account/queries";
 import { Pet } from "../../../Adopt/queries";
 
 interface Props {
@@ -26,11 +27,14 @@ interface Props {
 
 export const Hero = ({ data }: Props) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
   const { user } = useAuth();
   const userId = user?.id ?? 0;
+  const { data: userData, refetch } = useGetUser(userId as number);
+  console.log(userData);
   const [firstSwiper, setFirstSwiper] = useState<SwiperCore | null>(null);
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
 
@@ -44,6 +48,14 @@ export const Hero = ({ data }: Props) => {
 
   const updatePagination = (swiper: SwiperClass) => {
     setCurrentSlide(swiper.realIndex);
+  };
+
+  const handleButtonClick = () => {
+    if (!userData) {
+      navigate("/login");
+    } else {
+      openForm();
+    }
   };
   return (
     <section className="pt-10 bg-neutralLightGray">
@@ -215,14 +227,28 @@ export const Hero = ({ data }: Props) => {
             </div>
 
             <div className="mt-6 flex gap-6">
-              <Button
-                variant="filled"
-                label={"Apply to Adopt"}
-                size="md"
-                className="w-full gap-2 items-center"
-                onClick={openForm}
-                icon={<FaRegHeart />}
-              />
+              {userData?.application.some(
+                (app: AdoptionApplicationData) => app.pet.id === Number(id)
+              ) ? (
+                <Button
+                  variant="filled"
+                  label="Application Already Submitted"
+                  size="md"
+                  className="w-full gap-2 items-center cursor-not-allowed"
+                  onClick={openForm}
+                  icon={<FaRegHeart />}
+                  disabled
+                />
+              ) : (
+                <Button
+                  variant="filled"
+                  label={"Apply to Adopt"}
+                  size="md"
+                  className="w-full gap-2 items-center"
+                  onClick={handleButtonClick}
+                  icon={<FaRegHeart />}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -396,6 +422,7 @@ export const Hero = ({ data }: Props) => {
         open={isFormOpen}
         petId={Number(id)}
         userId={userId}
+        onSuccess={refetch}
       />
     </section>
   );

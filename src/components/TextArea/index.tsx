@@ -14,8 +14,12 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
     ref
   ) => {
     return (
-      <div>
-        {label && <label className={styles.label}>{label}</label>}
+      <div className="w-full space-y-1">
+        {label && (
+          <label className="block text-sm font-medium text-gray-700">
+            {label}
+          </label>
+        )}
         <textarea
           ref={ref}
           {...textAreaProps}

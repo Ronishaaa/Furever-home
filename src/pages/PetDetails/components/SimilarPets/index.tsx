@@ -1,35 +1,21 @@
+import { useParams } from "react-router-dom";
 import { PetCard } from "../../../../components";
-
-const PETS = [
-  {
-    name: "Buddy",
-    age: 2,
-    image: ["https://picsum.photos/id/237/300/300"],
-    breed: "Golden Retriever",
-  },
-  {
-    name: "Luna",
-    age: 1,
-    image: ["https://picsum.photos/300/301"],
-    breed: "Siberian Husky",
-  },
-  {
-    name: "Charlie",
-    age: 3,
-    image: ["https://picsum.photos/301/302"],
-    breed: "Labrador Retriever",
-  },
-  {
-    name: "Milo",
-    age: 4,
-    image: ["https://picsum.photos/300/303"],
-    breed: "Beagle",
-  },
-];
+import { useGetSimilarPets } from "./queries";
 
 export const SimilarPets = () => {
+  const { id } = useParams();
+  const petId = Number(id);
+
+  const { data, isLoading } = useGetSimilarPets(petId);
+
+  if (isLoading) {
+    return <div className="text-center py-10">Loading similar pets...</div>;
+  }
+
   return (
-    <section className="my-20">
+    <section
+      className={!data?.pets || data.pets.length === 0 ? "hidden" : "my-20"}
+    >
       <div className="fh-container">
         <div className="text-center mb-10">
           <h2 className="text-5xl font-semibold mb-3 text-neutralDarkGray">
@@ -40,16 +26,16 @@ export const SimilarPets = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-6">
-          {PETS.map((item, index) => (
+          {data?.pets.map((pet) => (
             <PetCard
-              key={index}
-              age={item.age}
-              image={item.image}
-              name={item.name}
-              breed={item.breed}
-              gender="Female"
-              href={1}
-              personality={["loyal", "Playful"]}
+              key={pet.id}
+              age={pet.age}
+              image={pet.images || []}
+              name={pet.name}
+              breed={pet.breed}
+              gender={pet.gender}
+              personality={pet.personality}
+              href={pet.id}
             />
           ))}
         </div>
