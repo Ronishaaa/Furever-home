@@ -24,7 +24,11 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
           ref={ref}
           {...textAreaProps}
           rows={rows}
-          className={twMerge(styles.textArea, error && styles.textAreaError)}
+          className={twMerge(
+            styles.textArea,
+            error &&
+              "border-warningRed focus:ring-warningRed/50 focus:border-warningRed"
+          )}
           placeholder={placeholder}
           onChange={onChange}
         />

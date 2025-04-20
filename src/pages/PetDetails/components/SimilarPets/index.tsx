@@ -26,18 +26,20 @@ export const SimilarPets = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-6">
-          {data?.pets.map((pet) => (
-            <PetCard
-              key={pet.id}
-              age={pet.age}
-              image={pet.images || []}
-              name={pet.name}
-              breed={pet.breed}
-              gender={pet.gender}
-              personality={pet.personality}
-              href={pet.id}
-            />
-          ))}
+          {data?.pets
+            .filter((pet) => pet.adoptionStatus !== "Adopted")
+            .map((pet, index) => (
+              <PetCard
+                key={pet.id || index}
+                age={pet.age}
+                image={pet.images}
+                name={pet.name}
+                breed={pet.breed}
+                gender={pet.gender}
+                href={pet.id}
+                personality={pet.personality}
+              />
+            ))}
         </div>
       </div>
     </section>

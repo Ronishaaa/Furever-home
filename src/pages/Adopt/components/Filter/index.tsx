@@ -89,6 +89,7 @@ export const Filter = () => {
     skip: 0,
     sortBy: "createdAt",
     sortOrder: "asc",
+    limit: 12,
   });
 
   return (
@@ -208,18 +209,20 @@ export const Filter = () => {
               onChange={handleSearchChange}
             />
             <div className="grid grid-cols-3 gap-6 mt-2">
-              {data?.data.map((pet, index) => (
-                <PetCard
-                  key={pet.id || index}
-                  age={pet.age}
-                  image={pet.images}
-                  name={pet.name}
-                  breed={pet.breed}
-                  gender={pet.gender}
-                  href={pet.id}
-                  personality={pet.personality}
-                />
-              ))}
+              {data?.data
+                .filter((pet) => pet.adoptionStatus !== "Adopted")
+                .map((pet, index) => (
+                  <PetCard
+                    key={pet.id || index}
+                    age={pet.age}
+                    image={pet.images}
+                    name={pet.name}
+                    breed={pet.breed}
+                    gender={pet.gender}
+                    href={pet.id}
+                    personality={pet.personality}
+                  />
+                ))}
             </div>
           </div>
         </div>

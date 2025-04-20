@@ -1,38 +1,14 @@
 import { PetCard } from "../../../../components";
-
-const PETS = [
-  {
-    name: "Buddy",
-    age: 2,
-    image: ["/pet1.jpg"],
-    breed: "Golden Retriever",
-    gender: "Female",
-  },
-  {
-    name: "Luna",
-    age: 1,
-    image: ["/pet2.jpg"],
-    gender: "Female",
-    breed: "Sammoyed",
-  },
-  {
-    name: "Charlie",
-    age: 3,
-    gender: "Female",
-    image: ["/pet3.jpg"],
-
-    breed: "Siberian Husky",
-  },
-  {
-    name: "Milo",
-    age: 4,
-    gender: "Male",
-    image: ["/pet4.jpg"],
-    breed: "Cocker spaniel",
-  },
-];
+import { useGetPets } from "../../../Adopt/queries";
 
 export const Featured = () => {
+  const { data } = useGetPets({
+    skip: 0,
+    sortBy: "createdAt",
+    sortOrder: "asc",
+    limit: 6,
+  });
+
   return (
     <section className="my-20">
       <div className="fh-container">
@@ -45,18 +21,20 @@ export const Featured = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-6">
-          {PETS.map((item, index) => (
-            <PetCard
-              key={index}
-              age={item.age}
-              image={item.image}
-              name={item.name}
-              breed={item.breed}
-              gender={item.gender}
-              href={1}
-              personality={["loyal", "Playful"]}
-            />
-          ))}
+          {data?.data
+            .filter((pet) => pet.adoptionStatus !== "Adopted")
+            .map((pet, index) => (
+              <PetCard
+                key={pet.id || index}
+                age={pet.age}
+                image={pet.images}
+                name={pet.name}
+                breed={pet.breed}
+                gender={pet.gender}
+                href={pet.id}
+                personality={pet.personality}
+              />
+            ))}
         </div>
       </div>
     </section>

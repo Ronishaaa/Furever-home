@@ -1,7 +1,56 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { FiMail } from "react-icons/fi";
 import { MdLocationOn, MdMail, MdPhone } from "react-icons/md";
+import { toast } from "sonner";
+import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 import { Button, TextArea, TextField } from "../../../../components";
+import { useSendContactForm } from "./queries";
+
+const contactSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email"),
+  phone: z.string().min(7, "Phone number is required"),
+  subject: z.string().min(1, "Please select a subject"),
+  message: z.string().min(1, "Message cannot be empty"),
+});
+
+type ContactForm = z.infer<typeof contactSchema>;
 
 export const Hero = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ContactForm>({
+    resolver: zodResolver(contactSchema),
+  });
+
+  const { mutate: sendContactForm } = useSendContactForm();
+
+  const onSubmit = async (data: ContactForm) => {
+    try {
+      await sendContactForm(data);
+      toast.success("Message sent successfully!", {
+        description:
+          "Thank you for reaching out! We'll get back to you shortly.",
+        duration: 5000,
+        className: "bg-green-50 border border-green-200 text-green-800",
+        icon: <FiMail className="text-green-500" />,
+      });
+    } catch (err) {
+      toast.error("Failed to send message.", {
+        description: "Please try again later or check your connection.",
+        duration: 5000,
+        className: "bg-red-50 border border-red-200 text-red-800",
+        icon: <FiMail className="text-red-500" />,
+      });
+      console.error(err);
+    }
+  };
+
   return (
     <section className="py-12">
       <div className="fh-container">
@@ -22,30 +71,62 @@ export const Hero = () => {
               Send Us a Message
             </h2>
 
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <TextField label="First Name" />
-                <TextField label="Last Name" />
+                <TextField
+                  label="First Name"
+                  {...register("firstName")}
+                  error={errors.firstName?.message}
+                />
+                <TextField
+                  label="Last Name"
+                  {...register("lastName")}
+                  error={errors.lastName?.message}
+                />
               </div>
 
-              <TextField label="Email Address" type="email" />
-
-              <TextField label="Phone Number" type="tel" />
+              <TextField
+                label="Email Address"
+                type="email"
+                {...register("email")}
+                error={errors.email?.message}
+              />
+              <TextField
+                label="Phone Number"
+                type="tel"
+                {...register("phone")}
+                error={errors.phone?.message}
+              />
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
                   Subject
                 </label>
-                <select className="w-full p-3 border border-[#e2e8f0] rounded-lg focus:border-primaryBlack">
-                  <option>Please select</option>
+                <select
+                  {...register("subject")}
+                  className={twMerge(
+                    "w-full p-3 border border-[#e2e8f0] rounded-lg focus:border-primaryBlack",
+                    errors.subject?.message &&
+                      "border-warningRed focus:ring-warningRed/50 focus:border-warningRed"
+                  )}
+                >
+                  <option value="">Please select</option>
                   <option>Adoption Inquiry</option>
                   <option>Donation</option>
                   <option>Volunteering</option>
                   <option>Other</option>
                 </select>
+                <p className="text-warningRed text-sm">
+                  {errors.subject?.message}
+                </p>
               </div>
 
-              <TextArea label="Message" rows={5} />
+              <TextArea
+                label="Message"
+                rows={5}
+                {...register("message")}
+                error={errors.message?.message}
+              />
 
               <Button
                 size="lg"

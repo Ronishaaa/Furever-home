@@ -38,17 +38,19 @@ export const useGetPets = ({
   experienceLevels,
   skip,
   sortBy,
+  limit,
   sortOrder,
 }: {
-  searchTerm: string;
-  ageMin: number;
-  ageMax: number;
-  gender: string;
-  energyLevels: string[];
-  personality: string[];
-  trainingLevels: string[];
-  experienceLevels: string[];
+  searchTerm?: string;
+  ageMin?: number;
+  ageMax?: number;
+  gender?: string;
+  energyLevels?: string[];
+  personality?: string[];
+  trainingLevels?: string[];
+  experienceLevels?: string[];
   skip: number;
+  limit: number;
   sortBy: string;
   sortOrder: string;
 }) => {
@@ -64,6 +66,7 @@ export const useGetPets = ({
       trainingLevels,
       experienceLevels,
       skip,
+      limit,
       sortBy,
       sortOrder,
     ],
@@ -82,6 +85,7 @@ export const useGetPets = ({
           skip,
           sortBy,
           sortOrder,
+          limit,
         },
       });
       return data;
