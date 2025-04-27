@@ -27,9 +27,9 @@ const GENDER = [
 ];
 
 const AGE_GROUP = [
-  { label: "Puppy (0-1 year)", value: [1, 1] },
-  { label: "Young (1-3 years)", value: [1, 3] },
-  { label: "Adult (3-7 years)", value: [3, 7] },
+  { label: "Puppy (0-1 year)", value: [0, 1] },
+  { label: "Young (2-3 years)", value: [2, 3] },
+  { label: "Adult (4-7 years)", value: [4, 7] },
   { label: "Senior (8+ years)", value: [8, 30] },
 ];
 
@@ -207,7 +207,7 @@ export const Wishlist = ({ close, value }: Props) => {
               onClick={close}
               className="text-gray-500 hover:text-gray-700 transition-colors"
             >
-              <IoClose size={20} />
+              <IoClose size={24} />
             </button>
           </div>
 

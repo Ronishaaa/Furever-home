@@ -1,0 +1,38 @@
+@use "main";
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  position: relative;
+  height: 42px;
+  padding: 0 16px;
+  background-color: main.$primary-grey;
+  color: main.$grey;
+  border: 1px solid main.$grey;
+}
+
+.label {
+  font-size: 14px;
+  color: rgba(main.$primary-dark-rosewood, 0.8);
+}
+
+.value {
+  font-size: 16px;
+  color: main.$primary-dark-rosewood;
+}
+
+.cross {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid main.$grey;
+  border-radius: 100%;
+}
+
+:export {
+  darkGray: main.$grey;
+}

@@ -2,6 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { MdPets } from "react-icons/md";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import { Button, TextField } from "../../components";
@@ -71,6 +73,11 @@ export const Account = () => {
       { userId, userData: data },
       {
         onSuccess: () => {
+          toast.success("Profile updated successfully!", {
+            description: "Your user details have been saved.",
+            duration: 3000,
+            icon: <MdPets />,
+          });
           refetch();
           setIsEditing(false);
         },
@@ -112,7 +119,6 @@ export const Account = () => {
                   label="Username"
                   {...register("username")}
                   error={errors.username?.message}
-                  required
                 />
 
                 <TextField
@@ -120,7 +126,6 @@ export const Account = () => {
                   type="email"
                   {...register("email")}
                   error={errors.email?.message}
-                  required
                   disabled
                 />
 

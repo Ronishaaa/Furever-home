@@ -167,7 +167,7 @@ export const DonationForm = () => {
           )}
         </form>
 
-        <div className="bg-primaryDarkRosewood text-secondaryWhite p-8 rounded-xl shadow-lg h-fit">
+        <div className="bg-black text-secondaryWhite p-8 rounded-xl shadow-lg h-fit">
           <h3 className="text-2xl font-semibold text-primaryOrange mb-4">
             Your Donation Helps
           </h3>

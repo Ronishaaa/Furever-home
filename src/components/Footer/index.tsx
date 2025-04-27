@@ -10,7 +10,7 @@ const OPTIONS = [
       },
       {
         title: "Browse Pets",
-        link: "/browse-pets",
+        link: "/adopt",
       },
       {
         title: "Contact Us",

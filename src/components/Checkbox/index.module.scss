@@ -23,10 +23,10 @@
       content: "";
       position: absolute;
       left: 3px;
-      top: 1px;
+      top: 3px;
       transform: unset;
       background: transparent;
-      border: 1px solid main.$primary-dark-rosewood;
+      border: 1px solid #ccc;
       transition: background 0.2s ease, box-shadow 0.2s ease,
         border 0.1s ease-in;
     }
@@ -49,11 +49,11 @@
     &::after {
       content: "";
       position: absolute;
-      left: 3px;
+      left: 0px;
       top: 11px;
       transform: translateY(-50%) scale(0);
-      width: 18px;
-      height: 18px;
+      width: 23px;
+      height: 22px;
       background-image: url("/check.svg");
       background-position: center;
       background-repeat: no-repeat;
@@ -64,7 +64,8 @@
   }
 
   &:checked + label::before {
-    border-color: main.$primary-dark-rosewood;
+    border-color: main.$primary-orange;
+    background-color: main.$primary-orange;
   }
   &:checked + label::after {
     transform: translateY(-50%) scale(1);

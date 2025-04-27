@@ -1,7 +1,13 @@
-import { Button } from "../../../../components";
+import { useBoolean } from "usehooks-ts";
+import { Button, PetQuiz } from "../../../../components";
 import styles from "./index.module.scss";
 
 export const Match = () => {
+  const {
+    value: isFormOpen,
+    setTrue: openForm,
+    setFalse: closeForm,
+  } = useBoolean(false);
   return (
     <section className={styles.container}>
       <div className="fh-container">
@@ -38,6 +44,7 @@ export const Match = () => {
               variant="outlined"
               label="Find Your Match"
               className="mx-auto"
+              onClick={openForm}
             />
           </div>
 
@@ -61,6 +68,8 @@ export const Match = () => {
           </div>
         </div>
       </div>
+
+      <PetQuiz handleClose={closeForm} open={isFormOpen} />
     </section>
   );
 };

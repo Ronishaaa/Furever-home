@@ -40,6 +40,7 @@ interface FiltersStore {
   setPersonality: (trait: string) => void;
   setTrainingLevel: (level: TrainingLevel) => void;
   setExperienceLevel: (level: ExperienceLevel) => void;
+  removeFilter: (category: string, value: string) => void;
   clearAll: () => void;
 }
 
@@ -93,6 +94,38 @@ const useFilters = create<FiltersStore>((set) => ({
       personality: [],
       trainingLevels: [],
       experienceLevels: [],
+    }),
+
+  removeFilter: (category, value) =>
+    set((state) => {
+      switch (category) {
+        case "Gender":
+          return {
+            gender: "",
+          };
+        case "Energy Level":
+          return {
+            energyLevels: state.energyLevels.filter((level) => level !== value),
+          };
+        case "Personality":
+          return {
+            personality: state.personality.filter((trait) => trait !== value),
+          };
+        case "Training Level":
+          return {
+            trainingLevels: state.trainingLevels.filter(
+              (level) => level !== value
+            ),
+          };
+        case "Experience Level":
+          return {
+            experienceLevels: state.experienceLevels.filter(
+              (level) => level !== value
+            ),
+          };
+        default:
+          return {};
+      }
     }),
 }));
 

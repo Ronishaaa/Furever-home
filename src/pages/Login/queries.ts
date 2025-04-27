@@ -30,23 +30,15 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: async (values: Login) => {
-      try {
-        socket.connect();
+      socket.connect();
+      if (socket.id) setSocketId(socket.id);
 
-        if (socket.id) setSocketId(socket.id);
-
-        const { data } = await axios.post(`api/login`, {
-          ...values,
-          socketId: socket.id,
-        });
-
-        setUser(data.user);
-        return data;
-      } catch (error) {
-        socket.disconnect();
-        setSocketId(null);
-        throw error;
-      }
+      const { data } = await axios.post(`api/login`, {
+        ...values,
+        socketId: socket.id,
+      });
+      setUser(data.user);
+      return data;
     },
     onError: (error) => {
       socket.disconnect();

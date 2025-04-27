@@ -10,7 +10,7 @@ import styles from "./index.module.scss";
 import { useSignup } from "./queries";
 
 const signupSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Username is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
@@ -69,8 +69,8 @@ export const Signup = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <TextField
-              label="Full Name"
-              placeholder="John Doe"
+              label="Username"
+              placeholder="Ram Kumar"
               icon={<FiUser />}
               {...register("name")}
               error={errors.name?.message}

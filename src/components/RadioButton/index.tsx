@@ -79,7 +79,7 @@ const RadioButtonGroup = ({
       {label && (
         <label className="text-sm font-medium text-black">{label}</label>
       )}
-      <ul className={twMerge("w-fit space-y-1", className)}>
+      <ul className={twMerge("w-fit", className)}>
         {React.Children.map(
           children,
           (child) =>

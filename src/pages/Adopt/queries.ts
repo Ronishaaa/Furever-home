@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "../../lib";
-
+import qs from "qs";
 export interface Pet {
   id: number;
   name: string;
@@ -27,20 +27,7 @@ export interface Pet {
   };
 }
 
-export const useGetPets = ({
-  searchTerm,
-  ageMin,
-  ageMax,
-  gender,
-  energyLevels,
-  personality,
-  trainingLevels,
-  experienceLevels,
-  skip,
-  sortBy,
-  limit,
-  sortOrder,
-}: {
+export const useGetPets = (params: {
   searchTerm?: string;
   ageMin?: number;
   ageMax?: number;
@@ -55,39 +42,14 @@ export const useGetPets = ({
   sortOrder: string;
 }) => {
   return useQuery({
-    queryKey: [
-      "Get-Pets",
-      searchTerm,
-      ageMin,
-      ageMax,
-      gender,
-      energyLevels,
-      personality,
-      trainingLevels,
-      experienceLevels,
-      skip,
-      limit,
-      sortBy,
-      sortOrder,
-    ],
-
+    queryKey: ["Get-Pets", params],
     queryFn: async () => {
-      const { data } = await axios.get<{ data: Pet[] }>("api/pets", {
-        params: {
-          searchTerm,
-          ageMin,
-          ageMax,
-          gender,
-          energyLevels,
-          personality,
-          trainingLevels,
-          experienceLevels,
-          skip,
-          sortBy,
-          sortOrder,
-          limit,
-        },
+      const queryString = qs.stringify(params, {
+        arrayFormat: "repeat", 
+        skipNulls: true,    
       });
+
+      const { data } = await axios.get<{ data: Pet[] }>(`/api/pets?${queryString}`);
       return data;
     },
   });

@@ -100,7 +100,7 @@ export const Login = () => {
               <div className="flex items-start gap-2">
                 <FiAlertCircle className="h-5 w-5 text-primaryOrange flex-shrink-0 mt-0.5" />
                 <p className="text-sm font-medium text-primaryOrange">
-                  Please verify your email address to complete registration
+                  Please verify your email address to login
                 </p>
               </div>
               <button
@@ -133,15 +133,6 @@ export const Login = () => {
               {...register("password")}
               error={errors.password?.message}
             />
-
-            <div className="flex justify-end">
-              <Link
-                to="/forgot-password"
-                className="text-sm text-primaryBlue hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
           </div>
 
           <Button

@@ -8,7 +8,6 @@ import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import { Button, RadioButton, TextField } from "..";
 import { TextArea } from "../TextArea";
-import styles from "./index.module.scss";
 import { useAddApplication } from "./queries";
 
 export const ApplicationSchema = z.object({
@@ -68,7 +67,7 @@ export const AdoptionApplication = ({
   userId,
   onSuccess,
 }: Props) => {
-  const { mutate, isSuccess, isError } = useAddApplication();
+  const { mutate } = useAddApplication();
 
   const {
     register,
@@ -111,7 +110,7 @@ export const AdoptionApplication = ({
         toast(`Application successfully sent!`, {
           description: `Your adoption application has been sent successfully.`,
           duration: 3000,
-          className: "my-classname",
+          className: "bg-primaryIvory text-primaryDark",
           icon: <MdPets />,
         });
         onSuccess();
@@ -133,25 +132,27 @@ export const AdoptionApplication = ({
       )}
       lockScroll={open}
     >
-      <div className="fh-container my-8">
-        <div className="mt-8 flex justify-between">
-          <h2 className={styles.title}>Adoption Application</h2>
+      <div className="max-w-4xl mx-auto px-4 py-8 lg:py-12">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-bold text-primaryDark">
+            Adoption Application
+          </h2>
           <button
-            className="flex size-10 items-center justify-center"
+            className="flex size-10 items-center justify-center rounded-full hover:bg-secondaryWhite transition-colors"
             onClick={handleFormClose}
             aria-label="Close application form"
           >
-            <MdClose size={24} />
+            <MdClose size={24} className="text-primaryDark" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="bg-secondaryWhite flex flex-col gap-4 p-6 rounded-lg shadow">
-            <h2 className="text-2xl font-semibold mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <div className="bg-secondaryWhite flex flex-col gap-6 p-8 rounded-xl shadow-md border border-gray-100">
+            <h2 className="text-2xl font-semibold text-primaryDark border-b pb-2">
               Personal Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TextField
                 label="First Name"
                 {...register("firstName")}
@@ -164,18 +165,19 @@ export const AdoptionApplication = ({
               />
             </div>
 
-            <TextField
-              label="Email"
-              type="email"
-              {...register("email")}
-              error={errors.email?.message}
-            />
-
-            <TextField
-              label="Phone"
-              {...register("phoneNumber")}
-              error={errors.phoneNumber?.message}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <TextField
+                label="Email"
+                type="email"
+                {...register("email")}
+                error={errors.email?.message}
+              />
+              <TextField
+                label="Phone"
+                {...register("phoneNumber")}
+                error={errors.phoneNumber?.message}
+              />
+            </div>
 
             <TextField
               label="Address"
@@ -184,8 +186,10 @@ export const AdoptionApplication = ({
             />
           </div>
 
-          <div className="bg-secondaryWhite flex flex-col gap-4 p-6 rounded-lg shadow">
-            <h2 className="text-2xl font-semibold">Housing Information</h2>
+          <div className="bg-secondaryWhite flex flex-col gap-6 p-8 rounded-xl shadow-md border border-gray-100">
+            <h2 className="text-2xl font-semibold text-primaryDark border-b pb-2">
+              Housing Information
+            </h2>
 
             <TextArea
               label="Who lives in the home? Specify the oldest and youngest members with their ages (e.g., Oldest: 72, Youngest: 5)."
@@ -194,65 +198,74 @@ export const AdoptionApplication = ({
               rows={4}
             />
 
-            <Controller
-              name="homeOwnership"
-              control={control}
-              render={({ field }) => (
-                <RadioButton.Group
-                  label="Do you own or rent your home?"
-                  value={field.value?.toString()}
-                  onChange={(e) => field.onChange(e.target.value === "true")}
-                  error={errors.homeOwnership?.message}
-                  name={field.name}
-                >
-                  <RadioButton value="true">Own</RadioButton>
-                  <RadioButton value="false">Rent</RadioButton>
-                </RadioButton.Group>
-              )}
-            />
-
-            {!watch("homeOwnership") && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Controller
-                name="petAllowed"
+                name="homeOwnership"
                 control={control}
                 render={({ field }) => (
                   <RadioButton.Group
-                    label="If renting, are pets allowed in your lease agreement?"
+                    label="Do you own or rent your home?"
                     value={field.value?.toString()}
                     onChange={(e) => field.onChange(e.target.value === "true")}
-                    error={errors.petAllowed?.message}
+                    error={errors.homeOwnership?.message}
                     name={field.name}
+                    className="flex gap-4"
+                  >
+                    <RadioButton value="true">Own</RadioButton>
+                    <RadioButton value="false">Rent</RadioButton>
+                  </RadioButton.Group>
+                )}
+              />
+
+              {!watch("homeOwnership") && (
+                <Controller
+                  name="petAllowed"
+                  control={control}
+                  render={({ field }) => (
+                    <RadioButton.Group
+                      label="If renting, are pets allowed in your lease agreement?"
+                      value={field.value?.toString()}
+                      onChange={(e) =>
+                        field.onChange(e.target.value === "true")
+                      }
+                      error={errors.petAllowed?.message}
+                      name={field.name}
+                      className="flex gap-4"
+                    >
+                      <RadioButton value="true">Yes</RadioButton>
+                      <RadioButton value="false">No</RadioButton>
+                    </RadioButton.Group>
+                  )}
+                />
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Controller
+                name="outdoorArea"
+                control={control}
+                render={({ field }) => (
+                  <RadioButton.Group
+                    label="Do you have a secure outdoor area?"
+                    value={field.value?.toString()}
+                    onChange={(e) => field.onChange(e.target.value === "true")}
+                    error={errors.outdoorArea?.message}
+                    name={field.name}
+                    className="flex gap-4"
                   >
                     <RadioButton value="true">Yes</RadioButton>
                     <RadioButton value="false">No</RadioButton>
                   </RadioButton.Group>
                 )}
               />
-            )}
 
-            <Controller
-              name="outdoorArea"
-              control={control}
-              render={({ field }) => (
-                <RadioButton.Group
-                  label="Do you have a secure outdoor area?"
-                  value={field.value?.toString()}
-                  onChange={(e) => field.onChange(e.target.value === "true")}
-                  error={errors.outdoorArea?.message}
-                  name={field.name}
-                >
-                  <RadioButton value="true">Yes</RadioButton>
-                  <RadioButton value="false">No</RadioButton>
-                </RadioButton.Group>
-              )}
-            />
-
-            <TextField
-              label="Daily alone hours for pet"
-              type="number"
-              {...register("aloneHours", { valueAsNumber: true })}
-              error={errors.aloneHours?.message}
-            />
+              <TextField
+                label="Daily alone hours for pet"
+                type="number"
+                {...register("aloneHours", { valueAsNumber: true })}
+                error={errors.aloneHours?.message}
+              />
+            </div>
 
             <TextArea
               label="Other pets in household"
@@ -261,47 +274,43 @@ export const AdoptionApplication = ({
               rows={4}
             />
 
-            <Controller
-              name="neuteredPets"
-              control={control}
-              render={({ field }) => (
-                <RadioButton.Group
-                  label="Are current pets neutered?"
-                  value={field.value?.toString()}
-                  onChange={(e) => field.onChange(e.target.value === "true")}
-                  error={errors.neuteredPets?.message}
-                  name={field.name}
-                >
-                  <RadioButton value="true">Yes</RadioButton>
-                  <RadioButton value="false">No</RadioButton>
-                </RadioButton.Group>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Controller
+                name="neuteredPets"
+                control={control}
+                render={({ field }) => (
+                  <RadioButton.Group
+                    label="Are current pets neutered?"
+                    value={field.value?.toString()}
+                    onChange={(e) => field.onChange(e.target.value === "true")}
+                    error={errors.neuteredPets?.message}
+                    name={field.name}
+                    className="flex gap-4"
+                  >
+                    <RadioButton value="true">Yes</RadioButton>
+                    <RadioButton value="false">No</RadioButton>
+                  </RadioButton.Group>
+                )}
+              />
 
-            <TextArea
-              label="Upcoming events affecting adoption"
-              {...register("upcomingEvents")}
-              error={errors.upcomingEvents?.message}
-              rows={4}
-            />
+              <TextArea
+                label="Upcoming events affecting adoption"
+                {...register("upcomingEvents")}
+                error={errors.upcomingEvents?.message}
+                rows={4}
+              />
+            </div>
           </div>
 
-          <Button
-            size="md"
-            variant="filled"
-            type="submit"
-            className="w-full"
-            label={"Submit Application"}
-          />
-
-          {isSuccess && (
-            <p className="text-green-600">
-              Application submitted successfully!
-            </p>
-          )}
-          {isError && (
-            <p className="text-red-600">Submission failed. Try again later.</p>
-          )}
+          <div className="flex flex-col items-center gap-4">
+            <Button
+              size="lg"
+              variant="filled"
+              type="submit"
+              className="w-full"
+              label={"Submit Application"}
+            />
+          </div>
         </form>
       </div>
     </FloatingOverlay>
