@@ -1,17 +1,15 @@
 import { FloatingOverlay } from "@floating-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  FaAward,
   FaBuilding,
   FaCouch,
   FaHome,
-  FaMedal,
   FaRunning,
   FaSpinner,
-  FaTrophy,
   FaWalking,
 } from "react-icons/fa";
 import { GiFarmTractor, GiVillage } from "react-icons/gi";
+import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { Button } from "../Button";
 import { DogInput, useRecommendBreed } from "./quiries";
@@ -34,7 +32,7 @@ export const PetQuiz = ({
     experience_level: null,
   });
   const { mutate: recommendBreed, data, reset } = useRecommendBreed();
-  const [message, setMessage] = useState("");
+
   const steps = [
     {
       title: "What's your experience level with pets?",
@@ -332,36 +330,47 @@ export const PetQuiz = ({
       title: "Recommended Breeds For You",
       content: (
         <div className="space-y-8">
-          {message ? (
-            <p className="text-center">{message}</p>
-          ) : data?.recommendedBreeds ? (
-            <div className="grid grid-cols-3 gap-6">
-              {data.recommendedBreeds.map((breed, index) => (
-                <div
-                  key={breed}
-                  className="p-8 rounded-xl flex flex-col items-center border-2 border-primaryOrange/50 bg-primaryOrange/10 shadow-md hover:shadow-lg transition-all"
-                >
-                  <div className="text-4xl mb-4">
-                    {index === 0 ? (
-                      <FaTrophy />
-                    ) : index === 1 ? (
-                      <FaMedal />
-                    ) : (
-                      <FaAward />
-                    )}
-                  </div>
-                  <h3 className="font-bold text-2xl text-primaryOrange">
-                    {breed}
-                  </h3>
-                </div>
-              ))}
-            </div>
-          ) : (
+          {data?.recommendedBreeds == null ? (
             <div className="text-center py-12">
               <FaSpinner className="animate-spin h-16 w-16 text-primaryOrange mx-auto mb-6" />
               <p className="text-gray-600 text-xl">
                 Finding your perfect matches...
               </p>
+            </div>
+          ) : !Array.isArray(data.recommendedBreeds) ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-xl">{"No breed found."}</p>
+            </div>
+          ) : (
+            <div className="flex justify-center gap-6">
+              {data.recommendedBreeds.map((pet) => (
+                <Link
+                  to={`pet-details/${pet.id}`}
+                  key={pet.id}
+                  className="p-6 rounded-xl border-2 border-primaryOrange/50 bg-primaryOrange/10 shadow-md hover:shadow-lg w-[250px] transition-all"
+                >
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={pet.images[0]}
+                      alt={pet.name}
+                      className="w-40 h-40 object-cover rounded-full mb-4 border border-primaryOrange"
+                    />
+                    <h3 className="text-xl font-bold text-primaryOrange">
+                      {pet.name}
+                    </h3>
+                    <p className="text-gray-700 italic mb-2">{pet.breed}</p>
+                    <p className="text-sm text-gray-600">
+                      Age: {pet.age} | Gender: {pet.gender}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Energy: {pet.energyLevel}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Training: {pet.trainingLevel}
+                    </p>
+                  </div>
+                </Link>
+              ))}
             </div>
           )}
         </div>
@@ -397,16 +406,16 @@ export const PetQuiz = ({
       experience_level: null,
     });
   };
-  useEffect(() => {
-    const response = {
-      recommendedBreeds: {
-        message: "No pets found for the recommended breeds.",
-      },
-    };
+  // useEffect(() => {
+  //   const response = {
+  //     recommendedBreeds: {
+  //       message: "No pets found for the recommended breeds.",
+  //     },
+  //   };
 
-    // Set the message from the response
-    setMessage(response.recommendedBreeds.message);
-  }, []);
+  //   // Set the message from the response
+  //   setMessage(response.recommendedBreeds.message);
+  // }, []);
 
   if (!open) return null;
 

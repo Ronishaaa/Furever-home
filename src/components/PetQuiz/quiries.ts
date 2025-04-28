@@ -10,8 +10,29 @@ export interface DogInput {
   home_type: "apartment" | "townhouse" | "house" | "farm" | null;
   experience_level: "first-time" | "experienced" | null;
 }
+interface Pet {
+  id: number;
+  name: string;
+  breed: string;
+  age: number;
+  gender: string;
+  color: string;
+  healthCondition: string | null;
+  vaccination: boolean;
+  adoptionStatus: string;
+  images: string[];
+  personality: string[];
+  energyLevel: string;
+  trainingLevel: string;
+  strangerBehavior: string;
+  specialTraits: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface BreedRecommendation {
-  recommendedBreeds: string[];
+  recommendedBreeds: Pet[] | null;
+  message?: string;
 }
 export const useRecommendBreed = () => {
   return useMutation({
