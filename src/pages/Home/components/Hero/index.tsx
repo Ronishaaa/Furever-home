@@ -8,10 +8,6 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primaryBlack/80 via-primaryBlack/50"></div>
       </div>
 
-      <div className="absolute top-20 left-20 w-40 h-40 rounded-full bg-primaryDarkRosewood/20 animate-pulse"></div>
-      <div className="absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-primaryDarkRosewood/15"></div>
-      <div className="absolute bottom-1/3 left-1/5 w-5 h-5 rounded-full bg-primaryDarkRosewood/10"></div>
-
       <div className="fh-container relative z-10 py-20">
         <div className="fh-grid">
           <div className="col-span-12 md:col-span-7 lg:col-span-6">

@@ -19,7 +19,7 @@ import { useBoolean } from "usehooks-ts";
 import { AdoptionApplication, Button } from "../../../../components";
 import { useAuth } from "../../../../context/AuthContext";
 import { AdoptionApplicationData, useGetUser } from "../../../Account/queries";
-import { Pet } from "../../../Adopt/queries";
+import { Pet } from "../../../Home/components/Featured/queries";
 
 interface Props {
   data: Pet;

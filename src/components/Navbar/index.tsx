@@ -6,10 +6,9 @@ import {
   MdOutlineLogin,
   MdOutlineLogout,
 } from "react-icons/md";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SimpleBarReact from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
-import { twMerge } from "tailwind-merge";
 import { useBoolean, useOnClickOutside } from "usehooks-ts";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../Button";
@@ -47,7 +46,6 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
-  const location = useLocation();
   const notificationRef = useRef(null);
   const { isAuthenticated, user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -71,8 +69,6 @@ const Navbar = () => {
 
   useOnClickOutside(notificationRef, setNotificationFalse);
 
-  const noNavbarRoutes = ["/login", "/register", "/verify"];
-
   const { data: notifications, refetch } = useGetNotifications(user?.id);
   const handleNotificationClick = () => {
     toggleNotification();
@@ -83,7 +79,7 @@ const Navbar = () => {
 
   useEffect(() => {
     refetch();
-  }, [value, user, refetch]);
+  }, [value, unreadCount, user, refetch]);
 
   const handleNotificationItemClick = () => {
     setNotificationFalse();
@@ -94,10 +90,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={twMerge(
-          styles.navbar,
-          noNavbarRoutes.includes(location.pathname) ? "hidden" : "block"
-        )}
+        className={styles.navbar}
         onMouseEnter={() => setDropdownOpen(false)}
       >
         <div className="fh-container">

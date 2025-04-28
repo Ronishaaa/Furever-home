@@ -38,6 +38,7 @@ export const SimilarPets = () => {
                 gender={pet.gender}
                 href={pet.id}
                 personality={pet.personality}
+                adoptionStatus={pet.adoptionStatus}
               />
             ))}
         </div>

@@ -162,6 +162,10 @@ export const Filter = () => {
     clearAll();
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [filters]);
+
   return (
     <section className="mt-[20px]">
       <div className="fh-container">

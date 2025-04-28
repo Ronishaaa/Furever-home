@@ -21,20 +21,19 @@ export const Featured = () => {
           </p>
         </div>
         <div className="grid grid-cols-4 gap-6">
-          {data?.data
-            .filter((pet) => pet.adoptionStatus !== "Adopted")
-            .map((pet, index) => (
-              <PetCard
-                key={pet.id || index}
-                age={pet.age}
-                image={pet.images}
-                name={pet.name}
-                breed={pet.breed}
-                gender={pet.gender}
-                href={pet.id}
-                personality={pet.personality}
-              />
-            ))}
+          {data?.data.slice(0, 4).map((pet, index) => (
+            <PetCard
+              key={pet.id || index}
+              age={pet.age}
+              image={pet.images}
+              name={pet.name}
+              breed={pet.breed}
+              gender={pet.gender}
+              href={pet.id}
+              personality={pet.personality}
+              adoptionStatus={pet.adoptionStatus}
+            />
+          ))}
         </div>
       </div>
     </section>

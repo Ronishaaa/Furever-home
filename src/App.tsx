@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import ScrollToTop from "./components/scrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import {
   Account,
@@ -30,6 +31,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Navbar />
         <Toaster closeButton position="top-right" />
         <Routes>
