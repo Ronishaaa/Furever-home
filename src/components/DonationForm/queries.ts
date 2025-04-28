@@ -1,4 +1,3 @@
-// hooks/useDonation.ts
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { DonationInput } from "../../components";

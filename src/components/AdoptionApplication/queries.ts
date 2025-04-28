@@ -26,11 +26,5 @@ export const useAddApplication = () => {
       const { data } = await axios.post("/api/application", values);
       return data;
     },
-    onSuccess: (data) => {
-      console.log("Application submitted successfully:", data);
-    },
-    onError: (error) => {
-      console.error("Application submission failed:", error);
-    },
   });
 };

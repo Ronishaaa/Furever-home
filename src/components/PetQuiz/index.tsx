@@ -1,6 +1,19 @@
 import { FloatingOverlay } from "@floating-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  FaAward,
+  FaBuilding,
+  FaCouch,
+  FaHome,
+  FaMedal,
+  FaRunning,
+  FaSpinner,
+  FaTrophy,
+  FaWalking,
+} from "react-icons/fa";
+import { GiFarmTractor, GiVillage } from "react-icons/gi";
 import { twMerge } from "tailwind-merge";
+import { Button } from "../Button";
 import { DogInput, useRecommendBreed } from "./quiries";
 
 export const PetQuiz = ({
@@ -21,12 +34,12 @@ export const PetQuiz = ({
     experience_level: null,
   });
   const { mutate: recommendBreed, data, reset } = useRecommendBreed();
-  console.log(data);
+  const [message, setMessage] = useState("");
   const steps = [
     {
       title: "What's your experience level with pets?",
       content: (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           {[
             {
               value: "first-time",
@@ -49,15 +62,16 @@ export const PetQuiz = ({
                     | "experienced",
                 })
               }
-              className={`p-6 rounded-xl border-2 transition-all ${
+              className={twMerge(
+                "p-8 rounded-xl border-2 transition-all duration-200",
                 preferences.experience_level === option.value
-                  ? "border-primaryOrange bg-primaryOrange/15"
-                  : "border-grey hover:border-primaryBlack"
-              }`}
+                  ? "border-primaryOrange bg-primaryOrange/20 shadow-md"
+                  : "border-grey hover:border-primaryBlack hover:shadow-sm"
+              )}
             >
-              <div className="flex flex-col items-center text-center">
-                <h3 className="font-bold text-black text-lg">{option.label}</h3>
-                <p className="text-sm text-grey mt-1">{option.description}</p>
+              <div className="flex flex-col items-center text-center gap-2">
+                <h3 className="font-bold text-black text-xl">{option.label}</h3>
+                <p className="text-base text-grey">{option.description}</p>
               </div>
             </button>
           ))}
@@ -68,12 +82,28 @@ export const PetQuiz = ({
     {
       title: "What type of home do you live in?",
       content: (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           {[
-            { value: "apartment", label: "Apartment", icon: "🏢" },
-            { value: "townhouse", label: "Townhouse", icon: "🏘️" },
-            { value: "house", label: "House", icon: "🏠" },
-            { value: "farm", label: "Farm/Rural", icon: "🌄" },
+            {
+              value: "apartment",
+              label: "Apartment",
+              icon: <FaBuilding className="text-4xl" />,
+            },
+            {
+              value: "townhouse",
+              label: "Townhouse",
+              icon: <GiVillage className="text-4xl" />,
+            },
+            {
+              value: "house",
+              label: "House",
+              icon: <FaHome className="text-4xl" />,
+            },
+            {
+              value: "farm",
+              label: "Farm/Rural",
+              icon: <GiFarmTractor className="text-4xl" />,
+            },
           ].map((option) => (
             <button
               key={option.value}
@@ -88,15 +118,16 @@ export const PetQuiz = ({
                     | null,
                 })
               }
-              className={`p-6 rounded-xl border-2 transition-all ${
+              className={twMerge(
+                "p-8 rounded-xl border-2 transition-all duration-200",
                 preferences.home_type === option.value
-                  ? "border-primaryOrange bg-primaryOrange/15"
-                  : "border-grey hover:border-primaryBlack"
-              }`}
+                  ? "border-primaryOrange bg-primaryOrange/20 shadow-md"
+                  : "border-grey hover:border-primaryBlack hover:shadow-sm"
+              )}
             >
-              <div className="flex flex-col items-center text-center">
-                <span className="text-2xl mb-2">{option.icon}</span>
-                <h3 className="font-bold text-black text-lg">{option.label}</h3>
+              <div className="flex flex-col items-center text-center gap-2">
+                <span className="mb-1">{option.icon}</span>
+                <h3 className="font-bold text-black text-xl">{option.label}</h3>
               </div>
             </button>
           ))}
@@ -107,25 +138,25 @@ export const PetQuiz = ({
     {
       title: "What's your lifestyle like?",
       content: (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-6">
           {[
             {
               value: "active",
               label: "Active",
               description: "I enjoy daily exercise and outdoor activities",
-              icon: "🏃‍♂️",
+              icon: <FaRunning className="text-4xl" />,
             },
             {
               value: "moderate",
               label: "Moderate",
               description: "I'm somewhat active but enjoy downtime",
-              icon: "🚶‍♂️",
+              icon: <FaWalking className="text-4xl" />,
             },
             {
               value: "sedentary",
               label: "Sedentary",
               description: "I prefer a more relaxed pace",
-              icon: "🛋️",
+              icon: <FaCouch className="text-4xl" />,
             },
           ].map((option) => (
             <button
@@ -140,16 +171,17 @@ export const PetQuiz = ({
                     | null,
                 })
               }
-              className={`p-6 rounded-xl border-2 transition-all ${
+              className={twMerge(
+                "p-8 rounded-xl border-2 transition-all duration-200",
                 preferences.lifestyle === option.value
-                  ? "border-primaryOrange bg-primaryOrange/15"
-                  : "border-grey hover:border-primaryBlack"
-              }`}
+                  ? "border-primaryOrange bg-primaryOrange/20 shadow-md"
+                  : "border-grey hover:border-primaryBlack hover:shadow-sm"
+              )}
             >
-              <div className="flex flex-col items-center text-center">
-                <span className="text-2xl mb-2">{option.icon}</span>
-                <h3 className="font-bold text-black text-lg">{option.label}</h3>
-                <p className="text-sm text-grey mt-1">{option.description}</p>
+              <div className="flex flex-col items-center text-center gap-2">
+                <span className="mb-1">{option.icon}</span>
+                <h3 className="font-bold text-black text-xl">{option.label}</h3>
+                <p className="text-base text-grey">{option.description}</p>
               </div>
             </button>
           ))}
@@ -161,25 +193,26 @@ export const PetQuiz = ({
       title: "How much grooming are you prepared to do?",
       description: "1 = Minimal grooming, 5 = Frequent grooming needed",
       content: (
-        <div className="space-y-6">
-          <div className="flex justify-center gap-2">
+        <div className="space-y-8">
+          <div className="flex justify-center gap-4">
             {[1, 2, 3, 4, 5].map((level) => (
               <button
                 key={level}
                 onClick={() =>
                   setPreferences({ ...preferences, grooming: level })
                 }
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all ${
+                className={twMerge(
+                  "w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold transition-all",
                   preferences.grooming === level
-                    ? "bg-primaryOrange text-white"
-                    : "bg-grey/10 text-grey hover:bg-primaryOrange/10"
-                }`}
+                    ? "bg-primaryOrange text-white shadow-lg scale-110"
+                    : "bg-grey/10 text-grey hover:bg-primaryOrange/20 hover:text-primaryBlack"
+                )}
               >
                 {level}
               </button>
             ))}
           </div>
-          <div className="text-center text-grey text-sm">
+          <div className="text-center text-grey text-lg">
             {preferences.grooming === 1 && "Brushing once a month or less"}
             {preferences.grooming === 2 && "Brushing once a week"}
             {preferences.grooming === 3 && "Brushing 2-3 times a week"}
@@ -195,25 +228,26 @@ export const PetQuiz = ({
       title: "How much shedding can you tolerate?",
       description: "1 = No shedding, 5 = Heavy shedding",
       content: (
-        <div className="space-y-6">
-          <div className="flex justify-center gap-2">
+        <div className="space-y-8">
+          <div className="flex justify-center gap-4">
             {[1, 2, 3, 4, 5].map((level) => (
               <button
                 key={level}
                 onClick={() =>
                   setPreferences({ ...preferences, shedding: level })
                 }
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all ${
+                className={twMerge(
+                  "w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold transition-all",
                   preferences.shedding === level
-                    ? "bg-primaryOrange text-white"
-                    : "bg-grey/10 text-grey hover:bg-primaryOrange/10"
-                }`}
+                    ? "bg-primaryOrange text-white shadow-lg scale-110"
+                    : "bg-grey/10 text-grey hover:bg-primaryOrange/20 hover:text-primaryBlack"
+                )}
               >
                 {level}
               </button>
             ))}
           </div>
-          <div className="text-center text-grey text-sm">
+          <div className="text-center text-grey text-lg">
             {preferences.shedding === 1 && "I want minimal to no shedding"}
             {preferences.shedding === 2 && "Occasional light shedding is okay"}
             {preferences.shedding === 3 && "Moderate shedding is acceptable"}
@@ -228,25 +262,26 @@ export const PetQuiz = ({
       title: "What energy level are you looking for in a pet?",
       description: "1 = Low energy, 5 = Very high energy",
       content: (
-        <div className="space-y-6">
-          <div className="flex justify-center gap-2">
+        <div className="space-y-8">
+          <div className="flex justify-center gap-4">
             {[1, 2, 3, 4, 5].map((level) => (
               <button
                 key={level}
                 onClick={() =>
                   setPreferences({ ...preferences, energy: level })
                 }
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all ${
+                className={twMerge(
+                  "w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold transition-all",
                   preferences.energy === level
-                    ? "bg-primaryOrange text-white"
-                    : "bg-grey/10 text-grey hover:bg-primaryOrange/10"
-                }`}
+                    ? "bg-primaryOrange text-white shadow-lg scale-110"
+                    : "bg-grey/10 text-grey hover:bg-primaryOrange/20 hover:text-primaryBlack"
+                )}
               >
                 {level}
               </button>
             ))}
           </div>
-          <div className="text-center text-grey text-sm">
+          <div className="text-center text-grey text-lg">
             {preferences.energy === 1 && "Couch potato - low exercise needs"}
             {preferences.energy === 2 && "Occasionally playful"}
             {preferences.energy === 3 && "Moderate daily exercise needed"}
@@ -261,25 +296,26 @@ export const PetQuiz = ({
       title: "How important is trainability to you?",
       description: "1 = Easy to train, 5 = Challenging to train",
       content: (
-        <div className="space-y-6">
-          <div className="flex justify-center gap-2">
+        <div className="space-y-8">
+          <div className="flex justify-center gap-4">
             {[1, 2, 3, 4, 5].map((level) => (
               <button
                 key={level}
                 onClick={() =>
                   setPreferences({ ...preferences, trainability: level })
                 }
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all ${
+                className={twMerge(
+                  "w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold transition-all",
                   preferences.trainability === level
-                    ? "bg-primaryOrange text-white"
-                    : "bg-grey/10 text-grey hover:bg-primaryOrange/10"
-                }`}
+                    ? "bg-primaryOrange text-white shadow-lg scale-110"
+                    : "bg-grey/10 text-grey hover:bg-primaryOrange/20 hover:text-primaryBlack"
+                )}
               >
                 {level}
               </button>
             ))}
           </div>
-          <div className="text-center text-grey text-sm">
+          <div className="text-center text-grey text-lg">
             {preferences.trainability === 1 &&
               "Very important - needs to be easy to train"}
             {preferences.trainability === 2 &&
@@ -295,27 +331,37 @@ export const PetQuiz = ({
     {
       title: "Recommended Breeds For You",
       content: (
-        <div className="space-y-6">
-          {data?.recommendedBreeds ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-8">
+          {message ? (
+            <p className="text-center">{message}</p>
+          ) : data?.recommendedBreeds ? (
+            <div className="grid grid-cols-3 gap-6">
               {data.recommendedBreeds.map((breed, index) => (
                 <div
                   key={breed}
-                  className="p-6 rounded-xl border-2 border-emerald-200 bg-primaryOrange/15 text-center"
+                  className="p-8 rounded-xl flex flex-col items-center border-2 border-primaryOrange/50 bg-primaryOrange/10 shadow-md hover:shadow-lg transition-all"
                 >
-                  <div className="text-4xl mb-3">
-                    {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
+                  <div className="text-4xl mb-4">
+                    {index === 0 ? (
+                      <FaTrophy />
+                    ) : index === 1 ? (
+                      <FaMedal />
+                    ) : (
+                      <FaAward />
+                    )}
                   </div>
-                  <h3 className="font-bold text-lg text-emerald-800">
+                  <h3 className="font-bold text-2xl text-primaryOrange">
                     {breed}
                   </h3>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primaryOrange mx-auto mb-4"></div>
-              <p className="text-gray-600">Finding your perfect matches...</p>
+            <div className="text-center py-12">
+              <FaSpinner className="animate-spin h-16 w-16 text-primaryOrange mx-auto mb-6" />
+              <p className="text-gray-600 text-xl">
+                Finding your perfect matches...
+              </p>
             </div>
           )}
         </div>
@@ -332,7 +378,6 @@ export const PetQuiz = ({
     if (currentStep < steps.length - 2) {
       setCurrentStep(currentStep + 1);
     } else if (currentStep === steps.length - 2) {
-      console.log("Submitting preferences:", preferences);
       recommendBreed(preferences);
       setCurrentStep(currentStep + 1);
     }
@@ -352,6 +397,16 @@ export const PetQuiz = ({
       experience_level: null,
     });
   };
+  useEffect(() => {
+    const response = {
+      recommendedBreeds: {
+        message: "No pets found for the recommended breeds.",
+      },
+    };
+
+    // Set the message from the response
+    setMessage(response.recommendedBreeds.message);
+  }, []);
 
   if (!open) return null;
 
@@ -364,73 +419,74 @@ export const PetQuiz = ({
       lockScroll={open}
     >
       <div className="min-h-screen w-full flex flex-col">
-        <div className="p-6 overflow-y-auto flex-grow">
-          <header className="mb-6 relative">
+        <div className="overflow-y-auto flex-grow">
+          <header className="py-8 fh-container relative">
             <button
               onClick={handleCloseQuiz}
-              className="absolute top-0 right-0 text-grey hover:text-grey text-2xl"
+              className="absolute top-6 right-0 text-grey hover:text-primaryBlack text-5xl transition-colors"
             >
               &times;
             </button>
 
-            <h1 className="text-2xl font-bold text-black">
+            <h1 className="text-4xl font-bold text-black">
               Find Your Perfect Dog Match
             </h1>
-            <p className="text-grey mt-1">
-              {currentStep + 1} of {steps.length} questions
-            </p>
-
-            <div className="w-full bg-grey rounded-full h-2 mt-4">
-              <div
-                className="bg-primaryOrange h-2 rounded-full transition-all duration-300"
-                style={{
-                  width: `${((currentStep + 1) / steps.length) * 100}%`,
-                }}
-              ></div>
-            </div>
-          </header>
-
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-black mb-2 text-center">
-              {steps[currentStep].title}
-            </h2>
-            {steps[currentStep].description && (
-              <p className="text-grey font-bold text-sm text-center mb-6">
-                {steps[currentStep].description}
+            {steps.length !== currentStep + 1 && (
+              <p className="text-grey mt-2 text-xl">
+                {currentStep + 1} of {steps.length - 1} questions
               </p>
             )}
-            <div className="mt-6">{steps[currentStep].content}</div>
+          </header>
+          <div className="w-full bg-grey/30 h-3">
+            <div
+              className="bg-primaryOrange h-3 transition-all duration-300"
+              style={{
+                width: `${((currentStep + 1) / steps.length) * 100}%`,
+              }}
+            ></div>
+          </div>
+
+          <div className="fh-container min-h-[calc(100vh-270px)] flex items-center py-8">
+            <div className="w-full">
+              <h2 className="text-3xl font-semibold text-black mb-4 text-center">
+                {steps[currentStep].title}
+              </h2>
+              {steps[currentStep].description && (
+                <p className="text-grey font-bold text-xl text-center mb-8">
+                  {steps[currentStep].description}
+                </p>
+              )}
+              <div className="mt-8">{steps[currentStep].content}</div>
+            </div>
           </div>
         </div>
 
-        <div className="p-6 border-t border-grey bg-gray-50">
+        <div className="p-8 border-t border-grey/30 bg-primaryIvory">
           <div className="flex justify-between">
-            <button
+            <Button
+              size="lg"
+              variant="outlined-dark"
               onClick={
                 currentStep === 0
                   ? handleCloseQuiz
                   : () => setCurrentStep(currentStep - 1)
               }
-              className={`px-6 py-2 rounded-lg ${
-                currentStep === 0
-                  ? "text-grey hover:bg-grey/10"
-                  : "bg-grey text-black hover:bg-gray-300"
-              }`}
-            >
-              {currentStep === 0 ? "Cancel" : "Back"}
-            </button>
+              label={currentStep === 0 ? "Cancel" : "Back"}
+            />
             {currentStep !== steps.length - 1 && (
-              <button
+              <Button
+                size="lg"
+                variant="filled"
                 onClick={handleNext}
                 disabled={!steps[currentStep].validate()}
-                className={`px-6 py-2 rounded-lg ${
-                  !steps[currentStep].validate()
-                    ? "bg-gray-300 text-grey cursor-not-allowed"
-                    : "bg-primaryOrange text-white hover:bg-emerald-600"
-                }`}
-              >
-                {currentStep === steps.length - 2 ? "Get Results" : "Next"}
-              </button>
+                className={twMerge(
+                  !steps[currentStep].validate() &&
+                    "bg-grey/20 text-grey cursor-not-allowed"
+                )}
+                label={
+                  currentStep === steps.length - 2 ? "Get Results" : "Next"
+                }
+              />
             )}
           </div>
         </div>

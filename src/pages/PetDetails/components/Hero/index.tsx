@@ -34,7 +34,7 @@ export const Hero = ({ data }: Props) => {
   const { user } = useAuth();
   const userId = user?.id ?? 0;
   const { data: userData, refetch } = useGetUser(userId as number);
-  console.log(userData);
+
   const [firstSwiper, setFirstSwiper] = useState<SwiperCore | null>(null);
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
 

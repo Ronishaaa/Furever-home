@@ -16,10 +16,6 @@ export const useSignup = () => {
         password: values.password,
       });
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
       return data;
     },
   });
