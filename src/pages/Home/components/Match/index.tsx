@@ -14,16 +14,11 @@ export const Match = () => {
         <div className="grid-cols-10 items-center gap-x-12 lg:grid">
           <div className="mb-16 grid grid-cols-4 flex-col items-center gap-56 gap-x-4 lg:col-span-3 lg:mb-0 lg:flex">
             <div className="col-span-2 w-[72%] lg:w-1/2 lg:self-end">
-              <img
-                src="https://picsum.photos/id/237/300/300"
-                alt="image"
-                width={200}
-                height={200}
-              />
+              <img src="/luna.jpg" alt="image" width={200} height={200} />
             </div>
             <div className="col-span-2 lg:w-4/5 lg:self-start">
               <img
-                src="https://picsum.photos/301/301"
+                src="/pet1.jpg"
                 alt="image"
                 width={288}
                 className="image-three"
@@ -51,7 +46,7 @@ export const Match = () => {
           <div className="grid grid-cols-4 flex-col items-center gap-56 gap-x-4 lg:col-span-3 lg:col-start-8 lg:flex">
             <div className="col-span-2 lg:w-4/5 lg:self-end">
               <img
-                src="https://picsum.photos/301/302"
+                src="/pet2.jpg"
                 alt="image"
                 width={288}
                 className="image-two"
@@ -59,7 +54,7 @@ export const Match = () => {
             </div>
             <div className="col-span-2 ml-auto w-[72%] lg:ml-0 lg:w-[60%] lg:self-start">
               <img
-                src="https://picsum.photos/300/303"
+                src="/pet3.jpg"
                 alt="image"
                 width={200}
                 className="image-four"

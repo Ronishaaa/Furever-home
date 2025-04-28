@@ -34,7 +34,7 @@ export const Signup = () => {
   } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
   });
-  const { mutate: signupUser } = useSignup();
+  const { mutate: signupUser, isPending } = useSignup();
 
   const onSubmit = (values: SignupForm) => {
     signupUser(values, {
@@ -103,10 +103,11 @@ export const Signup = () => {
 
           <Button
             type="submit"
-            label="Register"
+            label={isPending ? "Loading..." : "Register"}
             size="lg"
             variant="filled"
             className="w-full"
+            disabled={isPending}
           />
         </form>
 

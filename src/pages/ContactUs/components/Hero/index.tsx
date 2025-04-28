@@ -23,6 +23,7 @@ export const Hero = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
@@ -40,6 +41,7 @@ export const Hero = () => {
         className: "bg-green-50 border border-green-200 text-green-800",
         icon: <FiMail className="text-green-500" />,
       });
+      reset();
     } catch (err) {
       toast.error("Failed to send message.", {
         description: "Please try again later or check your connection.",
