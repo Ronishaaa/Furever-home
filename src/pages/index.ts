@@ -6,6 +6,7 @@ export * from "./Donation";
 export * from "./EmailVerification";
 export * from "./Home";
 export * from "./Login";
+export * from "./NotFound";
 export * from "./PetCareTips";
 export * from "./PetDetails";
 export * from "./RescueStories";

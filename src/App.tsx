@@ -12,6 +12,7 @@ import {
   EmailVerification,
   Home,
   Login,
+  NotFound,
   PetCareTips,
   PetDetails,
   RescueStories,
@@ -50,6 +51,7 @@ function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/donate" element={<Donation />} />
           <Route path="/verification" element={<Verification />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>
