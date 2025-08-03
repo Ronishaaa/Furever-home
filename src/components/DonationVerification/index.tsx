@@ -44,7 +44,7 @@ export const DonationVerification = () => {
   }, [searchParams]);
 
   if (status === "loading") {
-    return <p>Verifying your donation...</p>;
+    return <p>Verifying your donation..</p>;
   }
 
   return (
